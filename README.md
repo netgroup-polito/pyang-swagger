@@ -33,68 +33,9 @@ pyang -f swagger -p modules modules/config-bridge.yang -o config-bridge-swagger.
       --use the option '-p' to specify the path of the yang models for import purposes.
 ```
 
-### Have a look at the JSON output with the Swagger editor
+### Have a look at the auto-generated JSON output 
 
-[Swagger editor](http://editor.swagger.io/#/)
-
-
-## To build a JAX-RS server stub using Swagger-codegen
-
-We will use the swagger code generator. The obtained swagger files from our pyang plugin are in swagger v2.0. To generate code from this swagger file version we use the current stable version of [swagger-codegen (2.1.3)](https://github.com/swagger-api/swagger-codegen/tree/v2.1.3):
-
-### Prerequisites
-
-You need the following installed and available in your $PATH:
-
-[Java 7](http://java.oracle.com/)
-
-[Apache maven 3.0.3 or greater](http://maven.apache.org/)
-
-### Installation and code generation
-
-Download and build swagger-codegen
-
-```
-git clone https://github.com/swagger-api/swagger-codegen.git
-cd swagger-codegen/
-mvn package
-```
-Copy and paste your already generated swagger.json model/s into the swagger-codegen folder:
-
-```
-cp ../source_cop_files_folder/*.json .
-```
-
-###To build a server stub using JAX-RS:
-
-```
-java -jar modules/swagger-codegen-cli/target/swagger-codegen-cli.jar generate \
--i service-call.json \
--l jaxrs \
--o samples/service-call/
-```
-
-Run the generated server:
-
-```
-cd samples/service-call/
-mvn jetty:run
-```
-
-After starting the server you can try some examples using CURL or opening the following link:
-```
-http://localhost:8080/restconf/config/calls
-
-http://localhost:8080/restconf/config/calls/call/1/aEnd
-
-http://localhost:8080/restconf/config/calls/call/1/connections/conn_3
-```
-
-If everything worked, you will see this reply:
-```
-{"code":4,"type":"ok","message":"magic!"}
-```
-
+[config-bridge.json](./output/config-bridge.json)
 
 License
 -------
