@@ -1,0 +1,1783 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "description": "config-bridge API generated from C:\\Users\\miano\\PycharmProjects\\pyang-swagger\\modules\\config-bridge.yang",
+    "title": "config-bridge API"
+  },
+  "host": "localhost:8080",
+  "basePath": "/",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/bridges/": {
+      "put": {
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Internal Error"
+          }
+        },
+        "description": "Update operation of resource: bridges",
+        "parameters": [
+          {
+            "description": "bridgesbody object",
+            "schema": {
+              "$ref": "#/definitions/BridgesSchema"
+            },
+            "name": "bridges",
+            "in": "body"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Update bridges by ID",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "updateBridgesById"
+      },
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Internal Error"
+          }
+        },
+        "description": "Create operation of resource: bridges",
+        "parameters": [
+          {
+            "description": "bridgesbody object",
+            "schema": {
+              "$ref": "#/definitions/BridgesSchema"
+            },
+            "name": "bridges",
+            "in": "body"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Create bridges by ID",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "createBridgesById"
+      },
+      "delete": {
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Internal Error"
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "description": "Delete operation of resource: bridges",
+        "summary": "Delete bridges by ID",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "deleteBridgesById"
+      },
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/BridgesSchema"
+            }
+          },
+          "400": {
+            "description": "Internal Error"
+          }
+        },
+        "description": "Retrieve operation of resource: bridges",
+        "parameters": [],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Retrieve bridges",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "retrieveBridges"
+      }
+    },
+    "/bridges/bridge/{name}/": {
+      "put": {
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Internal Error"
+          }
+        },
+        "description": "Update operation of resource: bridge",
+        "parameters": [
+          {
+            "description": "ID of name",
+            "required": true,
+            "type": "string",
+            "name": "name",
+            "in": "path"
+          },
+          {
+            "description": "bridgebody object",
+            "schema": {
+              "$ref": "#/definitions/BridgeSchema"
+            },
+            "name": "bridge",
+            "in": "body"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Update bridge by ID",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "updateBridgesBridgeBridgeById"
+      },
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Internal Error"
+          }
+        },
+        "description": "Create operation of resource: bridge",
+        "parameters": [
+          {
+            "description": "ID of name",
+            "required": true,
+            "type": "string",
+            "name": "name",
+            "in": "path"
+          },
+          {
+            "description": "bridgebody object",
+            "schema": {
+              "$ref": "#/definitions/BridgeSchema"
+            },
+            "name": "bridge",
+            "in": "body"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Create bridge by ID",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "createBridgesBridgeBridgeById"
+      },
+      "delete": {
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Internal Error"
+          }
+        },
+        "description": "Delete operation of resource: bridge",
+        "parameters": [
+          {
+            "description": "ID of name",
+            "required": true,
+            "type": "string",
+            "name": "name",
+            "in": "path"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Delete bridge by ID",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "deleteBridgesBridgeBridgeById"
+      },
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/BridgeSchema"
+            }
+          },
+          "400": {
+            "description": "Internal Error"
+          }
+        },
+        "description": "Retrieve operation of resource: bridge",
+        "parameters": [
+          {
+            "description": "ID of name",
+            "required": true,
+            "type": "string",
+            "name": "name",
+            "in": "path"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Retrieve bridge by ID",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "retrieveBridgesBridgeBridgeById"
+      }
+    },
+    "/bridges/bridge/{name}/fwd-database/": {
+      "put": {
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Internal Error"
+          }
+        },
+        "description": "Update operation of resource: fwd-database",
+        "parameters": [
+          {
+            "description": "ID of name",
+            "required": true,
+            "type": "string",
+            "name": "name",
+            "in": "path"
+          },
+          {
+            "description": "fwd-databasebody object",
+            "schema": {
+              "$ref": "#/definitions/FwdDatabaseSchema"
+            },
+            "name": "fwd-database",
+            "in": "body"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Update fwd-database by ID",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "updateBridgesBridgeFwdDatabaseFwdDatabaseById"
+      },
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Internal Error"
+          }
+        },
+        "description": "Create operation of resource: fwd-database",
+        "parameters": [
+          {
+            "description": "ID of name",
+            "required": true,
+            "type": "string",
+            "name": "name",
+            "in": "path"
+          },
+          {
+            "description": "fwd-databasebody object",
+            "schema": {
+              "$ref": "#/definitions/FwdDatabaseSchema"
+            },
+            "name": "fwd-database",
+            "in": "body"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Create fwd-database by ID",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "createBridgesBridgeFwdDatabaseFwdDatabaseById"
+      },
+      "delete": {
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Internal Error"
+          }
+        },
+        "description": "Delete operation of resource: fwd-database",
+        "parameters": [
+          {
+            "description": "ID of name",
+            "required": true,
+            "type": "string",
+            "name": "name",
+            "in": "path"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Delete fwd-database by ID",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "deleteBridgesBridgeFwdDatabaseFwdDatabaseById"
+      },
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/FwdDatabaseSchema"
+            }
+          },
+          "400": {
+            "description": "Internal Error"
+          }
+        },
+        "description": "Retrieve operation of resource: fwd-database",
+        "parameters": [
+          {
+            "description": "ID of name",
+            "required": true,
+            "type": "string",
+            "name": "name",
+            "in": "path"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Retrieve fwd-database by ID",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "retrieveBridgesBridgeFwdDatabaseFwdDatabaseById"
+      }
+    },
+    "/bridges/bridge/{name}/fwd-database/fwd-entry/{vids}/{address}/": {
+      "put": {
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Internal Error"
+          }
+        },
+        "description": "Update operation of resource: fwd-entry",
+        "parameters": [
+          {
+            "description": "ID of name",
+            "required": true,
+            "type": "string",
+            "name": "name",
+            "in": "path"
+          },
+          {
+            "description": "ID of vids",
+            "required": true,
+            "type": "string",
+            "name": "vids",
+            "in": "path"
+          },
+          {
+            "description": "ID of address",
+            "required": true,
+            "type": "string",
+            "name": "address",
+            "in": "path"
+          },
+          {
+            "description": "fwd-entrybody object",
+            "schema": {
+              "$ref": "#/definitions/FwdEntrySchema"
+            },
+            "name": "fwd-entry",
+            "in": "body"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Update fwd-entry by ID",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "updateBridgesBridgeFwdDatabaseFwdEntryFwdEntryById"
+      },
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Internal Error"
+          }
+        },
+        "description": "Create operation of resource: fwd-entry",
+        "parameters": [
+          {
+            "description": "ID of name",
+            "required": true,
+            "type": "string",
+            "name": "name",
+            "in": "path"
+          },
+          {
+            "description": "ID of vids",
+            "required": true,
+            "type": "string",
+            "name": "vids",
+            "in": "path"
+          },
+          {
+            "description": "ID of address",
+            "required": true,
+            "type": "string",
+            "name": "address",
+            "in": "path"
+          },
+          {
+            "description": "fwd-entrybody object",
+            "schema": {
+              "$ref": "#/definitions/FwdEntrySchema"
+            },
+            "name": "fwd-entry",
+            "in": "body"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Create fwd-entry by ID",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "createBridgesBridgeFwdDatabaseFwdEntryFwdEntryById"
+      },
+      "delete": {
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Internal Error"
+          }
+        },
+        "description": "Delete operation of resource: fwd-entry",
+        "parameters": [
+          {
+            "description": "ID of name",
+            "required": true,
+            "type": "string",
+            "name": "name",
+            "in": "path"
+          },
+          {
+            "description": "ID of vids",
+            "required": true,
+            "type": "string",
+            "name": "vids",
+            "in": "path"
+          },
+          {
+            "description": "ID of address",
+            "required": true,
+            "type": "string",
+            "name": "address",
+            "in": "path"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Delete fwd-entry by ID",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "deleteBridgesBridgeFwdDatabaseFwdEntryFwdEntryById"
+      },
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/FwdEntrySchema"
+            }
+          },
+          "400": {
+            "description": "Internal Error"
+          }
+        },
+        "description": "Retrieve operation of resource: fwd-entry",
+        "parameters": [
+          {
+            "description": "ID of name",
+            "required": true,
+            "type": "string",
+            "name": "name",
+            "in": "path"
+          },
+          {
+            "description": "ID of vids",
+            "required": true,
+            "type": "string",
+            "name": "vids",
+            "in": "path"
+          },
+          {
+            "description": "ID of address",
+            "required": true,
+            "type": "string",
+            "name": "address",
+            "in": "path"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Retrieve fwd-entry by ID",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "retrieveBridgesBridgeFwdDatabaseFwdEntryFwdEntryById"
+      }
+    },
+    "/bridges/bridge/{name}/stp/": {
+      "put": {
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Internal Error"
+          }
+        },
+        "description": "Update operation of resource: stp",
+        "parameters": [
+          {
+            "description": "ID of name",
+            "required": true,
+            "type": "string",
+            "name": "name",
+            "in": "path"
+          },
+          {
+            "description": "stpbody object",
+            "schema": {
+              "$ref": "#/definitions/StpSchema"
+            },
+            "name": "stp",
+            "in": "body"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Update stp by ID",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "updateBridgesBridgeStpStpById"
+      },
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Internal Error"
+          }
+        },
+        "description": "Create operation of resource: stp",
+        "parameters": [
+          {
+            "description": "ID of name",
+            "required": true,
+            "type": "string",
+            "name": "name",
+            "in": "path"
+          },
+          {
+            "description": "stpbody object",
+            "schema": {
+              "$ref": "#/definitions/StpSchema"
+            },
+            "name": "stp",
+            "in": "body"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Create stp by ID",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "createBridgesBridgeStpStpById"
+      },
+      "delete": {
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Internal Error"
+          }
+        },
+        "description": "Delete operation of resource: stp",
+        "parameters": [
+          {
+            "description": "ID of name",
+            "required": true,
+            "type": "string",
+            "name": "name",
+            "in": "path"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Delete stp by ID",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "deleteBridgesBridgeStpStpById"
+      },
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/StpSchema"
+            }
+          },
+          "400": {
+            "description": "Internal Error"
+          }
+        },
+        "description": "Retrieve operation of resource: stp",
+        "parameters": [
+          {
+            "description": "ID of name",
+            "required": true,
+            "type": "string",
+            "name": "name",
+            "in": "path"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Retrieve stp by ID",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "retrieveBridgesBridgeStpStpById"
+      }
+    },
+    "/bridges/bridge/{name}/interfaces/": {
+      "put": {
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Internal Error"
+          }
+        },
+        "description": "Update operation of resource: interfaces",
+        "parameters": [
+          {
+            "description": "ID of name",
+            "required": true,
+            "type": "string",
+            "name": "name",
+            "in": "path"
+          },
+          {
+            "description": "interfacesbody object",
+            "schema": {
+              "$ref": "#/definitions/InterfacesSchema"
+            },
+            "name": "interfaces",
+            "in": "body"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Update interfaces by ID",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "updateBridgesBridgeInterfacesInterfacesById"
+      },
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Internal Error"
+          }
+        },
+        "description": "Create operation of resource: interfaces",
+        "parameters": [
+          {
+            "description": "ID of name",
+            "required": true,
+            "type": "string",
+            "name": "name",
+            "in": "path"
+          },
+          {
+            "description": "interfacesbody object",
+            "schema": {
+              "$ref": "#/definitions/InterfacesSchema"
+            },
+            "name": "interfaces",
+            "in": "body"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Create interfaces by ID",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "createBridgesBridgeInterfacesInterfacesById"
+      },
+      "delete": {
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Internal Error"
+          }
+        },
+        "description": "Delete operation of resource: interfaces",
+        "parameters": [
+          {
+            "description": "ID of name",
+            "required": true,
+            "type": "string",
+            "name": "name",
+            "in": "path"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Delete interfaces by ID",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "deleteBridgesBridgeInterfacesInterfacesById"
+      },
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/InterfacesSchema"
+            }
+          },
+          "400": {
+            "description": "Internal Error"
+          }
+        },
+        "description": "Retrieve operation of resource: interfaces",
+        "parameters": [
+          {
+            "description": "ID of name",
+            "required": true,
+            "type": "string",
+            "name": "name",
+            "in": "path"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Retrieve interfaces by ID",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "retrieveBridgesBridgeInterfacesInterfacesById"
+      }
+    },
+    "/bridges/bridge/{name}/interfaces/interface/{nterface_name}/": {
+      "put": {
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Internal Error"
+          }
+        },
+        "description": "Update operation of resource: interface",
+        "parameters": [
+          {
+            "description": "ID of name",
+            "required": true,
+            "type": "string",
+            "name": "name",
+            "in": "path"
+          },
+          {
+            "description": "ID of nterface_name",
+            "required": true,
+            "type": "string",
+            "name": "nterface_name",
+            "in": "path"
+          },
+          {
+            "description": "interfacebody object",
+            "schema": {
+              "$ref": "#/definitions/InterfaceSchema"
+            },
+            "name": "interface",
+            "in": "body"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Update interface by ID",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "updateBridgesBridgeInterfacesInterfaceInterfaceById"
+      },
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Internal Error"
+          }
+        },
+        "description": "Create operation of resource: interface",
+        "parameters": [
+          {
+            "description": "ID of name",
+            "required": true,
+            "type": "string",
+            "name": "name",
+            "in": "path"
+          },
+          {
+            "description": "ID of nterface_name",
+            "required": true,
+            "type": "string",
+            "name": "nterface_name",
+            "in": "path"
+          },
+          {
+            "description": "interfacebody object",
+            "schema": {
+              "$ref": "#/definitions/InterfaceSchema"
+            },
+            "name": "interface",
+            "in": "body"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Create interface by ID",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "createBridgesBridgeInterfacesInterfaceInterfaceById"
+      },
+      "delete": {
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Internal Error"
+          }
+        },
+        "description": "Delete operation of resource: interface",
+        "parameters": [
+          {
+            "description": "ID of name",
+            "required": true,
+            "type": "string",
+            "name": "name",
+            "in": "path"
+          },
+          {
+            "description": "ID of nterface_name",
+            "required": true,
+            "type": "string",
+            "name": "nterface_name",
+            "in": "path"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Delete interface by ID",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "deleteBridgesBridgeInterfacesInterfaceInterfaceById"
+      },
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/InterfaceSchema"
+            }
+          },
+          "400": {
+            "description": "Internal Error"
+          }
+        },
+        "description": "Retrieve operation of resource: interface",
+        "parameters": [
+          {
+            "description": "ID of name",
+            "required": true,
+            "type": "string",
+            "name": "name",
+            "in": "path"
+          },
+          {
+            "description": "ID of nterface_name",
+            "required": true,
+            "type": "string",
+            "name": "nterface_name",
+            "in": "path"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Retrieve interface by ID",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "retrieveBridgesBridgeInterfacesInterfaceInterfaceById"
+      }
+    },
+    "/bridges/bridge/{name}/interfaces/interface/{nterface_name}/stp_interface/": {
+      "put": {
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Internal Error"
+          }
+        },
+        "description": "Update operation of resource: stp_interface",
+        "parameters": [
+          {
+            "description": "ID of name",
+            "required": true,
+            "type": "string",
+            "name": "name",
+            "in": "path"
+          },
+          {
+            "description": "ID of nterface_name",
+            "required": true,
+            "type": "string",
+            "name": "nterface_name",
+            "in": "path"
+          },
+          {
+            "description": "stp_interfacebody object",
+            "schema": {
+              "$ref": "#/definitions/StpInterfaceSchema"
+            },
+            "name": "stp_interface",
+            "in": "body"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Update stp_interface by ID",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "updateBridgesBridgeInterfacesInterfaceStpInterfaceStpInterfaceById"
+      },
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Internal Error"
+          }
+        },
+        "description": "Create operation of resource: stp_interface",
+        "parameters": [
+          {
+            "description": "ID of name",
+            "required": true,
+            "type": "string",
+            "name": "name",
+            "in": "path"
+          },
+          {
+            "description": "ID of nterface_name",
+            "required": true,
+            "type": "string",
+            "name": "nterface_name",
+            "in": "path"
+          },
+          {
+            "description": "stp_interfacebody object",
+            "schema": {
+              "$ref": "#/definitions/StpInterfaceSchema"
+            },
+            "name": "stp_interface",
+            "in": "body"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Create stp_interface by ID",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "createBridgesBridgeInterfacesInterfaceStpInterfaceStpInterfaceById"
+      },
+      "delete": {
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Internal Error"
+          }
+        },
+        "description": "Delete operation of resource: stp_interface",
+        "parameters": [
+          {
+            "description": "ID of name",
+            "required": true,
+            "type": "string",
+            "name": "name",
+            "in": "path"
+          },
+          {
+            "description": "ID of nterface_name",
+            "required": true,
+            "type": "string",
+            "name": "nterface_name",
+            "in": "path"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Delete stp_interface by ID",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "deleteBridgesBridgeInterfacesInterfaceStpInterfaceStpInterfaceById"
+      },
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/StpInterfaceSchema"
+            }
+          },
+          "400": {
+            "description": "Internal Error"
+          }
+        },
+        "description": "Retrieve operation of resource: stp_interface",
+        "parameters": [
+          {
+            "description": "ID of name",
+            "required": true,
+            "type": "string",
+            "name": "name",
+            "in": "path"
+          },
+          {
+            "description": "ID of nterface_name",
+            "required": true,
+            "type": "string",
+            "name": "nterface_name",
+            "in": "path"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Retrieve stp_interface by ID",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "retrieveBridgesBridgeInterfacesInterfaceStpInterfaceStpInterfaceById"
+      }
+    },
+    "/bridges/bridge/{name}/interfaces/interface/{nterface_name}/statistics/": {
+      "put": {
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Internal Error"
+          }
+        },
+        "description": "Update operation of resource: statistics",
+        "parameters": [
+          {
+            "description": "ID of name",
+            "required": true,
+            "type": "string",
+            "name": "name",
+            "in": "path"
+          },
+          {
+            "description": "ID of nterface_name",
+            "required": true,
+            "type": "string",
+            "name": "nterface_name",
+            "in": "path"
+          },
+          {
+            "description": "statisticsbody object",
+            "schema": {
+              "$ref": "#/definitions/StatisticsSchema"
+            },
+            "name": "statistics",
+            "in": "body"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Update statistics by ID",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "updateBridgesBridgeInterfacesInterfaceStatisticsStatisticsById"
+      },
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Internal Error"
+          }
+        },
+        "description": "Create operation of resource: statistics",
+        "parameters": [
+          {
+            "description": "ID of name",
+            "required": true,
+            "type": "string",
+            "name": "name",
+            "in": "path"
+          },
+          {
+            "description": "ID of nterface_name",
+            "required": true,
+            "type": "string",
+            "name": "nterface_name",
+            "in": "path"
+          },
+          {
+            "description": "statisticsbody object",
+            "schema": {
+              "$ref": "#/definitions/StatisticsSchema"
+            },
+            "name": "statistics",
+            "in": "body"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Create statistics by ID",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "createBridgesBridgeInterfacesInterfaceStatisticsStatisticsById"
+      },
+      "delete": {
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Internal Error"
+          }
+        },
+        "description": "Delete operation of resource: statistics",
+        "parameters": [
+          {
+            "description": "ID of name",
+            "required": true,
+            "type": "string",
+            "name": "name",
+            "in": "path"
+          },
+          {
+            "description": "ID of nterface_name",
+            "required": true,
+            "type": "string",
+            "name": "nterface_name",
+            "in": "path"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Delete statistics by ID",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "deleteBridgesBridgeInterfacesInterfaceStatisticsStatisticsById"
+      },
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/StatisticsSchema"
+            }
+          },
+          "400": {
+            "description": "Internal Error"
+          }
+        },
+        "description": "Retrieve operation of resource: statistics",
+        "parameters": [
+          {
+            "description": "ID of name",
+            "required": true,
+            "type": "string",
+            "name": "name",
+            "in": "path"
+          },
+          {
+            "description": "ID of nterface_name",
+            "required": true,
+            "type": "string",
+            "name": "nterface_name",
+            "in": "path"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Retrieve statistics by ID",
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "retrieveBridgesBridgeInterfacesInterfaceStatisticsStatisticsById"
+      }
+    }
+  },
+  "definitions": {
+    "BridgesSchema": {
+      "properties": {
+        "bridge": {
+          "items": {
+            "properties": {
+              "stpEnabled": {
+                "type": "boolean"
+              },
+              "stp": {
+                "properties": {
+                  "priority": {
+                    "type": "string"
+                  },
+                  "maxMessageAge": {
+                    "type": "string"
+                  },
+                  "helloTime": {
+                    "type": "string"
+                  },
+                  "forwardDelay": {
+                    "type": "string"
+                  }
+                }
+              },
+              "name": {
+                "type": "string"
+              },
+              "agingTime": {
+                "type": "string"
+              },
+              "address": {
+                "type": "string",
+                "description": "The MAC address used by the STP."
+              },
+              "interfaces": {
+                "description": "name=\u2019Interface List\u2019",
+                "properties": {
+                  "interface": {
+                    "items": {
+                      "properties": {
+                        "statistics": {
+                          "properties": {
+                            "rxPackets": {
+                              "type": "string"
+                            },
+                            "txBytes": {
+                              "type": "string"
+                            },
+                            "rxBytes": {
+                              "type": "string"
+                            },
+                            "txPackets": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "address": {
+                          "type": "string"
+                        },
+                        "accessMode": {
+                          "enum": [
+                            "access",
+                            "trunk"
+                          ],
+                          "type": "string"
+                        },
+                        "stpInterface": {
+                          "properties": {
+                            "pathCost": {
+                              "type": "string"
+                            },
+                            "portPriority": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "vlanId": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "type": "array",
+                    "x-key": [
+                      "name"
+                    ]
+                  }
+                }
+              },
+              "fwdDatabase": {
+                "properties": {
+                  "fwdEntry": {
+                    "items": {
+                      "properties": {
+                        "vids": {
+                          "type": "string"
+                        },
+                        "age": {
+                          "type": "string"
+                        },
+                        "entryType": {
+                          "enum": [
+                            "static",
+                            "dynamic"
+                          ],
+                          "type": "string"
+                        },
+                        "portNo": {
+                          "type": "string"
+                        },
+                        "address": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "type": "array",
+                    "x-key": [
+                      "vids",
+                      "address"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "type": "array",
+          "x-key": [
+            "name"
+          ]
+        }
+      }
+    },
+    "BridgeSchema": {
+      "properties": {
+        "stpEnabled": {
+          "type": "boolean"
+        },
+        "stp": {
+          "properties": {
+            "priority": {
+              "type": "string"
+            },
+            "maxMessageAge": {
+              "type": "string"
+            },
+            "helloTime": {
+              "type": "string"
+            },
+            "forwardDelay": {
+              "type": "string"
+            }
+          }
+        },
+        "name": {
+          "type": "string"
+        },
+        "agingTime": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string",
+          "description": "The MAC address used by the STP."
+        },
+        "interfaces": {
+          "description": "name=\u2019Interface List\u2019",
+          "properties": {
+            "interface": {
+              "items": {
+                "properties": {
+                  "statistics": {
+                    "properties": {
+                      "rxPackets": {
+                        "type": "string"
+                      },
+                      "txBytes": {
+                        "type": "string"
+                      },
+                      "rxBytes": {
+                        "type": "string"
+                      },
+                      "txPackets": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "address": {
+                    "type": "string"
+                  },
+                  "accessMode": {
+                    "enum": [
+                      "access",
+                      "trunk"
+                    ],
+                    "type": "string"
+                  },
+                  "stpInterface": {
+                    "properties": {
+                      "pathCost": {
+                        "type": "string"
+                      },
+                      "portPriority": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "vlanId": {
+                    "type": "string"
+                  }
+                }
+              },
+              "type": "array",
+              "x-key": [
+                "name"
+              ]
+            }
+          }
+        },
+        "fwdDatabase": {
+          "properties": {
+            "fwdEntry": {
+              "items": {
+                "properties": {
+                  "vids": {
+                    "type": "string"
+                  },
+                  "age": {
+                    "type": "string"
+                  },
+                  "entryType": {
+                    "enum": [
+                      "static",
+                      "dynamic"
+                    ],
+                    "type": "string"
+                  },
+                  "portNo": {
+                    "type": "string"
+                  },
+                  "address": {
+                    "type": "string"
+                  }
+                }
+              },
+              "type": "array",
+              "x-key": [
+                "vids",
+                "address"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "FwdDatabaseSchema": {
+      "properties": {
+        "fwdEntry": {
+          "items": {
+            "properties": {
+              "vids": {
+                "type": "string"
+              },
+              "age": {
+                "type": "string"
+              },
+              "entryType": {
+                "enum": [
+                  "static",
+                  "dynamic"
+                ],
+                "type": "string"
+              },
+              "portNo": {
+                "type": "string"
+              },
+              "address": {
+                "type": "string"
+              }
+            }
+          },
+          "type": "array",
+          "x-key": [
+            "vids",
+            "address"
+          ]
+        }
+      }
+    },
+    "FwdEntrySchema": {
+      "properties": {
+        "vids": {
+          "type": "string"
+        },
+        "age": {
+          "type": "string"
+        },
+        "entryType": {
+          "enum": [
+            "static",
+            "dynamic"
+          ],
+          "type": "string"
+        },
+        "portNo": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        }
+      }
+    },
+    "StpSchema": {
+      "properties": {
+        "priority": {
+          "type": "string"
+        },
+        "maxMessageAge": {
+          "type": "string"
+        },
+        "helloTime": {
+          "type": "string"
+        },
+        "forwardDelay": {
+          "type": "string"
+        }
+      }
+    },
+    "InterfacesSchema": {
+      "description": "name=\u2019Interface List\u2019",
+      "properties": {
+        "interface": {
+          "items": {
+            "properties": {
+              "statistics": {
+                "properties": {
+                  "rxPackets": {
+                    "type": "string"
+                  },
+                  "txBytes": {
+                    "type": "string"
+                  },
+                  "rxBytes": {
+                    "type": "string"
+                  },
+                  "txPackets": {
+                    "type": "string"
+                  }
+                }
+              },
+              "name": {
+                "type": "string"
+              },
+              "address": {
+                "type": "string"
+              },
+              "accessMode": {
+                "enum": [
+                  "access",
+                  "trunk"
+                ],
+                "type": "string"
+              },
+              "stpInterface": {
+                "properties": {
+                  "pathCost": {
+                    "type": "string"
+                  },
+                  "portPriority": {
+                    "type": "string"
+                  }
+                }
+              },
+              "vlanId": {
+                "type": "string"
+              }
+            }
+          },
+          "type": "array",
+          "x-key": [
+            "name"
+          ]
+        }
+      }
+    },
+    "InterfaceSchema": {
+      "properties": {
+        "stpInterface": {
+          "properties": {
+            "pathCost": {
+              "type": "string"
+            },
+            "portPriority": {
+              "type": "string"
+            }
+          }
+        },
+        "statistics": {
+          "properties": {
+            "rxPackets": {
+              "type": "string"
+            },
+            "txBytes": {
+              "type": "string"
+            },
+            "rxBytes": {
+              "type": "string"
+            },
+            "txPackets": {
+              "type": "string"
+            }
+          }
+        },
+        "address": {
+          "type": "string"
+        },
+        "accessMode": {
+          "enum": [
+            "access",
+            "trunk"
+          ],
+          "type": "string"
+        },
+        "nterfaceName": {
+          "type": "string"
+        },
+        "vlanId": {
+          "type": "string"
+        }
+      }
+    },
+    "StpInterfaceSchema": {
+      "properties": {
+        "pathCost": {
+          "type": "string"
+        },
+        "portPriority": {
+          "type": "string"
+        }
+      }
+    },
+    "StatisticsSchema": {
+      "properties": {
+        "rxPackets": {
+          "type": "string"
+        },
+        "txBytes": {
+          "type": "string"
+        },
+        "rxBytes": {
+          "type": "string"
+        },
+        "txPackets": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
