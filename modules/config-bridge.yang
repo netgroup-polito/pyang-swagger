@@ -1,0 +1,112 @@
+module config-bridge {
+	namespace "http://netgroup.ipv6.polito.it/vnf";
+	prefix "bridge";
+
+	import ietf-yang-types { prefix "ietf"; }
+
+  	description "Bridge Configuration.";
+
+  	container bridges {
+
+		list bridge {
+			key "name";
+			leaf name { 
+				type string; 
+				mandatory true;
+			}
+			leaf address {
+				type ietf:mac-address;
+				mandatory true;
+				description
+				"The MAC address used by the STP.";
+			}
+			leaf aging_time { 
+				type uint32; 
+				units seconds;
+				default 300;
+			}
+			leaf stp_enabled { 
+				type boolean;
+				default false; 
+			}
+			container fwd-database {
+				list fwd-entry {
+					key "vids address";
+					leaf address {	
+						type ietf:mac-address; 
+					}
+					leaf vids {
+						type uint32;
+					}
+					leaf entry-type {
+						type enumeration {
+							enum static;
+							enum dynamic;
+						}
+					}
+					leaf port_no { type string; }
+					leaf age { type uint32; }
+				}
+			}
+			container stp {
+				leaf priority { 
+					type uint32; 
+					default 32768;
+				}
+				leaf forward_delay { 
+					type uint32;
+					units seconds;
+					default 10; 
+				}
+				leaf hello_time { 
+					type uint32;
+					units seconds;
+					default 2; 
+				}
+				leaf max_message_age { 
+					type uint32;
+					units seconds;
+					default 20;  
+				}
+			}
+			container interfaces {
+				description "name=’Interface List’";
+				list interface {
+					key name;
+					leaf name { type string; }
+					leaf address { 
+						type ietf:mac-address;
+						mandatory true;
+					}
+					leaf access_mode {
+						type enumeration {
+							enum access;
+							enum trunk;
+						}
+						default access;
+					}
+					leaf vlan_id { 
+						type uint32; 
+						default 1;
+					}
+					container stp_interface {
+						leaf path_cost { 
+							type uint32; 
+						}
+						leaf port_priority { 
+							type uint32; 
+						}
+					}
+
+					container statistics {
+						config false;
+						leaf txPackets { type uint64; }
+						leaf rxPackets { type uint64; }
+						leaf txBytes { type uint64; }
+						leaf rxBytes { type uint64; }
+					}
+				}
+			}
+		}
+	}
+}

@@ -131,7 +131,6 @@ doc/
 env.sh
 etc/
 man/
-modules/
 pyang/__init__.py
 pyang/error.py
 pyang/grammar.py
