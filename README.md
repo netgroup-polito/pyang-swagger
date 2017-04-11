@@ -1,6 +1,6 @@
 # Pyang plugin for Swagger
 
-Most of the code has been taken from the [Pyang-COP](https://github.com/ict-strauss/COP/tree/master/pyang_plugins) repository and modified to fit our requirements)
+Most of the code has been taken from the [Pyang-COP](https://github.com/ict-strauss/COP/tree/master/pyang_plugins) repository and modified to fit our requirements
 
 [Pyang](https://code.google.com/p/pyang/) is an extensible YANG validator and converter written in python.
 
