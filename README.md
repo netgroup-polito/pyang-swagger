@@ -39,7 +39,7 @@ pyang -f swagger -p modules modules/config-bridge.yang -o config-bridge-swagger.
 
 License
 -------
-
+Copyright 2017 Politecnico di Torino.
 Copyright 2015 CTTC.
 
 Licensed under the Apache License, Version 2.0 (the "License");
