@@ -11,7 +11,7 @@ The RESTCONF API of the YANG model is interpreted with [Swagger](http://swagger.
 
 ##Install pyang
 
-Download pyang [here](https://code.google.com/p/pyang/wiki/Downloads?tm=2) (tested with version 1.5).
+Download pyang [here](https://code.google.com/p/pyang/wiki/Downloads?tm=2)
 Extract the archive to a folder of you choice.
 Install pyang  by running the following command inside that folder:
 
@@ -36,6 +36,9 @@ pyang -f swagger -p modules modules/config-bridge.yang -o config-bridge-swagger.
 ### Have a look at the auto-generated JSON output 
 
 [config-bridge.json](./output/config-bridge.json)
+
+### Have a look at the auto-generated Swagger API on swaggerhub.com 
+[config-bridge-api](https://app.swaggerhub.com/apis/sebymiano/config-bridge_api/1.0.0)
 
 License
 -------
