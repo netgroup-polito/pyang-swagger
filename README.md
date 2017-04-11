@@ -2,7 +2,7 @@
 
 Most of the code has been taken from the [Pyang-COP](https://github.com/ict-strauss/COP/tree/master/pyang_plugins) repository and modified to fit our requirements
 
-[Pyang](https://code.google.com/p/pyang/) is an extensible YANG validator and converter written in python.
+[Pyang](https://github.com/mbj4668/pyang) is an extensible YANG validator and converter written in python.
 
 It can be used to validate YANG modules for correctness, to transform YANG modules into other formats, and to generate code from the modules. We have written a pyang plugin to obtain the RESTCONF API from a yang model.
 
@@ -11,7 +11,7 @@ The RESTCONF API of the YANG model is interpreted with [Swagger](http://swagger.
 
 ##Install pyang
 
-Download pyang [here](https://code.google.com/p/pyang/wiki/Downloads?tm=2)
+Download pyang [here](https://github.com/mbj4668/pyang/releases) (tested with version pyang-1.7.1)
 Extract the archive to a folder of you choice.
 Install pyang  by running the following command inside that folder:
 
