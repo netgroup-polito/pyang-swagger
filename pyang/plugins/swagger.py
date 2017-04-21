@@ -141,7 +141,8 @@ def emit_swagger_spec(ctx, modules, fd, path):
         # Print the swagger definitions of the Yang groupings.
         gen_model(models, definitions)
 
-        # If a model at runtime was dependant of another model which had been encounter yet, it is generated 'a posteriori'.
+        # If a model at runtime was dependant of another model which had been encounter yet,
+        # it is generated 'a posteriori'.
         if pending_models:
             gen_model(pending_models, definitions)
 
@@ -222,6 +223,7 @@ def gen_model(children, tree_structure, config=True):
         node = dict()
         nonRefChildren = None
         listkey = None
+
         if hasattr(child, 'substmts'):
             for attribute in child.substmts:
                 # process the 'type' attribute:
@@ -335,6 +337,12 @@ def gen_model(children, tree_structure, config=True):
 
             tree_structure[to_lower_camelcase(child.arg)] = node
 
+        # elif child.keyword == 'leaf':
+        #    copy_node = dict()
+        #    copy_node['properties'] = dict()
+        #    copy_node['properties'][to_lower_camelcase(child.arg)] = dict.copy(node)
+
+        #    tree_structure[to_lower_camelcase(child.arg)] = copy_node
         else:
             if referenced:
                 node['$ref'] = ref
@@ -376,8 +384,9 @@ def gen_api_node(node, path, apis, definitions, config=True):
             schema['$ref'] = '#/definitions/' + to_upper_camelcase(sub.arg)
 
     # API entries are only generated from container and list nodes.
-    if node.keyword == 'list' or node.keyword == 'container':
-        nonRefChildren = [e for e in node.i_children if not hasattr(e, 'i_uses')]
+    if node.keyword == 'list' or node.keyword == 'container' or node.keyword == 'leaf':
+        if not node.keyword == 'leaf':
+            nonRefChildren = [e for e in node.i_children if not hasattr(e, 'i_uses')]
         # We take only the schema model of a single item inside the list as a "body"
         # parameter or response model for the API implementation of the list statement.
         if node.keyword == 'list':
@@ -424,13 +433,20 @@ def gen_api_node(node, path, apis, definitions, config=True):
             else:
                 schema = dict(schema_list[to_lower_camelcase(node.arg)]['items'])
 
-        else:
+        elif node.keyword == 'container' or node.keyword == 'leaf':
             gen_model([node], schema, config)
 
             # If a body input params has not been defined as a schema (not included in the definitions set),
             # a new definition is created, named the parent node name and the extension Schema (i.e., NodenameSchema).
             # This new definition is a schema containing the content of the body input schema i.e {"child.arg":schema} -> schema
             if not '$ref' in schema[to_lower_camelcase(node.arg)]:
+                if node.keyword == 'leaf':
+                    updated_schema = dict()
+                    updated_schema['properties'] = dict()
+                    updated_schema['properties'][to_lower_camelcase(node.arg)] = dict.copy(
+                        schema[to_lower_camelcase(node.arg)])
+                    schema[to_lower_camelcase(node.arg)] = updated_schema
+
                 definitions[to_upper_camelcase(node.arg + '_schema')] = schema[to_lower_camelcase(node.arg)]
                 schema['$ref'] = '#/definitions/' + to_upper_camelcase(node.arg + '_schema')
             else:
@@ -530,9 +546,10 @@ def print_api(node, config, ref, path):
         operations['delete'] = generate_delete(node, ref, path)
     else:
         operations['get'] = generate_retrieve(node, ref, path)
-    if S_API:
+    if S_API or node.keyword == 'leaf':
         del operations['post']
         del operations['delete']
+
     return operations
 
 
