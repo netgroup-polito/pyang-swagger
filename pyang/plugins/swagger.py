@@ -1,6 +1,8 @@
 """Swagger output plugin for pyang.
 
     List of contributors:
+    -Sebastiano Miano, Computer Networks Group (Netgorup), Politecnico di Torino
+    [sebastiano.miano@polito.it]
     -Arturo Mayoral, Optical Networks & Systems group, Centre Tecnologic de Telecomunicacions de Catalunya (CTTC).
     [arturo.mayoral@cttc.es]
     -Ricard Vilalta, Optical Networks & Systems group, Centre Tecnologic de Telecomunicacions de Catalunya (CTTC)
@@ -84,7 +86,7 @@ class SwaggerPlugin(plugin.PyangPlugin):
         emit_swagger_spec(ctx, modules, fd, ctx.opts.path)
 
 
-def print_header(module, fd):
+def print_header(module, fd, children):
     """ Print the swagger header information."""
     module_name = str(module.arg)
     header = OrderedDict()
@@ -99,6 +101,17 @@ def print_header(module, fd):
     # TODO: introduce flexible base path. (CLI options?)
     header['basePath'] = '/'
     header['schemes'] = ['https']
+
+    # Add tags to the header to group the APIs based on every root node found in the YANG
+    if len(children) > 0:
+        header['tags'] = list(dict())
+        for i, child in enumerate(children):
+            value = {
+                'name': child.arg
+                # TODO: Add here additional information for the tag
+            }
+            header['tags'].append(value.copy())
+
     return header
 
 
@@ -111,19 +124,19 @@ def emit_swagger_spec(ctx, modules, fd, path):
 
     # Go through all modules and extend the model.
     for module in modules:
-        if not printed_header:
-            model = print_header(module, fd)
-            printed_header = True
-            path = '/'
-
         # extract children which contain data definition keywords
         chs = [ch for ch in module.i_children
                if ch.keyword in (statements.data_definition_keywords + ['rpc', 'notification'])]
 
+        if not printed_header:
+            model = print_header(module, fd, chs)
+            printed_header = True
+            path = '/'
+
         typdefs = [module.i_typedefs[element] for element in module.i_typedefs]
         models = list(module.i_groupings.values())
         referenced_types = list()
-        referenced_types = findTypedefs(ctx, module, models, referenced_types)
+        referenced_types = find_typedefs(ctx, module, models, referenced_types)
         for element in referenced_types:
             typdefs.append(element)
 
@@ -132,8 +145,8 @@ def emit_swagger_spec(ctx, modules, fd, path):
 
         # list() needed for python 3 compatibility
         referenced_models = list()
-        referenced_models = findModels(ctx, module, models, referenced_models)
-        referenced_models.extend(findModels(ctx, module, chs, referenced_models))
+        referenced_models = find_models(ctx, module, models, referenced_models)
+        referenced_models.extend(find_models(ctx, module, chs, referenced_models))
 
         for element in referenced_models:
             models.append(element)
@@ -154,13 +167,13 @@ def emit_swagger_spec(ctx, modules, fd, path):
         # generate the APIs for all children
         if len(chs) > 0:
             model['paths'] = OrderedDict()
-            gen_apis(chs, path, model['paths'], definitions)
+            gen_apis(chs, path, model['paths'], definitions, is_root=True)
 
         model['definitions'] = definitions
         fd.write(json.dumps(model, indent=4, separators=(',', ': ')))
 
 
-def findModels(ctx, module, children, referenced_models):
+def find_models(ctx, module, children, referenced_models):
     for child in children:
         if hasattr(child, 'substmts'):
             for attribute in child.substmts:
@@ -174,7 +187,7 @@ def findModels(ctx, module, children, referenced_models):
                             for element in models:
                                 referenced_models.append(element)
 
-                            referenced_models = findModels(ctx, subm, models, referenced_models)
+                            referenced_models = find_models(ctx, subm, models, referenced_models)
                     else:
                         models = [group for group in module.i_groupings.values() if
                                   group.arg not in [element.arg for element in referenced_models]]
@@ -182,12 +195,12 @@ def findModels(ctx, module, children, referenced_models):
                             referenced_models.append(element)
 
         if hasattr(child, 'i_children'):
-            findModels(ctx, module, child.i_children, referenced_models)
+            find_models(ctx, module, child.i_children, referenced_models)
 
     return referenced_models
 
 
-def findTypedefs(ctx, module, children, referenced_types):
+def find_typedefs(ctx, module, children, referenced_types):
     for child in children:
         if hasattr(child, 'substmts'):
             for attribute in child.substmts:
@@ -200,7 +213,7 @@ def findTypedefs(ctx, module, children, referenced_types):
                                           element.arg for element in referenced_types]]
                             for element in models:
                                 referenced_types.append(element)
-                            referenced_types = findTypedefs(ctx, subm, models, referenced_types)
+                            referenced_types = find_typedefs(ctx, subm, models, referenced_types)
                     else:
                         models = [type for type in module.i_typedefs.values() if
                                   str(type.arg) == str(attribute.arg) and type.arg not in [element.arg for element in
@@ -209,7 +222,7 @@ def findTypedefs(ctx, module, children, referenced_types):
                             referenced_types.append(element)
 
         if hasattr(child, 'i_children'):
-            findTypedefs(ctx, module, child.i_children, referenced_types)
+            find_typedefs(ctx, module, child.i_children, referenced_types)
     return referenced_types
 
 
@@ -359,9 +372,13 @@ def gen_model_node(node, tree_structure, config=True):
             tree_structure['properties'] = properties
 
 
-def gen_apis(children, path, apis, definitions, config=True):
+def gen_apis(children, path, apis, definitions, config=True, is_root=False):
     """ Generates the swagger path tree for the APIs."""
     for child in children:
+        if is_root:
+            global _ROOT_NODE_NAME
+            _ROOT_NODE_NAME = child.arg
+
         gen_api_node(child, path, apis, definitions, config)
 
 
@@ -398,7 +415,8 @@ def gen_api_node(node, path, apis, definitions, config=True):
                         raise Exception('Invalid list statement, key parameter is required')
 
             # It is checked that there is not name duplication within the input parameters list (i.e., path).
-            # In case of duplicity the input param. is upgrade to node.arg (parent node name) + _ + the input param (key).
+            # In case of duplicity the input param. is upgrade to node.arg
+            # (parent node name) + _ + the input param (key).
             # Example: 
             #          /config/Context/{uuid}/_topology/{uuid}/_link/{uuid}/_transferCost/costCharacteristic/{costAlgorithm}/
             #
@@ -424,8 +442,9 @@ def gen_api_node(node, path, apis, definitions, config=True):
             gen_model([node], schema_list, config)
 
             # If a body input params has not been defined as a schema (not included in the definitions set),
-            # a new definition is created, named the parent node name and the extension Schema (i.e., NodenameSchema).
-            # This new definition is a schema containing the content of the body input schema i.e {"child.arg":schema} -> schema
+            # a new definition is created, named the parent node name and the extension Schema
+            # (i.e., NodenameSchema). This new definition is a schema containing the content
+            # of the body input schema i.e {"child.arg":schema} -> schema
             if not '$ref' in schema_list[to_lower_camelcase(node.arg)]['items']:
                 definitions[to_upper_camelcase(node.arg + '_schema')] = dict(
                     schema_list[to_lower_camelcase(node.arg)]['items'])
@@ -437,8 +456,9 @@ def gen_api_node(node, path, apis, definitions, config=True):
             gen_model([node], schema, config)
 
             # If a body input params has not been defined as a schema (not included in the definitions set),
-            # a new definition is created, named the parent node name and the extension Schema (i.e., NodenameSchema).
-            # This new definition is a schema containing the content of the body input schema i.e {"child.arg":schema} -> schema
+            # a new definition is created, named the parent node name and the extension Schema
+            # (i.e., NodenameSchema). This new definition is a schema containing the content
+            # of the body input schema i.e {"child.arg":schema} -> schema
             if not '$ref' in schema[to_lower_camelcase(node.arg)]:
                 if node.keyword == 'leaf':
                     updated_schema = dict()
@@ -462,8 +482,9 @@ def gen_api_node(node, path, apis, definitions, config=True):
                 gen_model([child], schema, config)
 
                 # If a body input params has not been defined as a schema (not included in the definitions set),
-                # a new definition is created, named the parent node name and the extension Schema (i.e., NodenameRPCInputSchema).
-                # This new definition is a schema containing the content of the body input schema i.e {"child.arg":schema} -> schema
+                # a new definition is created, named the parent node name and the extension Schema
+                # (i.e., NodenameRPCInputSchema). This new definition is a schema containing the content
+                # of the body input schema i.e {"child.arg":schema} -> schema
                 if schema[to_lower_camelcase(child.arg)]:
                     if not '$ref' in schema[to_lower_camelcase(child.arg)]:
                         definitions[to_upper_camelcase(node.arg + 'RPC_input_schema')] = schema[
@@ -478,8 +499,9 @@ def gen_api_node(node, path, apis, definitions, config=True):
                 gen_model([child], schema_out, config)
 
                 # If a body input params has not been defined as a schema (not included in the definitions set),
-                # a new definition is created, named the parent node name and the extension Schema (i.e., NodenameRPCOutputSchema).
-                # This new definition is a schema containing the content of the body input schema i.e {"child.arg":schema} -> schema
+                # a new definition is created, named the parent node name and the extension Schema
+                # (i.e., NodenameRPCOutputSchema). This new definition is a schema containing the content
+                # of the body input schema i.e {"child.arg":schema} -> schema
                 if schema_out[to_lower_camelcase(child.arg)]:
                     if not '$ref' in schema_out[to_lower_camelcase(child.arg)]:
                         definitions[to_upper_camelcase(node.arg + 'RPC_output_schema')] = schema_out[
@@ -503,7 +525,9 @@ def gen_api_node(node, path, apis, definitions, config=True):
 
     # Generate APIs for children.
     if hasattr(node, 'i_children'):
-        gen_apis(node.i_children, path, apis, definitions, config)
+        # The param is_root is used to add the tag for each API. Every root container in the YANG model
+        # represents a different tag in the APIs
+        gen_apis(node.i_children, path, apis, definitions, config, is_root=False)
 
 
 def gen_typedefs(typedefs):
@@ -572,6 +596,7 @@ def get_input_path_parameters(path):
 
 def generate_create(stmt, schema, path, rpc=None):
     """ Generates the create function definitions."""
+    path_params = None
     if path:
         path_params = get_input_path_parameters(path)
     post = {}
@@ -600,6 +625,7 @@ def generate_create(stmt, schema, path, rpc=None):
 
 def generate_retrieve(stmt, schema, path):
     """ Generates the retrieve function definitions."""
+    path_params = None
     if path:
         path_params = get_input_path_parameters(path)
     get = {}
@@ -618,6 +644,7 @@ def generate_retrieve(stmt, schema, path):
 
 def generate_update(stmt, schema, path):
     """ Generates the update function definitions."""
+    path_params = None
     if path:
         path_params = get_input_path_parameters(path)
     put = {}
@@ -661,7 +688,7 @@ def create_parameter_list(path_params):
     """ Create description from a list of path parameters."""
     param_list = []
     for param in path_params:
-        parameter = {}
+        parameter = dict()
         parameter['in'] = 'path'
         parameter['name'] = str(param)
         parameter['description'] = 'ID of ' + str(param)
@@ -698,13 +725,13 @@ def generate_api_header(stmt, struct, operation, path, is_collection=False):
     """ Auxiliary function to generate the API-header skeleton.
     The "is_collection" flag is used to decide if an ID is needed.
     """
-    childPath = False
-    parentContainer = [to_upper_camelcase(element) for i, element in enumerate(str(path).split('/')[1:-1]) if
+    child_path = False
+    parent_container = [to_upper_camelcase(element) for i, element in enumerate(str(path).split('/')[1:-1]) if
                        str(element)[0] == '{' and str(element)[-1] == '}']
 
     if len(str(path).split('/')) > 3:
-        childPath = True
-        parentContainer = ''.join([to_upper_camelcase(element) for i, element in enumerate(str(path).split('/')[1:-1])
+        child_path = True
+        parent_container = ''.join([to_upper_camelcase(element) for i, element in enumerate(str(path).split('/')[1:-1])
                                    if not str(element)[0] == '{' and not str(element)[-1] == '}'])
 
     struct['summary'] = '%s %s%s' % (
@@ -713,18 +740,21 @@ def generate_api_header(stmt, struct, operation, path, is_collection=False):
     struct['description'] = str(operation) + ' operation of resource: ' \
                             + str(stmt.arg)
     struct['operationId'] = '%s%s%s%s' % (str(operation).lower(),
-                                          (parentContainer if childPath else ''),
+                                          (parent_container if child_path else ''),
                                           to_upper_camelcase(stmt.arg),
                                           ('' if is_collection else 'ById'))
     struct['produces'] = ['application/json']
     struct['consumes'] = ['application/json']
+
+    if _ROOT_NODE_NAME:
+        struct['tags'] = [_ROOT_NODE_NAME]
 
 
 def to_lower_camelcase(name):
     """ Converts the name string to lower camelcase by using "-" and "_" as
     markers.
     """
-    return re.sub(r'(?:\B_|\b\-)([a-zA-Z0-9])', lambda l: l.group(1).upper(),
+    return re.sub(r"(?:\B_|\b\-)([a-zA-Z0-9])", lambda l: l.group(1).upper(),
                   name)
 
 
@@ -732,5 +762,5 @@ def to_upper_camelcase(name):
     """ Converts the name string to upper camelcase by using "-" and "_" as
     markers.
     """
-    return re.sub(r'(?:\B_|\b\-|^)([a-zA-Z0-9])', lambda l: l.group(1).upper(),
+    return re.sub(r"(?:\B_|\b\-|^)([a-zA-Z0-9])", lambda l: l.group(1).upper(),
                   name)

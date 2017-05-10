@@ -10,6 +10,11 @@
   "schemes": [
     "https"
   ],
+  "tags": [
+    {
+      "name": "bridge"
+    }
+  ],
   "paths": {
     "/bridge/{name}/": {
       "put": {
@@ -41,6 +46,9 @@
         ],
         "produces": [
           "application/json"
+        ],
+        "tags": [
+          "bridge"
         ],
         "summary": "Update bridge by ID",
         "consumes": [
@@ -78,6 +86,9 @@
         "produces": [
           "application/json"
         ],
+        "tags": [
+          "bridge"
+        ],
         "summary": "Create bridge by ID",
         "consumes": [
           "application/json"
@@ -105,6 +116,9 @@
         ],
         "produces": [
           "application/json"
+        ],
+        "tags": [
+          "bridge"
         ],
         "summary": "Delete bridge by ID",
         "consumes": [
@@ -136,6 +150,9 @@
         ],
         "produces": [
           "application/json"
+        ],
+        "tags": [
+          "bridge"
         ],
         "summary": "Retrieve bridge by ID",
         "consumes": [
@@ -175,6 +192,9 @@
         "produces": [
           "application/json"
         ],
+        "tags": [
+          "bridge"
+        ],
         "summary": "Update name by ID",
         "consumes": [
           "application/json"
@@ -205,6 +225,9 @@
         ],
         "produces": [
           "application/json"
+        ],
+        "tags": [
+          "bridge"
         ],
         "summary": "Retrieve name by ID",
         "consumes": [
@@ -244,6 +267,9 @@
         "produces": [
           "application/json"
         ],
+        "tags": [
+          "bridge"
+        ],
         "summary": "Update address by ID",
         "consumes": [
           "application/json"
@@ -274,6 +300,9 @@
         ],
         "produces": [
           "application/json"
+        ],
+        "tags": [
+          "bridge"
         ],
         "summary": "Retrieve address by ID",
         "consumes": [
@@ -313,6 +342,9 @@
         "produces": [
           "application/json"
         ],
+        "tags": [
+          "bridge"
+        ],
         "summary": "Update aging_time by ID",
         "consumes": [
           "application/json"
@@ -343,6 +375,9 @@
         ],
         "produces": [
           "application/json"
+        ],
+        "tags": [
+          "bridge"
         ],
         "summary": "Retrieve aging_time by ID",
         "consumes": [
@@ -382,6 +417,9 @@
         "produces": [
           "application/json"
         ],
+        "tags": [
+          "bridge"
+        ],
         "summary": "Update stp_enabled by ID",
         "consumes": [
           "application/json"
@@ -412,6 +450,9 @@
         ],
         "produces": [
           "application/json"
+        ],
+        "tags": [
+          "bridge"
         ],
         "summary": "Retrieve stp_enabled by ID",
         "consumes": [
@@ -451,6 +492,9 @@
         "produces": [
           "application/json"
         ],
+        "tags": [
+          "bridge"
+        ],
         "summary": "Update fwd-database by ID",
         "consumes": [
           "application/json"
@@ -487,6 +531,9 @@
         "produces": [
           "application/json"
         ],
+        "tags": [
+          "bridge"
+        ],
         "summary": "Create fwd-database by ID",
         "consumes": [
           "application/json"
@@ -514,6 +561,9 @@
         ],
         "produces": [
           "application/json"
+        ],
+        "tags": [
+          "bridge"
         ],
         "summary": "Delete fwd-database by ID",
         "consumes": [
@@ -545,6 +595,9 @@
         ],
         "produces": [
           "application/json"
+        ],
+        "tags": [
+          "bridge"
         ],
         "summary": "Retrieve fwd-database by ID",
         "consumes": [
@@ -598,6 +651,9 @@
         "produces": [
           "application/json"
         ],
+        "tags": [
+          "bridge"
+        ],
         "summary": "Update fwd-entry by ID",
         "consumes": [
           "application/json"
@@ -648,6 +704,9 @@
         "produces": [
           "application/json"
         ],
+        "tags": [
+          "bridge"
+        ],
         "summary": "Create fwd-entry by ID",
         "consumes": [
           "application/json"
@@ -689,6 +748,9 @@
         ],
         "produces": [
           "application/json"
+        ],
+        "tags": [
+          "bridge"
         ],
         "summary": "Delete fwd-entry by ID",
         "consumes": [
@@ -734,6 +796,9 @@
         ],
         "produces": [
           "application/json"
+        ],
+        "tags": [
+          "bridge"
         ],
         "summary": "Retrieve fwd-entry by ID",
         "consumes": [
@@ -787,6 +852,9 @@
         "produces": [
           "application/json"
         ],
+        "tags": [
+          "bridge"
+        ],
         "summary": "Update address by ID",
         "consumes": [
           "application/json"
@@ -831,6 +899,9 @@
         ],
         "produces": [
           "application/json"
+        ],
+        "tags": [
+          "bridge"
         ],
         "summary": "Retrieve address by ID",
         "consumes": [
@@ -884,6 +955,9 @@
         "produces": [
           "application/json"
         ],
+        "tags": [
+          "bridge"
+        ],
         "summary": "Update vids by ID",
         "consumes": [
           "application/json"
@@ -928,6 +1002,9 @@
         ],
         "produces": [
           "application/json"
+        ],
+        "tags": [
+          "bridge"
         ],
         "summary": "Retrieve vids by ID",
         "consumes": [
@@ -981,6 +1058,9 @@
         "produces": [
           "application/json"
         ],
+        "tags": [
+          "bridge"
+        ],
         "summary": "Update entry-type by ID",
         "consumes": [
           "application/json"
@@ -1025,6 +1105,9 @@
         ],
         "produces": [
           "application/json"
+        ],
+        "tags": [
+          "bridge"
         ],
         "summary": "Retrieve entry-type by ID",
         "consumes": [
@@ -1078,6 +1161,9 @@
         "produces": [
           "application/json"
         ],
+        "tags": [
+          "bridge"
+        ],
         "summary": "Update port_no by ID",
         "consumes": [
           "application/json"
@@ -1122,6 +1208,9 @@
         ],
         "produces": [
           "application/json"
+        ],
+        "tags": [
+          "bridge"
         ],
         "summary": "Retrieve port_no by ID",
         "consumes": [
@@ -1175,6 +1264,9 @@
         "produces": [
           "application/json"
         ],
+        "tags": [
+          "bridge"
+        ],
         "summary": "Update age by ID",
         "consumes": [
           "application/json"
@@ -1220,6 +1312,9 @@
         "produces": [
           "application/json"
         ],
+        "tags": [
+          "bridge"
+        ],
         "summary": "Retrieve age by ID",
         "consumes": [
           "application/json"
@@ -1258,6 +1353,9 @@
         "produces": [
           "application/json"
         ],
+        "tags": [
+          "bridge"
+        ],
         "summary": "Update stp by ID",
         "consumes": [
           "application/json"
@@ -1294,6 +1392,9 @@
         "produces": [
           "application/json"
         ],
+        "tags": [
+          "bridge"
+        ],
         "summary": "Create stp by ID",
         "consumes": [
           "application/json"
@@ -1321,6 +1422,9 @@
         ],
         "produces": [
           "application/json"
+        ],
+        "tags": [
+          "bridge"
         ],
         "summary": "Delete stp by ID",
         "consumes": [
@@ -1352,6 +1456,9 @@
         ],
         "produces": [
           "application/json"
+        ],
+        "tags": [
+          "bridge"
         ],
         "summary": "Retrieve stp by ID",
         "consumes": [
@@ -1391,6 +1498,9 @@
         "produces": [
           "application/json"
         ],
+        "tags": [
+          "bridge"
+        ],
         "summary": "Update priority by ID",
         "consumes": [
           "application/json"
@@ -1421,6 +1531,9 @@
         ],
         "produces": [
           "application/json"
+        ],
+        "tags": [
+          "bridge"
         ],
         "summary": "Retrieve priority by ID",
         "consumes": [
@@ -1460,6 +1573,9 @@
         "produces": [
           "application/json"
         ],
+        "tags": [
+          "bridge"
+        ],
         "summary": "Update forward_delay by ID",
         "consumes": [
           "application/json"
@@ -1490,6 +1606,9 @@
         ],
         "produces": [
           "application/json"
+        ],
+        "tags": [
+          "bridge"
         ],
         "summary": "Retrieve forward_delay by ID",
         "consumes": [
@@ -1529,6 +1648,9 @@
         "produces": [
           "application/json"
         ],
+        "tags": [
+          "bridge"
+        ],
         "summary": "Update hello_time by ID",
         "consumes": [
           "application/json"
@@ -1559,6 +1681,9 @@
         ],
         "produces": [
           "application/json"
+        ],
+        "tags": [
+          "bridge"
         ],
         "summary": "Retrieve hello_time by ID",
         "consumes": [
@@ -1598,6 +1723,9 @@
         "produces": [
           "application/json"
         ],
+        "tags": [
+          "bridge"
+        ],
         "summary": "Update max_message_age by ID",
         "consumes": [
           "application/json"
@@ -1628,6 +1756,9 @@
         ],
         "produces": [
           "application/json"
+        ],
+        "tags": [
+          "bridge"
         ],
         "summary": "Retrieve max_message_age by ID",
         "consumes": [
@@ -1667,6 +1798,9 @@
         "produces": [
           "application/json"
         ],
+        "tags": [
+          "bridge"
+        ],
         "summary": "Update interfaces by ID",
         "consumes": [
           "application/json"
@@ -1703,6 +1837,9 @@
         "produces": [
           "application/json"
         ],
+        "tags": [
+          "bridge"
+        ],
         "summary": "Create interfaces by ID",
         "consumes": [
           "application/json"
@@ -1730,6 +1867,9 @@
         ],
         "produces": [
           "application/json"
+        ],
+        "tags": [
+          "bridge"
         ],
         "summary": "Delete interfaces by ID",
         "consumes": [
@@ -1761,6 +1901,9 @@
         ],
         "produces": [
           "application/json"
+        ],
+        "tags": [
+          "bridge"
         ],
         "summary": "Retrieve interfaces by ID",
         "consumes": [
@@ -1807,6 +1950,9 @@
         "produces": [
           "application/json"
         ],
+        "tags": [
+          "bridge"
+        ],
         "summary": "Update interface by ID",
         "consumes": [
           "application/json"
@@ -1850,6 +1996,9 @@
         "produces": [
           "application/json"
         ],
+        "tags": [
+          "bridge"
+        ],
         "summary": "Create interface by ID",
         "consumes": [
           "application/json"
@@ -1884,6 +2033,9 @@
         ],
         "produces": [
           "application/json"
+        ],
+        "tags": [
+          "bridge"
         ],
         "summary": "Delete interface by ID",
         "consumes": [
@@ -1922,6 +2074,9 @@
         ],
         "produces": [
           "application/json"
+        ],
+        "tags": [
+          "bridge"
         ],
         "summary": "Retrieve interface by ID",
         "consumes": [
@@ -1968,6 +2123,9 @@
         "produces": [
           "application/json"
         ],
+        "tags": [
+          "bridge"
+        ],
         "summary": "Update nterface_name by ID",
         "consumes": [
           "application/json"
@@ -2005,6 +2163,9 @@
         ],
         "produces": [
           "application/json"
+        ],
+        "tags": [
+          "bridge"
         ],
         "summary": "Retrieve nterface_name by ID",
         "consumes": [
@@ -2051,6 +2212,9 @@
         "produces": [
           "application/json"
         ],
+        "tags": [
+          "bridge"
+        ],
         "summary": "Update address by ID",
         "consumes": [
           "application/json"
@@ -2088,6 +2252,9 @@
         ],
         "produces": [
           "application/json"
+        ],
+        "tags": [
+          "bridge"
         ],
         "summary": "Retrieve address by ID",
         "consumes": [
@@ -2134,6 +2301,9 @@
         "produces": [
           "application/json"
         ],
+        "tags": [
+          "bridge"
+        ],
         "summary": "Update access_mode by ID",
         "consumes": [
           "application/json"
@@ -2171,6 +2341,9 @@
         ],
         "produces": [
           "application/json"
+        ],
+        "tags": [
+          "bridge"
         ],
         "summary": "Retrieve access_mode by ID",
         "consumes": [
@@ -2217,6 +2390,9 @@
         "produces": [
           "application/json"
         ],
+        "tags": [
+          "bridge"
+        ],
         "summary": "Update vlan_id by ID",
         "consumes": [
           "application/json"
@@ -2254,6 +2430,9 @@
         ],
         "produces": [
           "application/json"
+        ],
+        "tags": [
+          "bridge"
         ],
         "summary": "Retrieve vlan_id by ID",
         "consumes": [
@@ -2300,6 +2479,9 @@
         "produces": [
           "application/json"
         ],
+        "tags": [
+          "bridge"
+        ],
         "summary": "Update stp_interface by ID",
         "consumes": [
           "application/json"
@@ -2343,6 +2525,9 @@
         "produces": [
           "application/json"
         ],
+        "tags": [
+          "bridge"
+        ],
         "summary": "Create stp_interface by ID",
         "consumes": [
           "application/json"
@@ -2377,6 +2562,9 @@
         ],
         "produces": [
           "application/json"
+        ],
+        "tags": [
+          "bridge"
         ],
         "summary": "Delete stp_interface by ID",
         "consumes": [
@@ -2415,6 +2603,9 @@
         ],
         "produces": [
           "application/json"
+        ],
+        "tags": [
+          "bridge"
         ],
         "summary": "Retrieve stp_interface by ID",
         "consumes": [
@@ -2461,6 +2652,9 @@
         "produces": [
           "application/json"
         ],
+        "tags": [
+          "bridge"
+        ],
         "summary": "Update path_cost by ID",
         "consumes": [
           "application/json"
@@ -2498,6 +2692,9 @@
         ],
         "produces": [
           "application/json"
+        ],
+        "tags": [
+          "bridge"
         ],
         "summary": "Retrieve path_cost by ID",
         "consumes": [
@@ -2544,6 +2741,9 @@
         "produces": [
           "application/json"
         ],
+        "tags": [
+          "bridge"
+        ],
         "summary": "Update port_priority by ID",
         "consumes": [
           "application/json"
@@ -2581,6 +2781,9 @@
         ],
         "produces": [
           "application/json"
+        ],
+        "tags": [
+          "bridge"
         ],
         "summary": "Retrieve port_priority by ID",
         "consumes": [
