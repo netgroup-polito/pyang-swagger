@@ -92,8 +92,8 @@ def print_header(module, fd, children):
     header = OrderedDict()
     header['swagger'] = '2.0'
     header['info'] = {
-        'description': '%s API generated from %s' % (
-            module_name, module.pos.ref.rsplit('/')[-1]),
+        'description': '%s API generated from %s.yang' % (
+            module_name, module_name),  # module.pos.ref.rsplit('/')[-1]),
         'version': '1.0.0',
         'title': str(module_name + ' API')
     }
@@ -417,7 +417,7 @@ def gen_api_node(node, path, apis, definitions, config=True):
             # It is checked that there is not name duplication within the input parameters list (i.e., path).
             # In case of duplicity the input param. is upgrade to node.arg
             # (parent node name) + _ + the input param (key).
-            # Example: 
+            # Example:
             #          /config/Context/{uuid}/_topology/{uuid}/_link/{uuid}/_transferCost/costCharacteristic/{costAlgorithm}/
             #
             # is replaced by:
@@ -729,10 +729,12 @@ def generate_api_header(stmt, struct, operation, path, is_collection=False):
     parent_container = [to_upper_camelcase(element) for i, element in enumerate(str(path).split('/')[1:-1]) if
                        str(element)[0] == '{' and str(element)[-1] == '}']
 
-    if len(str(path).split('/')) > 3:
+    path_without_keys = [element for element in str(path).strip('/').split('/')
+                         if not str(element)[0] == '{' and not str(element)[-1] == '}']
+
+    if len(path_without_keys) > 1:
         child_path = True
-        parent_container = ''.join([to_upper_camelcase(element) for i, element in enumerate(str(path).split('/')[1:-1])
-                                   if not str(element)[0] == '{' and not str(element)[-1] == '}'])
+        parent_container = ''.join([to_upper_camelcase(element) for element in path_without_keys[:-1]])
 
     struct['summary'] = '%s %s%s' % (
         str(operation), str(stmt.arg),

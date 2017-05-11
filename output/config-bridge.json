@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "version": "1.0.0",
-    "description": "config-bridge API generated from C:\\Users\\miano\\PycharmProjects\\pyang-swagger\\modules\\config-bridge.yang",
+    "description": "config-bridge API generated from config-bridge.yang",
     "title": "config-bridge API"
   },
   "host": "localhost:8080",
@@ -54,7 +54,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "updateBridgeBridgeById"
+        "operationId": "updateBridgeById"
       },
       "post": {
         "responses": {
@@ -93,7 +93,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "createBridgeBridgeById"
+        "operationId": "createBridgeById"
       },
       "delete": {
         "responses": {
@@ -124,7 +124,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "deleteBridgeBridgeById"
+        "operationId": "deleteBridgeById"
       },
       "get": {
         "responses": {
@@ -158,7 +158,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "retrieveBridgeBridgeById"
+        "operationId": "retrieveBridgeById"
       }
     },
     "/bridge/{name}/name/": {
@@ -199,7 +199,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "updateBridgeNameNameById"
+        "operationId": "updateBridgeNameById"
       },
       "get": {
         "responses": {
@@ -233,7 +233,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "retrieveBridgeNameNameById"
+        "operationId": "retrieveBridgeNameById"
       }
     },
     "/bridge/{name}/address/": {
@@ -274,7 +274,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "updateBridgeAddressAddressById"
+        "operationId": "updateBridgeAddressById"
       },
       "get": {
         "responses": {
@@ -308,7 +308,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "retrieveBridgeAddressAddressById"
+        "operationId": "retrieveBridgeAddressById"
       }
     },
     "/bridge/{name}/aging_time/": {
@@ -349,7 +349,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "updateBridgeAgingTimeAgingTimeById"
+        "operationId": "updateBridgeAgingTimeById"
       },
       "get": {
         "responses": {
@@ -383,7 +383,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "retrieveBridgeAgingTimeAgingTimeById"
+        "operationId": "retrieveBridgeAgingTimeById"
       }
     },
     "/bridge/{name}/stp_enabled/": {
@@ -424,7 +424,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "updateBridgeStpEnabledStpEnabledById"
+        "operationId": "updateBridgeStpEnabledById"
       },
       "get": {
         "responses": {
@@ -458,7 +458,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "retrieveBridgeStpEnabledStpEnabledById"
+        "operationId": "retrieveBridgeStpEnabledById"
       }
         },
     "/bridge/{name}/fwd-database/": {
@@ -499,7 +499,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "updateBridgeFwdDatabaseFwdDatabaseById"
+        "operationId": "updateBridgeFwdDatabaseById"
       },
       "post": {
         "responses": {
@@ -538,7 +538,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "createBridgeFwdDatabaseFwdDatabaseById"
+        "operationId": "createBridgeFwdDatabaseById"
       },
       "delete": {
         "responses": {
@@ -569,7 +569,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "deleteBridgeFwdDatabaseFwdDatabaseById"
+        "operationId": "deleteBridgeFwdDatabaseById"
       },
       "get": {
         "responses": {
@@ -603,7 +603,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "retrieveBridgeFwdDatabaseFwdDatabaseById"
+        "operationId": "retrieveBridgeFwdDatabaseById"
       }
     },
     "/bridge/{name}/fwd-database/fwd-entry/{vids}/{address}/": {
@@ -658,7 +658,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "updateBridgeFwdDatabaseFwdEntryFwdEntryById"
+        "operationId": "updateBridgeFwdDatabaseFwdEntryById"
       },
       "post": {
         "responses": {
@@ -711,7 +711,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "createBridgeFwdDatabaseFwdEntryFwdEntryById"
+        "operationId": "createBridgeFwdDatabaseFwdEntryById"
       },
       "delete": {
         "responses": {
@@ -756,7 +756,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "deleteBridgeFwdDatabaseFwdEntryFwdEntryById"
+        "operationId": "deleteBridgeFwdDatabaseFwdEntryById"
       },
       "get": {
         "responses": {
@@ -804,7 +804,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "retrieveBridgeFwdDatabaseFwdEntryFwdEntryById"
+        "operationId": "retrieveBridgeFwdDatabaseFwdEntryById"
       }
     },
     "/bridge/{name}/fwd-database/fwd-entry/{vids}/{address}/address/": {
@@ -859,7 +859,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "updateBridgeFwdDatabaseFwdEntryAddressAddressById"
+        "operationId": "updateBridgeFwdDatabaseFwdEntryAddressById"
       },
       "get": {
         "responses": {
@@ -907,7 +907,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "retrieveBridgeFwdDatabaseFwdEntryAddressAddressById"
+        "operationId": "retrieveBridgeFwdDatabaseFwdEntryAddressById"
       }
     },
     "/bridge/{name}/fwd-database/fwd-entry/{vids}/{address}/vids/": {
@@ -962,7 +962,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "updateBridgeFwdDatabaseFwdEntryVidsVidsById"
+        "operationId": "updateBridgeFwdDatabaseFwdEntryVidsById"
       },
       "get": {
         "responses": {
@@ -1010,7 +1010,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "retrieveBridgeFwdDatabaseFwdEntryVidsVidsById"
+        "operationId": "retrieveBridgeFwdDatabaseFwdEntryVidsById"
       }
     },
     "/bridge/{name}/fwd-database/fwd-entry/{vids}/{address}/entry-type/": {
@@ -1065,7 +1065,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "updateBridgeFwdDatabaseFwdEntryEntryTypeEntryTypeById"
+        "operationId": "updateBridgeFwdDatabaseFwdEntryEntryTypeById"
       },
       "get": {
         "responses": {
@@ -1113,7 +1113,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "retrieveBridgeFwdDatabaseFwdEntryEntryTypeEntryTypeById"
+        "operationId": "retrieveBridgeFwdDatabaseFwdEntryEntryTypeById"
       }
     },
     "/bridge/{name}/fwd-database/fwd-entry/{vids}/{address}/port_no/": {
@@ -1168,7 +1168,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "updateBridgeFwdDatabaseFwdEntryPortNoPortNoById"
+        "operationId": "updateBridgeFwdDatabaseFwdEntryPortNoById"
       },
       "get": {
         "responses": {
@@ -1216,7 +1216,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "retrieveBridgeFwdDatabaseFwdEntryPortNoPortNoById"
+        "operationId": "retrieveBridgeFwdDatabaseFwdEntryPortNoById"
       }
     },
     "/bridge/{name}/fwd-database/fwd-entry/{vids}/{address}/age/": {
@@ -1271,7 +1271,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "updateBridgeFwdDatabaseFwdEntryAgeAgeById"
+        "operationId": "updateBridgeFwdDatabaseFwdEntryAgeById"
       },
       "get": {
         "responses": {
@@ -1319,7 +1319,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "retrieveBridgeFwdDatabaseFwdEntryAgeAgeById"
+        "operationId": "retrieveBridgeFwdDatabaseFwdEntryAgeById"
       }
     },
     "/bridge/{name}/stp/": {
@@ -1360,7 +1360,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "updateBridgeStpStpById"
+        "operationId": "updateBridgeStpById"
       },
       "post": {
         "responses": {
@@ -1399,7 +1399,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "createBridgeStpStpById"
+        "operationId": "createBridgeStpById"
       },
       "delete": {
         "responses": {
@@ -1430,7 +1430,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "deleteBridgeStpStpById"
+        "operationId": "deleteBridgeStpById"
       },
       "get": {
         "responses": {
@@ -1464,7 +1464,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "retrieveBridgeStpStpById"
+        "operationId": "retrieveBridgeStpById"
       }
     },
     "/bridge/{name}/stp/priority/": {
@@ -1505,7 +1505,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "updateBridgeStpPriorityPriorityById"
+        "operationId": "updateBridgeStpPriorityById"
       },
       "get": {
         "responses": {
@@ -1539,7 +1539,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "retrieveBridgeStpPriorityPriorityById"
+        "operationId": "retrieveBridgeStpPriorityById"
       }
     },
     "/bridge/{name}/stp/forward_delay/": {
@@ -1580,7 +1580,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "updateBridgeStpForwardDelayForwardDelayById"
+        "operationId": "updateBridgeStpForwardDelayById"
       },
       "get": {
         "responses": {
@@ -1614,7 +1614,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "retrieveBridgeStpForwardDelayForwardDelayById"
+        "operationId": "retrieveBridgeStpForwardDelayById"
       }
     },
     "/bridge/{name}/stp/hello_time/": {
@@ -1655,7 +1655,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "updateBridgeStpHelloTimeHelloTimeById"
+        "operationId": "updateBridgeStpHelloTimeById"
       },
       "get": {
         "responses": {
@@ -1689,7 +1689,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "retrieveBridgeStpHelloTimeHelloTimeById"
+        "operationId": "retrieveBridgeStpHelloTimeById"
       }
     },
     "/bridge/{name}/stp/max_message_age/": {
@@ -1730,7 +1730,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "updateBridgeStpMaxMessageAgeMaxMessageAgeById"
+        "operationId": "updateBridgeStpMaxMessageAgeById"
       },
       "get": {
         "responses": {
@@ -1764,7 +1764,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "retrieveBridgeStpMaxMessageAgeMaxMessageAgeById"
+        "operationId": "retrieveBridgeStpMaxMessageAgeById"
       }
     },
     "/bridge/{name}/interfaces/": {
@@ -1805,7 +1805,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "updateBridgeInterfacesInterfacesById"
+        "operationId": "updateBridgeInterfacesById"
       },
       "post": {
         "responses": {
@@ -1844,7 +1844,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "createBridgeInterfacesInterfacesById"
+        "operationId": "createBridgeInterfacesById"
       },
       "delete": {
         "responses": {
@@ -1875,7 +1875,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "deleteBridgeInterfacesInterfacesById"
+        "operationId": "deleteBridgeInterfacesById"
       },
       "get": {
         "responses": {
@@ -1909,7 +1909,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "retrieveBridgeInterfacesInterfacesById"
+        "operationId": "retrieveBridgeInterfacesById"
       }
     },
     "/bridge/{name}/interfaces/interface/{nterface_name}/": {
@@ -1957,7 +1957,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "updateBridgeInterfacesInterfaceInterfaceById"
+        "operationId": "updateBridgeInterfacesInterfaceById"
       },
       "post": {
         "responses": {
@@ -2003,7 +2003,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "createBridgeInterfacesInterfaceInterfaceById"
+        "operationId": "createBridgeInterfacesInterfaceById"
       },
       "delete": {
         "responses": {
@@ -2041,7 +2041,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "deleteBridgeInterfacesInterfaceInterfaceById"
+        "operationId": "deleteBridgeInterfacesInterfaceById"
       },
       "get": {
         "responses": {
@@ -2082,7 +2082,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "retrieveBridgeInterfacesInterfaceInterfaceById"
+        "operationId": "retrieveBridgeInterfacesInterfaceById"
       }
     },
     "/bridge/{name}/interfaces/interface/{nterface_name}/nterface_name/": {
@@ -2130,7 +2130,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "updateBridgeInterfacesInterfaceNterfaceNameNterfaceNameById"
+        "operationId": "updateBridgeInterfacesInterfaceNterfaceNameById"
       },
       "get": {
         "responses": {
@@ -2171,7 +2171,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "retrieveBridgeInterfacesInterfaceNterfaceNameNterfaceNameById"
+        "operationId": "retrieveBridgeInterfacesInterfaceNterfaceNameById"
       }
     },
     "/bridge/{name}/interfaces/interface/{nterface_name}/address/": {
@@ -2219,7 +2219,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "updateBridgeInterfacesInterfaceAddressAddressById"
+        "operationId": "updateBridgeInterfacesInterfaceAddressById"
       },
       "get": {
         "responses": {
@@ -2260,7 +2260,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "retrieveBridgeInterfacesInterfaceAddressAddressById"
+        "operationId": "retrieveBridgeInterfacesInterfaceAddressById"
       }
     },
     "/bridge/{name}/interfaces/interface/{nterface_name}/access_mode/": {
@@ -2308,7 +2308,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "updateBridgeInterfacesInterfaceAccessModeAccessModeById"
+        "operationId": "updateBridgeInterfacesInterfaceAccessModeById"
       },
       "get": {
         "responses": {
@@ -2349,7 +2349,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "retrieveBridgeInterfacesInterfaceAccessModeAccessModeById"
+        "operationId": "retrieveBridgeInterfacesInterfaceAccessModeById"
       }
     },
     "/bridge/{name}/interfaces/interface/{nterface_name}/vlan_id/": {
@@ -2397,7 +2397,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "updateBridgeInterfacesInterfaceVlanIdVlanIdById"
+        "operationId": "updateBridgeInterfacesInterfaceVlanIdById"
       },
       "get": {
         "responses": {
@@ -2438,7 +2438,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "retrieveBridgeInterfacesInterfaceVlanIdVlanIdById"
+        "operationId": "retrieveBridgeInterfacesInterfaceVlanIdById"
       }
     },
     "/bridge/{name}/interfaces/interface/{nterface_name}/stp_interface/": {
@@ -2486,7 +2486,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "updateBridgeInterfacesInterfaceStpInterfaceStpInterfaceById"
+        "operationId": "updateBridgeInterfacesInterfaceStpInterfaceById"
       },
       "post": {
         "responses": {
@@ -2532,7 +2532,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "createBridgeInterfacesInterfaceStpInterfaceStpInterfaceById"
+        "operationId": "createBridgeInterfacesInterfaceStpInterfaceById"
       },
       "delete": {
         "responses": {
@@ -2570,7 +2570,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "deleteBridgeInterfacesInterfaceStpInterfaceStpInterfaceById"
+        "operationId": "deleteBridgeInterfacesInterfaceStpInterfaceById"
       },
       "get": {
         "responses": {
@@ -2611,7 +2611,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "retrieveBridgeInterfacesInterfaceStpInterfaceStpInterfaceById"
+        "operationId": "retrieveBridgeInterfacesInterfaceStpInterfaceById"
       }
     },
     "/bridge/{name}/interfaces/interface/{nterface_name}/stp_interface/path_cost/": {
@@ -2659,7 +2659,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "updateBridgeInterfacesInterfaceStpInterfacePathCostPathCostById"
+        "operationId": "updateBridgeInterfacesInterfaceStpInterfacePathCostById"
       },
       "get": {
         "responses": {
@@ -2700,7 +2700,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "retrieveBridgeInterfacesInterfaceStpInterfacePathCostPathCostById"
+        "operationId": "retrieveBridgeInterfacesInterfaceStpInterfacePathCostById"
       }
     },
     "/bridge/{name}/interfaces/interface/{nterface_name}/stp_interface/port_priority/": {
@@ -2748,7 +2748,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "updateBridgeInterfacesInterfaceStpInterfacePortPriorityPortPriorityById"
+        "operationId": "updateBridgeInterfacesInterfaceStpInterfacePortPriorityById"
       },
       "get": {
         "responses": {
@@ -2789,7 +2789,7 @@
         "consumes": [
           "application/json"
         ],
-        "operationId": "retrieveBridgeInterfacesInterfaceStpInterfacePortPriorityPortPriorityById"
+        "operationId": "retrieveBridgeInterfacesInterfaceStpInterfacePortPriorityById"
       }
     }
   },
