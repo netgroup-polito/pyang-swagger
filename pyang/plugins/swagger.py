@@ -89,6 +89,10 @@ class SwaggerPlugin(plugin.PyangPlugin):
 def print_header(module, fd, children):
     """ Print the swagger header information."""
     module_name = str(module.arg)
+
+    global _MODULE_NAME
+    _MODULE_NAME = module_name
+
     header = OrderedDict()
     header['swagger'] = '2.0'
     header['info'] = {
@@ -739,14 +743,30 @@ def generate_api_header(stmt, struct, operation, path, is_collection=False):
     struct['summary'] = '%s %s%s' % (
         str(operation), str(stmt.arg),
         ('' if is_collection else ' by ID'))
-    struct['description'] = str(operation) + ' operation of resource: ' \
-                            + str(stmt.arg)
+    struct['description'] = str(operation) + ' operation of resource: ' + str(stmt.arg)
     struct['operationId'] = '%s%s%s%s' % (str(operation).lower(),
                                           (parent_container if child_path else ''),
                                           to_upper_camelcase(stmt.arg),
                                           ('' if is_collection else 'ById'))
     struct['produces'] = ['application/json']
     struct['consumes'] = ['application/json']
+
+    # This is a vendor extension added to support the automatic CLI generation
+    struct['x-cliParam'] = dict()
+    struct['x-cliParam']['commandName'] = '{0}{1}{2}Cmd'.format(str(operation).lower(),
+                                                                (parent_container if child_path else ''),
+                                                                to_upper_camelcase(stmt.arg))
+    struct['x-cliParam']['summary'] = '{0} operation for {1}'.format(to_upper_camelcase(str(operation)), str(stmt.arg))
+    struct['x-cliParam']['exampleUse'] = "{0}-cli ".format(str(_MODULE_NAME) if _MODULE_NAME else 'default') + \
+                                         str(operation).lower() + " " + \
+                                         ' '.join([element for element in path_without_keys]) + \
+                                         " <value>"
+    if child_path:
+        struct['x-cliParam']['commandUse'] = str(stmt.arg).lower()
+        struct['x-cliParam']['parentCommand'] = '{0}{1}Cmd'.format(str(operation).lower(), parent_container)
+    else:
+        struct['x-cliParam']['commandUse'] = str(operation).lower()
+        struct['x-cliParam']['parentCommand'] = "rootCmd"
 
     if _ROOT_NODE_NAME:
         struct['tags'] = [_ROOT_NODE_NAME]
