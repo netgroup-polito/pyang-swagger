@@ -2234,7 +2234,7 @@
         "operationId": "retrieveBridgeInterfacesById"
       }
     },
-    "/bridge/{name}/interfaces/interface/{nterface_name}/": {
+    "/bridge/{name}/interfaces/interface/{interface_name}/": {
       "put": {
         "responses": {
           "200": {
@@ -2254,10 +2254,10 @@
             "in": "path"
           },
           {
-            "description": "ID of nterface_name",
+            "description": "ID of interface_name",
             "required": true,
             "type": "string",
-            "name": "nterface_name",
+            "name": "interface_name",
             "in": "path"
           },
           {
@@ -2307,10 +2307,10 @@
             "in": "path"
           },
           {
-            "description": "ID of nterface_name",
+            "description": "ID of interface_name",
             "required": true,
             "type": "string",
-            "name": "nterface_name",
+            "name": "interface_name",
             "in": "path"
           },
           {
@@ -2360,10 +2360,10 @@
             "in": "path"
           },
           {
-            "description": "ID of nterface_name",
+            "description": "ID of interface_name",
             "required": true,
             "type": "string",
-            "name": "nterface_name",
+            "name": "interface_name",
             "in": "path"
           }
         ],
@@ -2408,10 +2408,10 @@
             "in": "path"
           },
           {
-            "description": "ID of nterface_name",
+            "description": "ID of interface_name",
             "required": true,
             "type": "string",
-            "name": "nterface_name",
+            "name": "interface_name",
             "in": "path"
           }
         ],
@@ -2435,7 +2435,7 @@
         "operationId": "retrieveBridgeInterfacesInterfaceById"
       }
     },
-    "/bridge/{name}/interfaces/interface/{nterface_name}/nterface_name/": {
+    "/bridge/{name}/interfaces/interface/{interface_name}/interface_name/": {
       "put": {
         "responses": {
           "200": {
@@ -2445,7 +2445,7 @@
             "description": "Internal Error"
           }
         },
-        "description": "Update operation of resource: nterface_name",
+        "description": "Update operation of resource: interface_name",
         "parameters": [
           {
             "description": "ID of name",
@@ -2455,18 +2455,18 @@
             "in": "path"
           },
           {
-            "description": "ID of nterface_name",
+            "description": "ID of interface_name",
             "required": true,
             "type": "string",
-            "name": "nterface_name",
+            "name": "interface_name",
             "in": "path"
           },
           {
-            "description": "nterface_namebody object",
+            "description": "interface_namebody object",
             "schema": {
-              "$ref": "#/definitions/NterfaceNameSchema"
+              "$ref": "#/definitions/InterfaceNameSchema"
             },
-            "name": "nterface_name",
+            "name": "interface_name",
             "in": "body"
           }
         ],
@@ -2476,32 +2476,32 @@
         "tags": [
           "bridge"
         ],
-        "summary": "Update nterface_name by ID",
+        "summary": "Update interface_name by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli update bridge interfaces interface nterface_name <value>",
-          "commandUse": "nterface_name",
-          "commandName": "updateBridgeInterfacesInterfaceNterfaceNameCmd",
+          "exampleUse": "config-bridge-cli update bridge interfaces interface interface_name <value>",
+          "commandUse": "interface_name",
+          "commandName": "updateBridgeInterfacesInterfaceInterfaceNameCmd",
           "parentCommand": "updateBridgeInterfacesInterfaceCmd",
-          "summary": "Update operation for nterface_name"
+          "summary": "Update operation for interface_name"
         },
         "consumes": [
           "application/json"
         ],
-        "operationId": "updateBridgeInterfacesInterfaceNterfaceNameById"
+        "operationId": "updateBridgeInterfacesInterfaceInterfaceNameById"
       },
       "get": {
         "responses": {
           "200": {
             "description": "Successful operation",
             "schema": {
-              "$ref": "#/definitions/NterfaceNameSchema"
+              "$ref": "#/definitions/InterfaceNameSchema"
             }
           },
           "400": {
             "description": "Internal Error"
           }
         },
-        "description": "Retrieve operation of resource: nterface_name",
+        "description": "Retrieve operation of resource: interface_name",
         "parameters": [
           {
             "description": "ID of name",
@@ -2511,10 +2511,10 @@
             "in": "path"
           },
           {
-            "description": "ID of nterface_name",
+            "description": "ID of interface_name",
             "required": true,
             "type": "string",
-            "name": "nterface_name",
+            "name": "interface_name",
             "in": "path"
           }
         ],
@@ -2524,21 +2524,21 @@
         "tags": [
           "bridge"
         ],
-        "summary": "Retrieve nterface_name by ID",
+        "summary": "Retrieve interface_name by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli retrieve bridge interfaces interface nterface_name <value>",
-          "commandUse": "nterface_name",
-          "commandName": "retrieveBridgeInterfacesInterfaceNterfaceNameCmd",
+          "exampleUse": "config-bridge-cli retrieve bridge interfaces interface interface_name <value>",
+          "commandUse": "interface_name",
+          "commandName": "retrieveBridgeInterfacesInterfaceInterfaceNameCmd",
           "parentCommand": "retrieveBridgeInterfacesInterfaceCmd",
-          "summary": "Retrieve operation for nterface_name"
+          "summary": "Retrieve operation for interface_name"
         },
         "consumes": [
           "application/json"
         ],
-        "operationId": "retrieveBridgeInterfacesInterfaceNterfaceNameById"
+        "operationId": "retrieveBridgeInterfacesInterfaceInterfaceNameById"
       }
     },
-    "/bridge/{name}/interfaces/interface/{nterface_name}/address/": {
+    "/bridge/{name}/interfaces/interface/{interface_name}/address/": {
       "put": {
         "responses": {
           "200": {
@@ -2558,10 +2558,10 @@
             "in": "path"
           },
           {
-            "description": "ID of nterface_name",
+            "description": "ID of interface_name",
             "required": true,
             "type": "string",
-            "name": "nterface_name",
+            "name": "interface_name",
             "in": "path"
           },
           {
@@ -2614,10 +2614,10 @@
             "in": "path"
           },
           {
-            "description": "ID of nterface_name",
+            "description": "ID of interface_name",
             "required": true,
             "type": "string",
-            "name": "nterface_name",
+            "name": "interface_name",
             "in": "path"
           }
         ],
@@ -2641,7 +2641,7 @@
         "operationId": "retrieveBridgeInterfacesInterfaceAddressById"
       }
     },
-    "/bridge/{name}/interfaces/interface/{nterface_name}/access_mode/": {
+    "/bridge/{name}/interfaces/interface/{interface_name}/access_mode/": {
       "put": {
         "responses": {
           "200": {
@@ -2661,10 +2661,10 @@
             "in": "path"
           },
           {
-            "description": "ID of nterface_name",
+            "description": "ID of interface_name",
             "required": true,
             "type": "string",
-            "name": "nterface_name",
+            "name": "interface_name",
             "in": "path"
           },
           {
@@ -2717,10 +2717,10 @@
             "in": "path"
           },
           {
-            "description": "ID of nterface_name",
+            "description": "ID of interface_name",
             "required": true,
             "type": "string",
-            "name": "nterface_name",
+            "name": "interface_name",
             "in": "path"
           }
         ],
@@ -2744,7 +2744,7 @@
         "operationId": "retrieveBridgeInterfacesInterfaceAccessModeById"
       }
     },
-    "/bridge/{name}/interfaces/interface/{nterface_name}/vlan_id/": {
+    "/bridge/{name}/interfaces/interface/{interface_name}/vlan_id/": {
       "put": {
         "responses": {
           "200": {
@@ -2764,10 +2764,10 @@
             "in": "path"
           },
           {
-            "description": "ID of nterface_name",
+            "description": "ID of interface_name",
             "required": true,
             "type": "string",
-            "name": "nterface_name",
+            "name": "interface_name",
             "in": "path"
           },
           {
@@ -2820,10 +2820,10 @@
             "in": "path"
           },
           {
-            "description": "ID of nterface_name",
+            "description": "ID of interface_name",
             "required": true,
             "type": "string",
-            "name": "nterface_name",
+            "name": "interface_name",
             "in": "path"
           }
         ],
@@ -2847,7 +2847,7 @@
         "operationId": "retrieveBridgeInterfacesInterfaceVlanIdById"
       }
     },
-    "/bridge/{name}/interfaces/interface/{nterface_name}/stp_interface/": {
+    "/bridge/{name}/interfaces/interface/{interface_name}/stp_interface/": {
       "put": {
         "responses": {
           "200": {
@@ -2867,10 +2867,10 @@
             "in": "path"
           },
           {
-            "description": "ID of nterface_name",
+            "description": "ID of interface_name",
             "required": true,
             "type": "string",
-            "name": "nterface_name",
+            "name": "interface_name",
             "in": "path"
           },
           {
@@ -2920,10 +2920,10 @@
             "in": "path"
           },
           {
-            "description": "ID of nterface_name",
+            "description": "ID of interface_name",
             "required": true,
             "type": "string",
-            "name": "nterface_name",
+            "name": "interface_name",
             "in": "path"
           },
           {
@@ -2973,10 +2973,10 @@
             "in": "path"
           },
           {
-            "description": "ID of nterface_name",
+            "description": "ID of interface_name",
             "required": true,
             "type": "string",
-            "name": "nterface_name",
+            "name": "interface_name",
             "in": "path"
           }
         ],
@@ -3021,10 +3021,10 @@
             "in": "path"
           },
           {
-            "description": "ID of nterface_name",
+            "description": "ID of interface_name",
             "required": true,
             "type": "string",
-            "name": "nterface_name",
+            "name": "interface_name",
             "in": "path"
           }
         ],
@@ -3048,7 +3048,7 @@
         "operationId": "retrieveBridgeInterfacesInterfaceStpInterfaceById"
       }
     },
-    "/bridge/{name}/interfaces/interface/{nterface_name}/stp_interface/path_cost/": {
+    "/bridge/{name}/interfaces/interface/{interface_name}/stp_interface/path_cost/": {
       "put": {
         "responses": {
           "200": {
@@ -3068,10 +3068,10 @@
             "in": "path"
           },
           {
-            "description": "ID of nterface_name",
+            "description": "ID of interface_name",
             "required": true,
             "type": "string",
-            "name": "nterface_name",
+            "name": "interface_name",
             "in": "path"
           },
           {
@@ -3124,10 +3124,10 @@
             "in": "path"
           },
           {
-            "description": "ID of nterface_name",
+            "description": "ID of interface_name",
             "required": true,
             "type": "string",
-            "name": "nterface_name",
+            "name": "interface_name",
             "in": "path"
           }
         ],
@@ -3151,7 +3151,7 @@
         "operationId": "retrieveBridgeInterfacesInterfaceStpInterfacePathCostById"
       }
     },
-    "/bridge/{name}/interfaces/interface/{nterface_name}/stp_interface/port_priority/": {
+    "/bridge/{name}/interfaces/interface/{interface_name}/stp_interface/port_priority/": {
       "put": {
         "responses": {
           "200": {
@@ -3171,10 +3171,10 @@
             "in": "path"
           },
           {
-            "description": "ID of nterface_name",
+            "description": "ID of interface_name",
             "required": true,
             "type": "string",
-            "name": "nterface_name",
+            "name": "interface_name",
             "in": "path"
           },
           {
@@ -3227,10 +3227,10 @@
             "in": "path"
           },
           {
-            "description": "ID of nterface_name",
+            "description": "ID of interface_name",
             "required": true,
             "type": "string",
-            "name": "nterface_name",
+            "name": "interface_name",
             "in": "path"
           }
         ],
@@ -3568,10 +3568,11 @@
     },
     "InterfaceSchema": {
       "properties": {
-        "nterfaceName": {
-          "type": "string"
-        },
-        "address": {
+        "accessMode": {
+          "enum": [
+            "access",
+            "trunk"
+          ],
           "type": "string"
         },
         "stpInterface": {
@@ -3584,21 +3585,20 @@
             }
           }
         },
+        "interfaceName": {
+          "type": "string"
+        },
         "vlanId": {
           "type": "string"
         },
-        "accessMode": {
-          "enum": [
-            "access",
-            "trunk"
-          ],
+        "address": {
           "type": "string"
         }
       }
         },
-    "NterfaceNameSchema": {
+    "InterfaceNameSchema": {
       "properties": {
-        "nterfaceName": {
+        "interfaceName": {
           "type": "string"
         }
       }

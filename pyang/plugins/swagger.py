@@ -402,7 +402,7 @@ def gen_api_node(node, path, apis, definitions, config=True):
             keyList = str(sub.arg).split()
         elif sub.keyword == 'uses':
             # Set the reference to a model, previously defined by a grouping.
-            schema['$ref'] = '#/definitions/' + to_upper_camelcase(sub.arg)
+            schema['$ref'] = '#/definitions/{0}'.format(to_upper_camelcase(sub.arg))
 
     # API entries are only generated from container and list nodes.
     if node.keyword == 'list' or node.keyword == 'container' or node.keyword == 'leaf':
@@ -434,7 +434,7 @@ def gen_api_node(node, path, apis, definitions, config=True):
                         if node.arg[0] == '_':
                             new_param_name = node.arg[1:] + '_' + to_lower_camelcase(key)
                         else:
-                            new_param_name = node.arg[1:] + '_' + to_lower_camelcase(key)
+                            new_param_name = node.arg + '_' + to_lower_camelcase(key)
                         path += '{' + new_param_name + '}/'
                         for child in node.i_children:
                             if child.arg == key:
@@ -452,7 +452,7 @@ def gen_api_node(node, path, apis, definitions, config=True):
             if not '$ref' in schema_list[to_lower_camelcase(node.arg)]['items']:
                 definitions[to_upper_camelcase(node.arg + '_schema')] = dict(
                     schema_list[to_lower_camelcase(node.arg)]['items'])
-                schema['$ref'] = '#/definitions/' + to_upper_camelcase(node.arg + '_schema')
+                schema['$ref'] = '#/definitions/{0}'.format(to_upper_camelcase(node.arg + '_schema'))
             else:
                 schema = dict(schema_list[to_lower_camelcase(node.arg)]['items'])
 
