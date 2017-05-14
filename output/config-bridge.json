@@ -60,6 +60,7 @@
           "exampleUse": "config-bridge-cli update bridge <value>",
           "commandUse": "update",
           "commandName": "updateBridgeCmd",
+          "totParams": 1,
           "summary": "Update operation for bridge",
           "parentCommand": "rootCmd"
         },
@@ -111,6 +112,7 @@
           "exampleUse": "config-bridge-cli create bridge <value>",
           "commandUse": "create",
           "commandName": "createBridgeCmd",
+          "totParams": 1,
           "summary": "Create operation for bridge",
           "parentCommand": "rootCmd"
         },
@@ -154,6 +156,7 @@
           "exampleUse": "config-bridge-cli delete bridge <value>",
           "commandUse": "delete",
           "commandName": "deleteBridgeCmd",
+          "totParams": 1,
           "summary": "Delete operation for bridge",
           "parentCommand": "rootCmd"
         },
@@ -200,6 +203,7 @@
           "exampleUse": "config-bridge-cli retrieve bridge <value>",
           "commandUse": "retrieve",
           "commandName": "retrieveBridgeCmd",
+          "totParams": 1,
           "summary": "Retrieve operation for bridge",
           "parentCommand": "rootCmd"
         },
@@ -248,8 +252,9 @@
           "exampleUse": "config-bridge-cli update bridge name <value>",
           "commandUse": "name",
           "commandName": "updateBridgeNameCmd",
-          "parentCommand": "updateBridgeCmd",
-          "summary": "Update operation for name"
+          "totParams": 1,
+          "summary": "Update operation for name",
+          "parentCommand": "updateBridgeCmd"
         },
         "consumes": [
           "application/json"
@@ -289,8 +294,9 @@
           "exampleUse": "config-bridge-cli retrieve bridge name <value>",
           "commandUse": "name",
           "commandName": "retrieveBridgeNameCmd",
-          "parentCommand": "retrieveBridgeCmd",
-          "summary": "Retrieve operation for name"
+          "totParams": 1,
+          "summary": "Retrieve operation for name",
+          "parentCommand": "retrieveBridgeCmd"
         },
         "consumes": [
           "application/json"
@@ -338,8 +344,9 @@
           "exampleUse": "config-bridge-cli update bridge address <value>",
           "commandUse": "address",
           "commandName": "updateBridgeAddressCmd",
-          "parentCommand": "updateBridgeCmd",
-          "summary": "Update operation for address"
+          "totParams": 1,
+          "summary": "Update operation for address",
+          "parentCommand": "updateBridgeCmd"
         },
         "consumes": [
           "application/json"
@@ -380,8 +387,9 @@
           "exampleUse": "config-bridge-cli retrieve bridge address <value>",
           "commandUse": "address",
           "commandName": "retrieveBridgeAddressCmd",
-          "parentCommand": "retrieveBridgeCmd",
-          "summary": "Retrieve operation for address"
+          "totParams": 1,
+          "summary": "Retrieve operation for address",
+          "parentCommand": "retrieveBridgeCmd"
         },
         "consumes": [
           "application/json"
@@ -428,8 +436,9 @@
           "exampleUse": "config-bridge-cli update bridge aging_time <value>",
           "commandUse": "aging_time",
           "commandName": "updateBridgeAgingTimeCmd",
-          "parentCommand": "updateBridgeCmd",
-          "summary": "Update operation for aging_time"
+          "totParams": 1,
+          "summary": "Update operation for aging_time",
+          "parentCommand": "updateBridgeCmd"
         },
         "consumes": [
           "application/json"
@@ -469,8 +478,9 @@
           "exampleUse": "config-bridge-cli retrieve bridge aging_time <value>",
           "commandUse": "aging_time",
           "commandName": "retrieveBridgeAgingTimeCmd",
-          "parentCommand": "retrieveBridgeCmd",
-          "summary": "Retrieve operation for aging_time"
+          "totParams": 1,
+          "summary": "Retrieve operation for aging_time",
+          "parentCommand": "retrieveBridgeCmd"
         },
         "consumes": [
           "application/json"
@@ -517,8 +527,9 @@
           "exampleUse": "config-bridge-cli update bridge stp_enabled <value>",
           "commandUse": "stp_enabled",
           "commandName": "updateBridgeStpEnabledCmd",
-          "parentCommand": "updateBridgeCmd",
-          "summary": "Update operation for stp_enabled"
+          "totParams": 1,
+          "summary": "Update operation for stp_enabled",
+          "parentCommand": "updateBridgeCmd"
         },
         "consumes": [
           "application/json"
@@ -558,8 +569,9 @@
           "exampleUse": "config-bridge-cli retrieve bridge stp_enabled <value>",
           "commandUse": "stp_enabled",
           "commandName": "retrieveBridgeStpEnabledCmd",
-          "parentCommand": "retrieveBridgeCmd",
-          "summary": "Retrieve operation for stp_enabled"
+          "totParams": 1,
+          "summary": "Retrieve operation for stp_enabled",
+          "parentCommand": "retrieveBridgeCmd"
         },
         "consumes": [
           "application/json"
@@ -606,8 +618,9 @@
           "exampleUse": "config-bridge-cli update bridge fwd-database <value>",
           "commandUse": "fwd-database",
           "commandName": "updateBridgeFwdDatabaseCmd",
-          "parentCommand": "updateBridgeCmd",
-          "summary": "Update operation for fwd-database"
+          "totParams": 1,
+          "summary": "Update operation for fwd-database",
+          "parentCommand": "updateBridgeCmd"
         },
         "consumes": [
           "application/json"
@@ -652,8 +665,9 @@
           "exampleUse": "config-bridge-cli create bridge fwd-database <value>",
           "commandUse": "fwd-database",
           "commandName": "createBridgeFwdDatabaseCmd",
-          "parentCommand": "createBridgeCmd",
-          "summary": "Create operation for fwd-database"
+          "totParams": 1,
+          "summary": "Create operation for fwd-database",
+          "parentCommand": "createBridgeCmd"
         },
         "consumes": [
           "application/json"
@@ -690,8 +704,9 @@
           "exampleUse": "config-bridge-cli delete bridge fwd-database <value>",
           "commandUse": "fwd-database",
           "commandName": "deleteBridgeFwdDatabaseCmd",
-          "parentCommand": "deleteBridgeCmd",
-          "summary": "Delete operation for fwd-database"
+          "totParams": 1,
+          "summary": "Delete operation for fwd-database",
+          "parentCommand": "deleteBridgeCmd"
         },
         "consumes": [
           "application/json"
@@ -731,8 +746,9 @@
           "exampleUse": "config-bridge-cli retrieve bridge fwd-database <value>",
           "commandUse": "fwd-database",
           "commandName": "retrieveBridgeFwdDatabaseCmd",
-          "parentCommand": "retrieveBridgeCmd",
-          "summary": "Retrieve operation for fwd-database"
+          "totParams": 1,
+          "summary": "Retrieve operation for fwd-database",
+          "parentCommand": "retrieveBridgeCmd"
         },
         "consumes": [
           "application/json"
@@ -801,6 +817,7 @@
           "exampleUse": "config-bridge-cli update bridge fwd-database fwd-entry <value>",
           "commandUse": "fwd-entry",
           "commandName": "updateBridgeFwdDatabaseFwdEntryCmd",
+          "totParams": 3,
           "summary": "Update operation for fwd-entry",
           "parentCommand": "updateBridgeFwdDatabaseCmd"
         },
@@ -869,6 +886,7 @@
           "exampleUse": "config-bridge-cli create bridge fwd-database fwd-entry <value>",
           "commandUse": "fwd-entry",
           "commandName": "createBridgeFwdDatabaseFwdEntryCmd",
+          "totParams": 3,
           "summary": "Create operation for fwd-entry",
           "parentCommand": "createBridgeFwdDatabaseCmd"
         },
@@ -929,6 +947,7 @@
           "exampleUse": "config-bridge-cli delete bridge fwd-database fwd-entry <value>",
           "commandUse": "fwd-entry",
           "commandName": "deleteBridgeFwdDatabaseFwdEntryCmd",
+          "totParams": 3,
           "summary": "Delete operation for fwd-entry",
           "parentCommand": "deleteBridgeFwdDatabaseCmd"
         },
@@ -992,6 +1011,7 @@
           "exampleUse": "config-bridge-cli retrieve bridge fwd-database fwd-entry <value>",
           "commandUse": "fwd-entry",
           "commandName": "retrieveBridgeFwdDatabaseFwdEntryCmd",
+          "totParams": 3,
           "summary": "Retrieve operation for fwd-entry",
           "parentCommand": "retrieveBridgeFwdDatabaseCmd"
         },
@@ -1054,8 +1074,9 @@
           "exampleUse": "config-bridge-cli update bridge fwd-database fwd-entry address <value>",
           "commandUse": "address",
           "commandName": "updateBridgeFwdDatabaseFwdEntryAddressCmd",
-          "parentCommand": "updateBridgeFwdDatabaseFwdEntryCmd",
-          "summary": "Update operation for address"
+          "totParams": 3,
+          "summary": "Update operation for address",
+          "parentCommand": "updateBridgeFwdDatabaseFwdEntryCmd"
         },
         "consumes": [
           "application/json"
@@ -1109,8 +1130,9 @@
           "exampleUse": "config-bridge-cli retrieve bridge fwd-database fwd-entry address <value>",
           "commandUse": "address",
           "commandName": "retrieveBridgeFwdDatabaseFwdEntryAddressCmd",
-          "parentCommand": "retrieveBridgeFwdDatabaseFwdEntryCmd",
-          "summary": "Retrieve operation for address"
+          "totParams": 3,
+          "summary": "Retrieve operation for address",
+          "parentCommand": "retrieveBridgeFwdDatabaseFwdEntryCmd"
         },
         "consumes": [
           "application/json"
@@ -1171,8 +1193,9 @@
           "exampleUse": "config-bridge-cli update bridge fwd-database fwd-entry vids <value>",
           "commandUse": "vids",
           "commandName": "updateBridgeFwdDatabaseFwdEntryVidsCmd",
-          "parentCommand": "updateBridgeFwdDatabaseFwdEntryCmd",
-          "summary": "Update operation for vids"
+          "totParams": 3,
+          "summary": "Update operation for vids",
+          "parentCommand": "updateBridgeFwdDatabaseFwdEntryCmd"
         },
         "consumes": [
           "application/json"
@@ -1226,8 +1249,9 @@
           "exampleUse": "config-bridge-cli retrieve bridge fwd-database fwd-entry vids <value>",
           "commandUse": "vids",
           "commandName": "retrieveBridgeFwdDatabaseFwdEntryVidsCmd",
-          "parentCommand": "retrieveBridgeFwdDatabaseFwdEntryCmd",
-          "summary": "Retrieve operation for vids"
+          "totParams": 3,
+          "summary": "Retrieve operation for vids",
+          "parentCommand": "retrieveBridgeFwdDatabaseFwdEntryCmd"
         },
         "consumes": [
           "application/json"
@@ -1292,8 +1316,9 @@
           "exampleUse": "config-bridge-cli update bridge fwd-database fwd-entry entry-type <value>",
           "commandUse": "entry-type",
           "commandName": "updateBridgeFwdDatabaseFwdEntryEntryTypeCmd",
-          "parentCommand": "updateBridgeFwdDatabaseFwdEntryCmd",
-          "summary": "Update operation for entry-type"
+          "totParams": 3,
+          "summary": "Update operation for entry-type",
+          "parentCommand": "updateBridgeFwdDatabaseFwdEntryCmd"
         },
         "consumes": [
           "application/json"
@@ -1351,8 +1376,9 @@
           "exampleUse": "config-bridge-cli retrieve bridge fwd-database fwd-entry entry-type <value>",
           "commandUse": "entry-type",
           "commandName": "retrieveBridgeFwdDatabaseFwdEntryEntryTypeCmd",
-          "parentCommand": "retrieveBridgeFwdDatabaseFwdEntryCmd",
-          "summary": "Retrieve operation for entry-type"
+          "totParams": 3,
+          "summary": "Retrieve operation for entry-type",
+          "parentCommand": "retrieveBridgeFwdDatabaseFwdEntryCmd"
         },
         "consumes": [
           "application/json"
@@ -1413,8 +1439,9 @@
           "exampleUse": "config-bridge-cli update bridge fwd-database fwd-entry port_no <value>",
           "commandUse": "port_no",
           "commandName": "updateBridgeFwdDatabaseFwdEntryPortNoCmd",
-          "parentCommand": "updateBridgeFwdDatabaseFwdEntryCmd",
-          "summary": "Update operation for port_no"
+          "totParams": 3,
+          "summary": "Update operation for port_no",
+          "parentCommand": "updateBridgeFwdDatabaseFwdEntryCmd"
         },
         "consumes": [
           "application/json"
@@ -1468,8 +1495,9 @@
           "exampleUse": "config-bridge-cli retrieve bridge fwd-database fwd-entry port_no <value>",
           "commandUse": "port_no",
           "commandName": "retrieveBridgeFwdDatabaseFwdEntryPortNoCmd",
-          "parentCommand": "retrieveBridgeFwdDatabaseFwdEntryCmd",
-          "summary": "Retrieve operation for port_no"
+          "totParams": 3,
+          "summary": "Retrieve operation for port_no",
+          "parentCommand": "retrieveBridgeFwdDatabaseFwdEntryCmd"
         },
         "consumes": [
           "application/json"
@@ -1530,8 +1558,9 @@
           "exampleUse": "config-bridge-cli update bridge fwd-database fwd-entry age <value>",
           "commandUse": "age",
           "commandName": "updateBridgeFwdDatabaseFwdEntryAgeCmd",
-          "parentCommand": "updateBridgeFwdDatabaseFwdEntryCmd",
-          "summary": "Update operation for age"
+          "totParams": 3,
+          "summary": "Update operation for age",
+          "parentCommand": "updateBridgeFwdDatabaseFwdEntryCmd"
         },
         "consumes": [
           "application/json"
@@ -1585,8 +1614,9 @@
           "exampleUse": "config-bridge-cli retrieve bridge fwd-database fwd-entry age <value>",
           "commandUse": "age",
           "commandName": "retrieveBridgeFwdDatabaseFwdEntryAgeCmd",
-          "parentCommand": "retrieveBridgeFwdDatabaseFwdEntryCmd",
-          "summary": "Retrieve operation for age"
+          "totParams": 3,
+          "summary": "Retrieve operation for age",
+          "parentCommand": "retrieveBridgeFwdDatabaseFwdEntryCmd"
         },
         "consumes": [
           "application/json"
@@ -1633,8 +1663,9 @@
           "exampleUse": "config-bridge-cli update bridge stp <value>",
           "commandUse": "stp",
           "commandName": "updateBridgeStpCmd",
-          "parentCommand": "updateBridgeCmd",
-          "summary": "Update operation for stp"
+          "totParams": 1,
+          "summary": "Update operation for stp",
+          "parentCommand": "updateBridgeCmd"
         },
         "consumes": [
           "application/json"
@@ -1679,8 +1710,9 @@
           "exampleUse": "config-bridge-cli create bridge stp <value>",
           "commandUse": "stp",
           "commandName": "createBridgeStpCmd",
-          "parentCommand": "createBridgeCmd",
-          "summary": "Create operation for stp"
+          "totParams": 1,
+          "summary": "Create operation for stp",
+          "parentCommand": "createBridgeCmd"
         },
         "consumes": [
           "application/json"
@@ -1717,8 +1749,9 @@
           "exampleUse": "config-bridge-cli delete bridge stp <value>",
           "commandUse": "stp",
           "commandName": "deleteBridgeStpCmd",
-          "parentCommand": "deleteBridgeCmd",
-          "summary": "Delete operation for stp"
+          "totParams": 1,
+          "summary": "Delete operation for stp",
+          "parentCommand": "deleteBridgeCmd"
         },
         "consumes": [
           "application/json"
@@ -1758,8 +1791,9 @@
           "exampleUse": "config-bridge-cli retrieve bridge stp <value>",
           "commandUse": "stp",
           "commandName": "retrieveBridgeStpCmd",
-          "parentCommand": "retrieveBridgeCmd",
-          "summary": "Retrieve operation for stp"
+          "totParams": 1,
+          "summary": "Retrieve operation for stp",
+          "parentCommand": "retrieveBridgeCmd"
         },
         "consumes": [
           "application/json"
@@ -1806,8 +1840,9 @@
           "exampleUse": "config-bridge-cli update bridge stp priority <value>",
           "commandUse": "priority",
           "commandName": "updateBridgeStpPriorityCmd",
-          "parentCommand": "updateBridgeStpCmd",
-          "summary": "Update operation for priority"
+          "totParams": 1,
+          "summary": "Update operation for priority",
+          "parentCommand": "updateBridgeStpCmd"
         },
         "consumes": [
           "application/json"
@@ -1847,8 +1882,9 @@
           "exampleUse": "config-bridge-cli retrieve bridge stp priority <value>",
           "commandUse": "priority",
           "commandName": "retrieveBridgeStpPriorityCmd",
-          "parentCommand": "retrieveBridgeStpCmd",
-          "summary": "Retrieve operation for priority"
+          "totParams": 1,
+          "summary": "Retrieve operation for priority",
+          "parentCommand": "retrieveBridgeStpCmd"
         },
         "consumes": [
           "application/json"
@@ -1895,8 +1931,9 @@
           "exampleUse": "config-bridge-cli update bridge stp forward_delay <value>",
           "commandUse": "forward_delay",
           "commandName": "updateBridgeStpForwardDelayCmd",
-          "parentCommand": "updateBridgeStpCmd",
-          "summary": "Update operation for forward_delay"
+          "totParams": 1,
+          "summary": "Update operation for forward_delay",
+          "parentCommand": "updateBridgeStpCmd"
         },
         "consumes": [
           "application/json"
@@ -1936,8 +1973,9 @@
           "exampleUse": "config-bridge-cli retrieve bridge stp forward_delay <value>",
           "commandUse": "forward_delay",
           "commandName": "retrieveBridgeStpForwardDelayCmd",
-          "parentCommand": "retrieveBridgeStpCmd",
-          "summary": "Retrieve operation for forward_delay"
+          "totParams": 1,
+          "summary": "Retrieve operation for forward_delay",
+          "parentCommand": "retrieveBridgeStpCmd"
         },
         "consumes": [
           "application/json"
@@ -1984,8 +2022,9 @@
           "exampleUse": "config-bridge-cli update bridge stp hello_time <value>",
           "commandUse": "hello_time",
           "commandName": "updateBridgeStpHelloTimeCmd",
-          "parentCommand": "updateBridgeStpCmd",
-          "summary": "Update operation for hello_time"
+          "totParams": 1,
+          "summary": "Update operation for hello_time",
+          "parentCommand": "updateBridgeStpCmd"
         },
         "consumes": [
           "application/json"
@@ -2025,8 +2064,9 @@
           "exampleUse": "config-bridge-cli retrieve bridge stp hello_time <value>",
           "commandUse": "hello_time",
           "commandName": "retrieveBridgeStpHelloTimeCmd",
-          "parentCommand": "retrieveBridgeStpCmd",
-          "summary": "Retrieve operation for hello_time"
+          "totParams": 1,
+          "summary": "Retrieve operation for hello_time",
+          "parentCommand": "retrieveBridgeStpCmd"
         },
         "consumes": [
           "application/json"
@@ -2073,8 +2113,9 @@
           "exampleUse": "config-bridge-cli update bridge stp max_message_age <value>",
           "commandUse": "max_message_age",
           "commandName": "updateBridgeStpMaxMessageAgeCmd",
-          "parentCommand": "updateBridgeStpCmd",
-          "summary": "Update operation for max_message_age"
+          "totParams": 1,
+          "summary": "Update operation for max_message_age",
+          "parentCommand": "updateBridgeStpCmd"
         },
         "consumes": [
           "application/json"
@@ -2114,8 +2155,9 @@
           "exampleUse": "config-bridge-cli retrieve bridge stp max_message_age <value>",
           "commandUse": "max_message_age",
           "commandName": "retrieveBridgeStpMaxMessageAgeCmd",
-          "parentCommand": "retrieveBridgeStpCmd",
-          "summary": "Retrieve operation for max_message_age"
+          "totParams": 1,
+          "summary": "Retrieve operation for max_message_age",
+          "parentCommand": "retrieveBridgeStpCmd"
         },
         "consumes": [
           "application/json"
@@ -2162,8 +2204,9 @@
           "exampleUse": "config-bridge-cli update bridge interfaces <value>",
           "commandUse": "interfaces",
           "commandName": "updateBridgeInterfacesCmd",
-          "parentCommand": "updateBridgeCmd",
-          "summary": "Update operation for interfaces"
+          "totParams": 1,
+          "summary": "Update operation for interfaces",
+          "parentCommand": "updateBridgeCmd"
         },
         "consumes": [
           "application/json"
@@ -2208,8 +2251,9 @@
           "exampleUse": "config-bridge-cli create bridge interfaces <value>",
           "commandUse": "interfaces",
           "commandName": "createBridgeInterfacesCmd",
-          "parentCommand": "createBridgeCmd",
-          "summary": "Create operation for interfaces"
+          "totParams": 1,
+          "summary": "Create operation for interfaces",
+          "parentCommand": "createBridgeCmd"
         },
         "consumes": [
           "application/json"
@@ -2246,8 +2290,9 @@
           "exampleUse": "config-bridge-cli delete bridge interfaces <value>",
           "commandUse": "interfaces",
           "commandName": "deleteBridgeInterfacesCmd",
-          "parentCommand": "deleteBridgeCmd",
-          "summary": "Delete operation for interfaces"
+          "totParams": 1,
+          "summary": "Delete operation for interfaces",
+          "parentCommand": "deleteBridgeCmd"
         },
         "consumes": [
           "application/json"
@@ -2287,8 +2332,9 @@
           "exampleUse": "config-bridge-cli retrieve bridge interfaces <value>",
           "commandUse": "interfaces",
           "commandName": "retrieveBridgeInterfacesCmd",
-          "parentCommand": "retrieveBridgeCmd",
-          "summary": "Retrieve operation for interfaces"
+          "totParams": 1,
+          "summary": "Retrieve operation for interfaces",
+          "parentCommand": "retrieveBridgeCmd"
         },
         "consumes": [
           "application/json"
@@ -2347,6 +2393,7 @@
           "exampleUse": "config-bridge-cli update bridge interfaces interface <value>",
           "commandUse": "interface",
           "commandName": "updateBridgeInterfacesInterfaceCmd",
+          "totParams": 2,
           "summary": "Update operation for interface",
           "parentCommand": "updateBridgeInterfacesCmd"
         },
@@ -2405,6 +2452,7 @@
           "exampleUse": "config-bridge-cli create bridge interfaces interface <value>",
           "commandUse": "interface",
           "commandName": "createBridgeInterfacesInterfaceCmd",
+          "totParams": 2,
           "summary": "Create operation for interface",
           "parentCommand": "createBridgeInterfacesCmd"
         },
@@ -2455,6 +2503,7 @@
           "exampleUse": "config-bridge-cli delete bridge interfaces interface <value>",
           "commandUse": "interface",
           "commandName": "deleteBridgeInterfacesInterfaceCmd",
+          "totParams": 2,
           "summary": "Delete operation for interface",
           "parentCommand": "deleteBridgeInterfacesCmd"
         },
@@ -2508,6 +2557,7 @@
           "exampleUse": "config-bridge-cli retrieve bridge interfaces interface <value>",
           "commandUse": "interface",
           "commandName": "retrieveBridgeInterfacesInterfaceCmd",
+          "totParams": 2,
           "summary": "Retrieve operation for interface",
           "parentCommand": "retrieveBridgeInterfacesCmd"
         },
@@ -2563,8 +2613,9 @@
           "exampleUse": "config-bridge-cli update bridge interfaces interface interface_name <value>",
           "commandUse": "interface_name",
           "commandName": "updateBridgeInterfacesInterfaceInterfaceNameCmd",
-          "parentCommand": "updateBridgeInterfacesInterfaceCmd",
-          "summary": "Update operation for interface_name"
+          "totParams": 2,
+          "summary": "Update operation for interface_name",
+          "parentCommand": "updateBridgeInterfacesInterfaceCmd"
         },
         "consumes": [
           "application/json"
@@ -2611,8 +2662,9 @@
           "exampleUse": "config-bridge-cli retrieve bridge interfaces interface interface_name <value>",
           "commandUse": "interface_name",
           "commandName": "retrieveBridgeInterfacesInterfaceInterfaceNameCmd",
-          "parentCommand": "retrieveBridgeInterfacesInterfaceCmd",
-          "summary": "Retrieve operation for interface_name"
+          "totParams": 2,
+          "summary": "Retrieve operation for interface_name",
+          "parentCommand": "retrieveBridgeInterfacesInterfaceCmd"
         },
         "consumes": [
           "application/json"
@@ -2666,8 +2718,9 @@
           "exampleUse": "config-bridge-cli update bridge interfaces interface address <value>",
           "commandUse": "address",
           "commandName": "updateBridgeInterfacesInterfaceAddressCmd",
-          "parentCommand": "updateBridgeInterfacesInterfaceCmd",
-          "summary": "Update operation for address"
+          "totParams": 2,
+          "summary": "Update operation for address",
+          "parentCommand": "updateBridgeInterfacesInterfaceCmd"
         },
         "consumes": [
           "application/json"
@@ -2714,8 +2767,9 @@
           "exampleUse": "config-bridge-cli retrieve bridge interfaces interface address <value>",
           "commandUse": "address",
           "commandName": "retrieveBridgeInterfacesInterfaceAddressCmd",
-          "parentCommand": "retrieveBridgeInterfacesInterfaceCmd",
-          "summary": "Retrieve operation for address"
+          "totParams": 2,
+          "summary": "Retrieve operation for address",
+          "parentCommand": "retrieveBridgeInterfacesInterfaceCmd"
         },
         "consumes": [
           "application/json"
@@ -2773,8 +2827,9 @@
           "exampleUse": "config-bridge-cli update bridge interfaces interface access_mode <value>",
           "commandUse": "access_mode",
           "commandName": "updateBridgeInterfacesInterfaceAccessModeCmd",
-          "parentCommand": "updateBridgeInterfacesInterfaceCmd",
-          "summary": "Update operation for access_mode"
+          "totParams": 2,
+          "summary": "Update operation for access_mode",
+          "parentCommand": "updateBridgeInterfacesInterfaceCmd"
         },
         "consumes": [
           "application/json"
@@ -2825,8 +2880,9 @@
           "exampleUse": "config-bridge-cli retrieve bridge interfaces interface access_mode <value>",
           "commandUse": "access_mode",
           "commandName": "retrieveBridgeInterfacesInterfaceAccessModeCmd",
-          "parentCommand": "retrieveBridgeInterfacesInterfaceCmd",
-          "summary": "Retrieve operation for access_mode"
+          "totParams": 2,
+          "summary": "Retrieve operation for access_mode",
+          "parentCommand": "retrieveBridgeInterfacesInterfaceCmd"
         },
         "consumes": [
           "application/json"
@@ -2880,8 +2936,9 @@
           "exampleUse": "config-bridge-cli update bridge interfaces interface vlan_id <value>",
           "commandUse": "vlan_id",
           "commandName": "updateBridgeInterfacesInterfaceVlanIdCmd",
-          "parentCommand": "updateBridgeInterfacesInterfaceCmd",
-          "summary": "Update operation for vlan_id"
+          "totParams": 2,
+          "summary": "Update operation for vlan_id",
+          "parentCommand": "updateBridgeInterfacesInterfaceCmd"
         },
         "consumes": [
           "application/json"
@@ -2928,8 +2985,9 @@
           "exampleUse": "config-bridge-cli retrieve bridge interfaces interface vlan_id <value>",
           "commandUse": "vlan_id",
           "commandName": "retrieveBridgeInterfacesInterfaceVlanIdCmd",
-          "parentCommand": "retrieveBridgeInterfacesInterfaceCmd",
-          "summary": "Retrieve operation for vlan_id"
+          "totParams": 2,
+          "summary": "Retrieve operation for vlan_id",
+          "parentCommand": "retrieveBridgeInterfacesInterfaceCmd"
         },
         "consumes": [
           "application/json"
@@ -2983,8 +3041,9 @@
           "exampleUse": "config-bridge-cli update bridge interfaces interface stp_interface <value>",
           "commandUse": "stp_interface",
           "commandName": "updateBridgeInterfacesInterfaceStpInterfaceCmd",
-          "parentCommand": "updateBridgeInterfacesInterfaceCmd",
-          "summary": "Update operation for stp_interface"
+          "totParams": 2,
+          "summary": "Update operation for stp_interface",
+          "parentCommand": "updateBridgeInterfacesInterfaceCmd"
         },
         "consumes": [
           "application/json"
@@ -3036,8 +3095,9 @@
           "exampleUse": "config-bridge-cli create bridge interfaces interface stp_interface <value>",
           "commandUse": "stp_interface",
           "commandName": "createBridgeInterfacesInterfaceStpInterfaceCmd",
-          "parentCommand": "createBridgeInterfacesInterfaceCmd",
-          "summary": "Create operation for stp_interface"
+          "totParams": 2,
+          "summary": "Create operation for stp_interface",
+          "parentCommand": "createBridgeInterfacesInterfaceCmd"
         },
         "consumes": [
           "application/json"
@@ -3081,8 +3141,9 @@
           "exampleUse": "config-bridge-cli delete bridge interfaces interface stp_interface <value>",
           "commandUse": "stp_interface",
           "commandName": "deleteBridgeInterfacesInterfaceStpInterfaceCmd",
-          "parentCommand": "deleteBridgeInterfacesInterfaceCmd",
-          "summary": "Delete operation for stp_interface"
+          "totParams": 2,
+          "summary": "Delete operation for stp_interface",
+          "parentCommand": "deleteBridgeInterfacesInterfaceCmd"
         },
         "consumes": [
           "application/json"
@@ -3129,8 +3190,9 @@
           "exampleUse": "config-bridge-cli retrieve bridge interfaces interface stp_interface <value>",
           "commandUse": "stp_interface",
           "commandName": "retrieveBridgeInterfacesInterfaceStpInterfaceCmd",
-          "parentCommand": "retrieveBridgeInterfacesInterfaceCmd",
-          "summary": "Retrieve operation for stp_interface"
+          "totParams": 2,
+          "summary": "Retrieve operation for stp_interface",
+          "parentCommand": "retrieveBridgeInterfacesInterfaceCmd"
         },
         "consumes": [
           "application/json"
@@ -3184,8 +3246,9 @@
           "exampleUse": "config-bridge-cli update bridge interfaces interface stp_interface path_cost <value>",
           "commandUse": "path_cost",
           "commandName": "updateBridgeInterfacesInterfaceStpInterfacePathCostCmd",
-          "parentCommand": "updateBridgeInterfacesInterfaceStpInterfaceCmd",
-          "summary": "Update operation for path_cost"
+          "totParams": 2,
+          "summary": "Update operation for path_cost",
+          "parentCommand": "updateBridgeInterfacesInterfaceStpInterfaceCmd"
         },
         "consumes": [
           "application/json"
@@ -3232,8 +3295,9 @@
           "exampleUse": "config-bridge-cli retrieve bridge interfaces interface stp_interface path_cost <value>",
           "commandUse": "path_cost",
           "commandName": "retrieveBridgeInterfacesInterfaceStpInterfacePathCostCmd",
-          "parentCommand": "retrieveBridgeInterfacesInterfaceStpInterfaceCmd",
-          "summary": "Retrieve operation for path_cost"
+          "totParams": 2,
+          "summary": "Retrieve operation for path_cost",
+          "parentCommand": "retrieveBridgeInterfacesInterfaceStpInterfaceCmd"
         },
         "consumes": [
           "application/json"
@@ -3287,8 +3351,9 @@
           "exampleUse": "config-bridge-cli update bridge interfaces interface stp_interface port_priority <value>",
           "commandUse": "port_priority",
           "commandName": "updateBridgeInterfacesInterfaceStpInterfacePortPriorityCmd",
-          "parentCommand": "updateBridgeInterfacesInterfaceStpInterfaceCmd",
-          "summary": "Update operation for port_priority"
+          "totParams": 2,
+          "summary": "Update operation for port_priority",
+          "parentCommand": "updateBridgeInterfacesInterfaceStpInterfaceCmd"
         },
         "consumes": [
           "application/json"
@@ -3335,8 +3400,9 @@
           "exampleUse": "config-bridge-cli retrieve bridge interfaces interface stp_interface port_priority <value>",
           "commandUse": "port_priority",
           "commandName": "retrieveBridgeInterfacesInterfaceStpInterfacePortPriorityCmd",
-          "parentCommand": "retrieveBridgeInterfacesInterfaceStpInterfaceCmd",
-          "summary": "Retrieve operation for port_priority"
+          "totParams": 2,
+          "summary": "Retrieve operation for port_priority",
+          "parentCommand": "retrieveBridgeInterfacesInterfaceStpInterfaceCmd"
         },
         "consumes": [
           "application/json"

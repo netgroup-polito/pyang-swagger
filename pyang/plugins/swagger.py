@@ -797,6 +797,14 @@ def generate_api_header(stmt, struct, operation, path, is_collection=False):
             else:
                 break
 
+    struct['x-cliParam']['totParams'] = 0
+    for element in path_list:
+        if str(element)[0] == '{' and str(element)[-1] == '}':
+            struct['x-cliParam']['totParams'] += 1
+
+    if struct['x-cliParam']['totParams'] == 0:
+        struct['x-cliParam'].pop('totParams', None)
+
     if _ROOT_NODE_NAME:
         struct['tags'] = [_ROOT_NODE_NAME]
 
