@@ -52,11 +52,16 @@
         ],
         "summary": "Update bridge by ID",
         "x-cliParam": {
+          "paramKeys": [
+            {
+              "key": "name"
+            }
+          ],
           "exampleUse": "config-bridge-cli update bridge <value>",
           "commandUse": "update",
           "commandName": "updateBridgeCmd",
-          "parentCommand": "rootCmd",
-          "summary": "Update operation for bridge"
+          "summary": "Update operation for bridge",
+          "parentCommand": "rootCmd"
         },
         "consumes": [
           "application/json"
@@ -98,11 +103,16 @@
         ],
         "summary": "Create bridge by ID",
         "x-cliParam": {
+          "paramKeys": [
+            {
+              "key": "name"
+            }
+          ],
           "exampleUse": "config-bridge-cli create bridge <value>",
           "commandUse": "create",
           "commandName": "createBridgeCmd",
-          "parentCommand": "rootCmd",
-          "summary": "Create operation for bridge"
+          "summary": "Create operation for bridge",
+          "parentCommand": "rootCmd"
         },
         "consumes": [
           "application/json"
@@ -136,11 +146,16 @@
         ],
         "summary": "Delete bridge by ID",
         "x-cliParam": {
+          "paramKeys": [
+            {
+              "key": "name"
+            }
+          ],
           "exampleUse": "config-bridge-cli delete bridge <value>",
           "commandUse": "delete",
           "commandName": "deleteBridgeCmd",
-          "parentCommand": "rootCmd",
-          "summary": "Delete operation for bridge"
+          "summary": "Delete operation for bridge",
+          "parentCommand": "rootCmd"
         },
         "consumes": [
           "application/json"
@@ -177,11 +192,16 @@
         ],
         "summary": "Retrieve bridge by ID",
         "x-cliParam": {
+          "paramKeys": [
+            {
+              "key": "name"
+            }
+          ],
           "exampleUse": "config-bridge-cli retrieve bridge <value>",
           "commandUse": "retrieve",
           "commandName": "retrieveBridgeCmd",
-          "parentCommand": "rootCmd",
-          "summary": "Retrieve operation for bridge"
+          "summary": "Retrieve operation for bridge",
+          "parentCommand": "rootCmd"
         },
         "consumes": [
           "application/json"
@@ -211,7 +231,7 @@
           {
             "description": "namebody object",
             "schema": {
-              "$ref": "#/definitions/NameSchema"
+              "type": "string"
             },
             "name": "name",
             "in": "body"
@@ -241,7 +261,7 @@
           "200": {
             "description": "Successful operation",
             "schema": {
-              "$ref": "#/definitions/NameSchema"
+              "type": "string"
             }
           },
           "400": {
@@ -300,7 +320,8 @@
           {
             "description": "addressbody object",
             "schema": {
-              "$ref": "#/definitions/AddressSchema"
+              "type": "string",
+              "description": "The MAC address used by the STP."
             },
             "name": "address",
             "in": "body"
@@ -330,7 +351,8 @@
           "200": {
             "description": "Successful operation",
             "schema": {
-              "$ref": "#/definitions/AddressSchema"
+              "type": "string",
+              "description": "The MAC address used by the STP."
             }
           },
           "400": {
@@ -389,7 +411,7 @@
           {
             "description": "aging_timebody object",
             "schema": {
-              "$ref": "#/definitions/AgingTimeSchema"
+              "type": "string"
             },
             "name": "aging_time",
             "in": "body"
@@ -419,7 +441,7 @@
           "200": {
             "description": "Successful operation",
             "schema": {
-              "$ref": "#/definitions/AgingTimeSchema"
+              "type": "string"
             }
           },
           "400": {
@@ -478,7 +500,7 @@
           {
             "description": "stp_enabledbody object",
             "schema": {
-              "$ref": "#/definitions/StpEnabledSchema"
+              "type": "boolean"
             },
             "name": "stp_enabled",
             "in": "body"
@@ -508,7 +530,7 @@
           "200": {
             "description": "Successful operation",
             "schema": {
-              "$ref": "#/definitions/StpEnabledSchema"
+              "type": "boolean"
             }
           },
           "400": {
@@ -768,11 +790,19 @@
         ],
         "summary": "Update fwd-entry by ID",
         "x-cliParam": {
+          "paramKeys": [
+            {
+              "key": "vids"
+            },
+            {
+              "key": "address"
+            }
+          ],
           "exampleUse": "config-bridge-cli update bridge fwd-database fwd-entry <value>",
           "commandUse": "fwd-entry",
           "commandName": "updateBridgeFwdDatabaseFwdEntryCmd",
-          "parentCommand": "updateBridgeFwdDatabaseCmd",
-          "summary": "Update operation for fwd-entry"
+          "summary": "Update operation for fwd-entry",
+          "parentCommand": "updateBridgeFwdDatabaseCmd"
         },
         "consumes": [
           "application/json"
@@ -828,11 +858,19 @@
         ],
         "summary": "Create fwd-entry by ID",
         "x-cliParam": {
+          "paramKeys": [
+            {
+              "key": "vids"
+            },
+            {
+              "key": "address"
+            }
+          ],
           "exampleUse": "config-bridge-cli create bridge fwd-database fwd-entry <value>",
           "commandUse": "fwd-entry",
           "commandName": "createBridgeFwdDatabaseFwdEntryCmd",
-          "parentCommand": "createBridgeFwdDatabaseCmd",
-          "summary": "Create operation for fwd-entry"
+          "summary": "Create operation for fwd-entry",
+          "parentCommand": "createBridgeFwdDatabaseCmd"
         },
         "consumes": [
           "application/json"
@@ -880,11 +918,19 @@
         ],
         "summary": "Delete fwd-entry by ID",
         "x-cliParam": {
+          "paramKeys": [
+            {
+              "key": "vids"
+            },
+            {
+              "key": "address"
+            }
+          ],
           "exampleUse": "config-bridge-cli delete bridge fwd-database fwd-entry <value>",
           "commandUse": "fwd-entry",
           "commandName": "deleteBridgeFwdDatabaseFwdEntryCmd",
-          "parentCommand": "deleteBridgeFwdDatabaseCmd",
-          "summary": "Delete operation for fwd-entry"
+          "summary": "Delete operation for fwd-entry",
+          "parentCommand": "deleteBridgeFwdDatabaseCmd"
         },
         "consumes": [
           "application/json"
@@ -935,11 +981,19 @@
         ],
         "summary": "Retrieve fwd-entry by ID",
         "x-cliParam": {
+          "paramKeys": [
+            {
+              "key": "vids"
+            },
+            {
+              "key": "address"
+            }
+          ],
           "exampleUse": "config-bridge-cli retrieve bridge fwd-database fwd-entry <value>",
           "commandUse": "fwd-entry",
           "commandName": "retrieveBridgeFwdDatabaseFwdEntryCmd",
-          "parentCommand": "retrieveBridgeFwdDatabaseCmd",
-          "summary": "Retrieve operation for fwd-entry"
+          "summary": "Retrieve operation for fwd-entry",
+          "parentCommand": "retrieveBridgeFwdDatabaseCmd"
         },
         "consumes": [
           "application/json"
@@ -983,7 +1037,7 @@
           {
             "description": "addressbody object",
             "schema": {
-              "$ref": "#/definitions/AddressSchema"
+              "type": "string"
             },
             "name": "address",
             "in": "body"
@@ -1013,7 +1067,7 @@
           "200": {
             "description": "Successful operation",
             "schema": {
-              "$ref": "#/definitions/AddressSchema"
+              "type": "string"
             }
           },
           "400": {
@@ -1100,7 +1154,7 @@
           {
             "description": "vidsbody object",
             "schema": {
-              "$ref": "#/definitions/VidsSchema"
+              "type": "string"
             },
             "name": "vids",
             "in": "body"
@@ -1130,7 +1184,7 @@
           "200": {
             "description": "Successful operation",
             "schema": {
-              "$ref": "#/definitions/VidsSchema"
+              "type": "string"
             }
           },
           "400": {
@@ -1217,7 +1271,11 @@
           {
             "description": "entry-typebody object",
             "schema": {
-              "$ref": "#/definitions/EntryTypeSchema"
+              "enum": [
+                "static",
+                "dynamic"
+              ],
+              "type": "string"
             },
             "name": "entry-type",
             "in": "body"
@@ -1247,7 +1305,11 @@
           "200": {
             "description": "Successful operation",
             "schema": {
-              "$ref": "#/definitions/EntryTypeSchema"
+              "enum": [
+                "static",
+                "dynamic"
+              ],
+              "type": "string"
             }
           },
           "400": {
@@ -1334,7 +1396,7 @@
           {
             "description": "port_nobody object",
             "schema": {
-              "$ref": "#/definitions/PortNoSchema"
+              "type": "string"
             },
             "name": "port_no",
             "in": "body"
@@ -1364,7 +1426,7 @@
           "200": {
             "description": "Successful operation",
             "schema": {
-              "$ref": "#/definitions/PortNoSchema"
+              "type": "string"
             }
           },
           "400": {
@@ -1451,7 +1513,7 @@
           {
             "description": "agebody object",
             "schema": {
-              "$ref": "#/definitions/AgeSchema"
+              "type": "string"
             },
             "name": "age",
             "in": "body"
@@ -1481,7 +1543,7 @@
           "200": {
             "description": "Successful operation",
             "schema": {
-              "$ref": "#/definitions/AgeSchema"
+              "type": "string"
             }
           },
           "400": {
@@ -1727,7 +1789,7 @@
           {
             "description": "prioritybody object",
             "schema": {
-              "$ref": "#/definitions/PrioritySchema"
+              "type": "string"
             },
             "name": "priority",
             "in": "body"
@@ -1757,7 +1819,7 @@
           "200": {
             "description": "Successful operation",
             "schema": {
-              "$ref": "#/definitions/PrioritySchema"
+              "type": "string"
             }
           },
           "400": {
@@ -1816,7 +1878,7 @@
           {
             "description": "forward_delaybody object",
             "schema": {
-              "$ref": "#/definitions/ForwardDelaySchema"
+              "type": "string"
             },
             "name": "forward_delay",
             "in": "body"
@@ -1846,7 +1908,7 @@
           "200": {
             "description": "Successful operation",
             "schema": {
-              "$ref": "#/definitions/ForwardDelaySchema"
+              "type": "string"
             }
           },
           "400": {
@@ -1905,7 +1967,7 @@
           {
             "description": "hello_timebody object",
             "schema": {
-              "$ref": "#/definitions/HelloTimeSchema"
+              "type": "string"
             },
             "name": "hello_time",
             "in": "body"
@@ -1935,7 +1997,7 @@
           "200": {
             "description": "Successful operation",
             "schema": {
-              "$ref": "#/definitions/HelloTimeSchema"
+              "type": "string"
             }
           },
           "400": {
@@ -1994,7 +2056,7 @@
           {
             "description": "max_message_agebody object",
             "schema": {
-              "$ref": "#/definitions/MaxMessageAgeSchema"
+              "type": "string"
             },
             "name": "max_message_age",
             "in": "body"
@@ -2024,7 +2086,7 @@
           "200": {
             "description": "Successful operation",
             "schema": {
-              "$ref": "#/definitions/MaxMessageAgeSchema"
+              "type": "string"
             }
           },
           "400": {
@@ -2277,11 +2339,16 @@
         ],
         "summary": "Update interface by ID",
         "x-cliParam": {
+          "paramKeys": [
+            {
+              "key": "interface_name"
+            }
+          ],
           "exampleUse": "config-bridge-cli update bridge interfaces interface <value>",
           "commandUse": "interface",
           "commandName": "updateBridgeInterfacesInterfaceCmd",
-          "parentCommand": "updateBridgeInterfacesCmd",
-          "summary": "Update operation for interface"
+          "summary": "Update operation for interface",
+          "parentCommand": "updateBridgeInterfacesCmd"
         },
         "consumes": [
           "application/json"
@@ -2330,11 +2397,16 @@
         ],
         "summary": "Create interface by ID",
         "x-cliParam": {
+          "paramKeys": [
+            {
+              "key": "interface_name"
+            }
+          ],
           "exampleUse": "config-bridge-cli create bridge interfaces interface <value>",
           "commandUse": "interface",
           "commandName": "createBridgeInterfacesInterfaceCmd",
-          "parentCommand": "createBridgeInterfacesCmd",
-          "summary": "Create operation for interface"
+          "summary": "Create operation for interface",
+          "parentCommand": "createBridgeInterfacesCmd"
         },
         "consumes": [
           "application/json"
@@ -2375,11 +2447,16 @@
         ],
         "summary": "Delete interface by ID",
         "x-cliParam": {
+          "paramKeys": [
+            {
+              "key": "interface_name"
+            }
+          ],
           "exampleUse": "config-bridge-cli delete bridge interfaces interface <value>",
           "commandUse": "interface",
           "commandName": "deleteBridgeInterfacesInterfaceCmd",
-          "parentCommand": "deleteBridgeInterfacesCmd",
-          "summary": "Delete operation for interface"
+          "summary": "Delete operation for interface",
+          "parentCommand": "deleteBridgeInterfacesCmd"
         },
         "consumes": [
           "application/json"
@@ -2423,11 +2500,16 @@
         ],
         "summary": "Retrieve interface by ID",
         "x-cliParam": {
+          "paramKeys": [
+            {
+              "key": "interface_name"
+            }
+          ],
           "exampleUse": "config-bridge-cli retrieve bridge interfaces interface <value>",
           "commandUse": "interface",
           "commandName": "retrieveBridgeInterfacesInterfaceCmd",
-          "parentCommand": "retrieveBridgeInterfacesCmd",
-          "summary": "Retrieve operation for interface"
+          "summary": "Retrieve operation for interface",
+          "parentCommand": "retrieveBridgeInterfacesCmd"
         },
         "consumes": [
           "application/json"
@@ -2464,7 +2546,7 @@
           {
             "description": "interface_namebody object",
             "schema": {
-              "$ref": "#/definitions/InterfaceNameSchema"
+              "type": "string"
             },
             "name": "interface_name",
             "in": "body"
@@ -2494,7 +2576,7 @@
           "200": {
             "description": "Successful operation",
             "schema": {
-              "$ref": "#/definitions/InterfaceNameSchema"
+              "type": "string"
             }
           },
           "400": {
@@ -2567,7 +2649,7 @@
           {
             "description": "addressbody object",
             "schema": {
-              "$ref": "#/definitions/AddressSchema"
+              "type": "string"
             },
             "name": "address",
             "in": "body"
@@ -2597,7 +2679,7 @@
           "200": {
             "description": "Successful operation",
             "schema": {
-              "$ref": "#/definitions/AddressSchema"
+              "type": "string"
             }
           },
           "400": {
@@ -2670,7 +2752,11 @@
           {
             "description": "access_modebody object",
             "schema": {
-              "$ref": "#/definitions/AccessModeSchema"
+              "enum": [
+                "access",
+                "trunk"
+              ],
+              "type": "string"
             },
             "name": "access_mode",
             "in": "body"
@@ -2700,7 +2786,11 @@
           "200": {
             "description": "Successful operation",
             "schema": {
-              "$ref": "#/definitions/AccessModeSchema"
+              "enum": [
+                "access",
+                "trunk"
+              ],
+              "type": "string"
             }
           },
           "400": {
@@ -2773,7 +2863,7 @@
           {
             "description": "vlan_idbody object",
             "schema": {
-              "$ref": "#/definitions/VlanIdSchema"
+              "type": "string"
             },
             "name": "vlan_id",
             "in": "body"
@@ -2803,7 +2893,7 @@
           "200": {
             "description": "Successful operation",
             "schema": {
-              "$ref": "#/definitions/VlanIdSchema"
+              "type": "string"
             }
           },
           "400": {
@@ -3077,7 +3167,7 @@
           {
             "description": "path_costbody object",
             "schema": {
-              "$ref": "#/definitions/PathCostSchema"
+              "type": "string"
             },
             "name": "path_cost",
             "in": "body"
@@ -3107,7 +3197,7 @@
           "200": {
             "description": "Successful operation",
             "schema": {
-              "$ref": "#/definitions/PathCostSchema"
+              "type": "string"
             }
           },
           "400": {
@@ -3180,7 +3270,7 @@
           {
             "description": "port_prioritybody object",
             "schema": {
-              "$ref": "#/definitions/PortPrioritySchema"
+              "type": "string"
             },
             "name": "port_priority",
             "in": "body"
@@ -3210,7 +3300,7 @@
           "200": {
             "description": "Successful operation",
             "schema": {
-              "$ref": "#/definitions/PortPrioritySchema"
+              "type": "string"
             }
           },
           "400": {
@@ -3363,35 +3453,7 @@
                 }
               }
             }
-    },
-    "NameSchema": {
-      "properties": {
-        "name": {
-          "type": "string"
-        }
-      }
         },
-    "AddressSchema": {
-      "properties": {
-        "address": {
-                    "type": "string"
-        }
-      }
-    },
-    "AgingTimeSchema": {
-      "properties": {
-        "agingTime": {
-          "type": "string"
-        }
-      }
-        },
-    "StpEnabledSchema": {
-      "properties": {
-        "stpEnabled": {
-          "type": "boolean"
-        }
-      }
-    },
     "FwdDatabaseSchema": {
       "properties": {
         "fwdEntry": {
@@ -3448,39 +3510,7 @@
                 "type": "string"
               }
             }
-    },
-    "VidsSchema": {
-      "properties": {
-        "vids": {
-          "type": "string"
-        }
-      }
         },
-    "EntryTypeSchema": {
-      "properties": {
-        "entryType": {
-          "enum": [
-            "static",
-            "dynamic"
-          ],
-          "type": "string"
-        }
-      }
-        },
-    "PortNoSchema": {
-      "properties": {
-        "portNo": {
-          "type": "string"
-        }
-      }
-        },
-    "AgeSchema": {
-      "properties": {
-        "age": {
-          "type": "string"
-        }
-      }
-    },
     "StpSchema": {
       "properties": {
         "priority": {
@@ -3493,34 +3523,6 @@
           "type": "string"
         },
         "forwardDelay": {
-          "type": "string"
-        }
-      }
-    },
-    "PrioritySchema": {
-      "properties": {
-        "priority": {
-          "type": "string"
-        }
-      }
-    },
-    "ForwardDelaySchema": {
-      "properties": {
-        "forwardDelay": {
-          "type": "string"
-        }
-      }
-    },
-    "HelloTimeSchema": {
-      "properties": {
-        "helloTime": {
-          "type": "string"
-        }
-      }
-    },
-    "MaxMessageAgeSchema": {
-      "properties": {
-        "maxMessageAge": {
           "type": "string"
         }
       }
@@ -3596,50 +3598,11 @@
         }
       }
         },
-    "InterfaceNameSchema": {
-      "properties": {
-        "interfaceName": {
-          "type": "string"
-        }
-      }
-        },
-    "AccessModeSchema": {
-      "properties": {
-        "accessMode": {
-          "enum": [
-            "access",
-            "trunk"
-          ],
-          "type": "string"
-        }
-      }
-    },
-    "VlanIdSchema": {
-      "properties": {
-        "vlanId": {
-          "type": "string"
-        }
-      }
-    },
     "StpInterfaceSchema": {
       "properties": {
         "pathCost": {
           "type": "string"
         },
-        "portPriority": {
-          "type": "string"
-        }
-      }
-    },
-    "PathCostSchema": {
-      "properties": {
-        "pathCost": {
-          "type": "string"
-        }
-      }
-        },
-    "PortPrioritySchema": {
-      "properties": {
         "portPriority": {
           "type": "string"
         }

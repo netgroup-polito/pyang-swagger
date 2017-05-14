@@ -449,34 +449,52 @@ def gen_api_node(node, path, apis, definitions, config=True):
             # a new definition is created, named the parent node name and the extension Schema
             # (i.e., NodenameSchema). This new definition is a schema containing the content
             # of the body input schema i.e {"child.arg":schema} -> schema
-            if not '$ref' in schema_list[to_lower_camelcase(node.arg)]['items']:
+            if '$ref' not in schema_list[to_lower_camelcase(node.arg)]['items']:
                 definitions[to_upper_camelcase(node.arg + '_schema')] = dict(
                     schema_list[to_lower_camelcase(node.arg)]['items'])
                 schema['$ref'] = '#/definitions/{0}'.format(to_upper_camelcase(node.arg + '_schema'))
             else:
                 schema = dict(schema_list[to_lower_camelcase(node.arg)]['items'])
 
-        elif node.keyword == 'container' or node.keyword == 'leaf':
+        elif node.keyword == 'container':
             gen_model([node], schema, config)
 
             # If a body input params has not been defined as a schema (not included in the definitions set),
             # a new definition is created, named the parent node name and the extension Schema
             # (i.e., NodenameSchema). This new definition is a schema containing the content
             # of the body input schema i.e {"child.arg":schema} -> schema
-            if not '$ref' in schema[to_lower_camelcase(node.arg)]:
-                if node.keyword == 'leaf':
-                    updated_schema = dict()
-                    updated_schema['properties'] = dict()
-                    updated_schema['properties'][to_lower_camelcase(node.arg)] = dict.copy(
-                        schema[to_lower_camelcase(node.arg)])
-                    schema[to_lower_camelcase(node.arg)] = updated_schema
-
+            if '$ref' not in schema[to_lower_camelcase(node.arg)]:
                 definitions[to_upper_camelcase(node.arg + '_schema')] = schema[to_lower_camelcase(node.arg)]
                 schema['$ref'] = '#/definitions/' + to_upper_camelcase(node.arg + '_schema')
             else:
                 schema = schema[to_lower_camelcase(node.arg)]
 
-        new_schema = {"$ref": schema['$ref']}
+        elif node.keyword == 'leaf':
+            gen_model([node], schema, config)
+
+            # There is only one attribute, I do not want to create a new schema for this
+            updated_schema = dict()
+            updated_schema = dict.copy(schema[to_lower_camelcase(node.arg)])
+            schema = updated_schema
+
+            # This old code is used to create a new schema for each element,
+            # even for those containing only one attribute
+            #
+            # if '$ref' not in schema[to_lower_camelcase(node.arg)]:
+            #     updated_schema = dict()
+            #     updated_schema['properties'] = dict()
+            #     updated_schema['properties'][to_lower_camelcase(node.arg)] = dict.copy(schema[to_lower_camelcase(node.arg)])
+            #     schema[to_lower_camelcase(node.arg)] = updated_schema
+            #
+            #     definitions[to_upper_camelcase(node.arg + '_schema')] = schema[to_lower_camelcase(node.arg)]
+            #     schema['$ref'] = '#/definitions/' + to_upper_camelcase(node.arg + '_schema')
+            # else:
+            #     schema = schema[to_lower_camelcase(node.arg)]
+
+        if node.keyword == 'leaf':
+            new_schema = schema
+        else:
+            new_schema = {"$ref": schema['$ref']}
         apis[str(path)] = print_api(node, config, new_schema, path)
 
     elif node.keyword == 'rpc':
@@ -767,6 +785,17 @@ def generate_api_header(stmt, struct, operation, path, is_collection=False):
     else:
         struct['x-cliParam']['commandUse'] = str(operation).lower()
         struct['x-cliParam']['parentCommand'] = "rootCmd"
+
+    # Set the parameters used in the command line for that specific command
+    path_list = [element for element in str(path).strip('/').split('/')]
+    if str(path_list[-1])[0] == '{' and str(path_list[-1])[-1] == '}':
+        # Include the keys in the parameters information
+        struct['x-cliParam']['paramKeys'] = list()
+        for elem in reversed(path_list):
+            if str(elem)[0] == '{' and str(elem[-1]) == '}':
+                struct['x-cliParam']['paramKeys'].insert(0, {"key": elem[1:-1]})
+            else:
+                break
 
     if _ROOT_NODE_NAME:
         struct['tags'] = [_ROOT_NODE_NAME]
