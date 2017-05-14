@@ -805,6 +805,8 @@ def generate_api_header(stmt, struct, operation, path, is_collection=False):
     if struct['x-cliParam']['totParams'] == 0:
         struct['x-cliParam'].pop('totParams', None)
 
+    struct['x-cliParam']['pathToPrint'] = re.sub(r'{(.*?)}', "%s", path)
+
     if _ROOT_NODE_NAME:
         struct['tags'] = [_ROOT_NODE_NAME]
 

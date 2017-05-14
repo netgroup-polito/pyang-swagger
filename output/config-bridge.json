@@ -59,6 +59,7 @@
           ],
           "exampleUse": "config-bridge-cli update bridge <value>",
           "commandUse": "update",
+          "pathToPrint": "/bridge/%s/",
           "commandName": "updateBridgeCmd",
           "totParams": 1,
           "summary": "Update operation for bridge",
@@ -111,6 +112,7 @@
           ],
           "exampleUse": "config-bridge-cli create bridge <value>",
           "commandUse": "create",
+          "pathToPrint": "/bridge/%s/",
           "commandName": "createBridgeCmd",
           "totParams": 1,
           "summary": "Create operation for bridge",
@@ -155,6 +157,7 @@
           ],
           "exampleUse": "config-bridge-cli delete bridge <value>",
           "commandUse": "delete",
+          "pathToPrint": "/bridge/%s/",
           "commandName": "deleteBridgeCmd",
           "totParams": 1,
           "summary": "Delete operation for bridge",
@@ -202,6 +205,7 @@
           ],
           "exampleUse": "config-bridge-cli retrieve bridge <value>",
           "commandUse": "retrieve",
+          "pathToPrint": "/bridge/%s/",
           "commandName": "retrieveBridgeCmd",
           "totParams": 1,
           "summary": "Retrieve operation for bridge",
@@ -251,6 +255,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli update bridge name <value>",
           "commandUse": "name",
+          "pathToPrint": "/bridge/%s/name/",
           "commandName": "updateBridgeNameCmd",
           "totParams": 1,
           "summary": "Update operation for name",
@@ -293,6 +298,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli retrieve bridge name <value>",
           "commandUse": "name",
+          "pathToPrint": "/bridge/%s/name/",
           "commandName": "retrieveBridgeNameCmd",
           "totParams": 1,
           "summary": "Retrieve operation for name",
@@ -343,6 +349,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli update bridge address <value>",
           "commandUse": "address",
+          "pathToPrint": "/bridge/%s/address/",
           "commandName": "updateBridgeAddressCmd",
           "totParams": 1,
           "summary": "Update operation for address",
@@ -386,6 +393,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli retrieve bridge address <value>",
           "commandUse": "address",
+          "pathToPrint": "/bridge/%s/address/",
           "commandName": "retrieveBridgeAddressCmd",
           "totParams": 1,
           "summary": "Retrieve operation for address",
@@ -435,6 +443,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli update bridge aging_time <value>",
           "commandUse": "aging_time",
+          "pathToPrint": "/bridge/%s/aging_time/",
           "commandName": "updateBridgeAgingTimeCmd",
           "totParams": 1,
           "summary": "Update operation for aging_time",
@@ -477,6 +486,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli retrieve bridge aging_time <value>",
           "commandUse": "aging_time",
+          "pathToPrint": "/bridge/%s/aging_time/",
           "commandName": "retrieveBridgeAgingTimeCmd",
           "totParams": 1,
           "summary": "Retrieve operation for aging_time",
@@ -526,6 +536,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli update bridge stp_enabled <value>",
           "commandUse": "stp_enabled",
+          "pathToPrint": "/bridge/%s/stp_enabled/",
           "commandName": "updateBridgeStpEnabledCmd",
           "totParams": 1,
           "summary": "Update operation for stp_enabled",
@@ -568,6 +579,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli retrieve bridge stp_enabled <value>",
           "commandUse": "stp_enabled",
+          "pathToPrint": "/bridge/%s/stp_enabled/",
           "commandName": "retrieveBridgeStpEnabledCmd",
           "totParams": 1,
           "summary": "Retrieve operation for stp_enabled",
@@ -617,6 +629,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli update bridge fwd-database <value>",
           "commandUse": "fwd-database",
+          "pathToPrint": "/bridge/%s/fwd-database/",
           "commandName": "updateBridgeFwdDatabaseCmd",
           "totParams": 1,
           "summary": "Update operation for fwd-database",
@@ -664,6 +677,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli create bridge fwd-database <value>",
           "commandUse": "fwd-database",
+          "pathToPrint": "/bridge/%s/fwd-database/",
           "commandName": "createBridgeFwdDatabaseCmd",
           "totParams": 1,
           "summary": "Create operation for fwd-database",
@@ -703,6 +717,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli delete bridge fwd-database <value>",
           "commandUse": "fwd-database",
+          "pathToPrint": "/bridge/%s/fwd-database/",
           "commandName": "deleteBridgeFwdDatabaseCmd",
           "totParams": 1,
           "summary": "Delete operation for fwd-database",
@@ -745,6 +760,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli retrieve bridge fwd-database <value>",
           "commandUse": "fwd-database",
+          "pathToPrint": "/bridge/%s/fwd-database/",
           "commandName": "retrieveBridgeFwdDatabaseCmd",
           "totParams": 1,
           "summary": "Retrieve operation for fwd-database",
@@ -816,6 +832,7 @@
           ],
           "exampleUse": "config-bridge-cli update bridge fwd-database fwd-entry <value>",
           "commandUse": "fwd-entry",
+          "pathToPrint": "/bridge/%s/fwd-database/fwd-entry/%s/%s/",
           "commandName": "updateBridgeFwdDatabaseFwdEntryCmd",
           "totParams": 3,
           "summary": "Update operation for fwd-entry",
@@ -885,6 +902,7 @@
           ],
           "exampleUse": "config-bridge-cli create bridge fwd-database fwd-entry <value>",
           "commandUse": "fwd-entry",
+          "pathToPrint": "/bridge/%s/fwd-database/fwd-entry/%s/%s/",
           "commandName": "createBridgeFwdDatabaseFwdEntryCmd",
           "totParams": 3,
           "summary": "Create operation for fwd-entry",
@@ -946,6 +964,7 @@
           ],
           "exampleUse": "config-bridge-cli delete bridge fwd-database fwd-entry <value>",
           "commandUse": "fwd-entry",
+          "pathToPrint": "/bridge/%s/fwd-database/fwd-entry/%s/%s/",
           "commandName": "deleteBridgeFwdDatabaseFwdEntryCmd",
           "totParams": 3,
           "summary": "Delete operation for fwd-entry",
@@ -1010,6 +1029,7 @@
           ],
           "exampleUse": "config-bridge-cli retrieve bridge fwd-database fwd-entry <value>",
           "commandUse": "fwd-entry",
+          "pathToPrint": "/bridge/%s/fwd-database/fwd-entry/%s/%s/",
           "commandName": "retrieveBridgeFwdDatabaseFwdEntryCmd",
           "totParams": 3,
           "summary": "Retrieve operation for fwd-entry",
@@ -1073,6 +1093,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli update bridge fwd-database fwd-entry address <value>",
           "commandUse": "address",
+          "pathToPrint": "/bridge/%s/fwd-database/fwd-entry/%s/%s/address/",
           "commandName": "updateBridgeFwdDatabaseFwdEntryAddressCmd",
           "totParams": 3,
           "summary": "Update operation for address",
@@ -1129,6 +1150,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli retrieve bridge fwd-database fwd-entry address <value>",
           "commandUse": "address",
+          "pathToPrint": "/bridge/%s/fwd-database/fwd-entry/%s/%s/address/",
           "commandName": "retrieveBridgeFwdDatabaseFwdEntryAddressCmd",
           "totParams": 3,
           "summary": "Retrieve operation for address",
@@ -1192,6 +1214,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli update bridge fwd-database fwd-entry vids <value>",
           "commandUse": "vids",
+          "pathToPrint": "/bridge/%s/fwd-database/fwd-entry/%s/%s/vids/",
           "commandName": "updateBridgeFwdDatabaseFwdEntryVidsCmd",
           "totParams": 3,
           "summary": "Update operation for vids",
@@ -1248,6 +1271,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli retrieve bridge fwd-database fwd-entry vids <value>",
           "commandUse": "vids",
+          "pathToPrint": "/bridge/%s/fwd-database/fwd-entry/%s/%s/vids/",
           "commandName": "retrieveBridgeFwdDatabaseFwdEntryVidsCmd",
           "totParams": 3,
           "summary": "Retrieve operation for vids",
@@ -1315,6 +1339,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli update bridge fwd-database fwd-entry entry-type <value>",
           "commandUse": "entry-type",
+          "pathToPrint": "/bridge/%s/fwd-database/fwd-entry/%s/%s/entry-type/",
           "commandName": "updateBridgeFwdDatabaseFwdEntryEntryTypeCmd",
           "totParams": 3,
           "summary": "Update operation for entry-type",
@@ -1375,6 +1400,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli retrieve bridge fwd-database fwd-entry entry-type <value>",
           "commandUse": "entry-type",
+          "pathToPrint": "/bridge/%s/fwd-database/fwd-entry/%s/%s/entry-type/",
           "commandName": "retrieveBridgeFwdDatabaseFwdEntryEntryTypeCmd",
           "totParams": 3,
           "summary": "Retrieve operation for entry-type",
@@ -1438,6 +1464,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli update bridge fwd-database fwd-entry port_no <value>",
           "commandUse": "port_no",
+          "pathToPrint": "/bridge/%s/fwd-database/fwd-entry/%s/%s/port_no/",
           "commandName": "updateBridgeFwdDatabaseFwdEntryPortNoCmd",
           "totParams": 3,
           "summary": "Update operation for port_no",
@@ -1494,6 +1521,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli retrieve bridge fwd-database fwd-entry port_no <value>",
           "commandUse": "port_no",
+          "pathToPrint": "/bridge/%s/fwd-database/fwd-entry/%s/%s/port_no/",
           "commandName": "retrieveBridgeFwdDatabaseFwdEntryPortNoCmd",
           "totParams": 3,
           "summary": "Retrieve operation for port_no",
@@ -1557,6 +1585,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli update bridge fwd-database fwd-entry age <value>",
           "commandUse": "age",
+          "pathToPrint": "/bridge/%s/fwd-database/fwd-entry/%s/%s/age/",
           "commandName": "updateBridgeFwdDatabaseFwdEntryAgeCmd",
           "totParams": 3,
           "summary": "Update operation for age",
@@ -1613,6 +1642,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli retrieve bridge fwd-database fwd-entry age <value>",
           "commandUse": "age",
+          "pathToPrint": "/bridge/%s/fwd-database/fwd-entry/%s/%s/age/",
           "commandName": "retrieveBridgeFwdDatabaseFwdEntryAgeCmd",
           "totParams": 3,
           "summary": "Retrieve operation for age",
@@ -1662,6 +1692,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli update bridge stp <value>",
           "commandUse": "stp",
+          "pathToPrint": "/bridge/%s/stp/",
           "commandName": "updateBridgeStpCmd",
           "totParams": 1,
           "summary": "Update operation for stp",
@@ -1709,6 +1740,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli create bridge stp <value>",
           "commandUse": "stp",
+          "pathToPrint": "/bridge/%s/stp/",
           "commandName": "createBridgeStpCmd",
           "totParams": 1,
           "summary": "Create operation for stp",
@@ -1748,6 +1780,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli delete bridge stp <value>",
           "commandUse": "stp",
+          "pathToPrint": "/bridge/%s/stp/",
           "commandName": "deleteBridgeStpCmd",
           "totParams": 1,
           "summary": "Delete operation for stp",
@@ -1790,6 +1823,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli retrieve bridge stp <value>",
           "commandUse": "stp",
+          "pathToPrint": "/bridge/%s/stp/",
           "commandName": "retrieveBridgeStpCmd",
           "totParams": 1,
           "summary": "Retrieve operation for stp",
@@ -1839,6 +1873,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli update bridge stp priority <value>",
           "commandUse": "priority",
+          "pathToPrint": "/bridge/%s/stp/priority/",
           "commandName": "updateBridgeStpPriorityCmd",
           "totParams": 1,
           "summary": "Update operation for priority",
@@ -1881,6 +1916,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli retrieve bridge stp priority <value>",
           "commandUse": "priority",
+          "pathToPrint": "/bridge/%s/stp/priority/",
           "commandName": "retrieveBridgeStpPriorityCmd",
           "totParams": 1,
           "summary": "Retrieve operation for priority",
@@ -1930,6 +1966,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli update bridge stp forward_delay <value>",
           "commandUse": "forward_delay",
+          "pathToPrint": "/bridge/%s/stp/forward_delay/",
           "commandName": "updateBridgeStpForwardDelayCmd",
           "totParams": 1,
           "summary": "Update operation for forward_delay",
@@ -1972,6 +2009,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli retrieve bridge stp forward_delay <value>",
           "commandUse": "forward_delay",
+          "pathToPrint": "/bridge/%s/stp/forward_delay/",
           "commandName": "retrieveBridgeStpForwardDelayCmd",
           "totParams": 1,
           "summary": "Retrieve operation for forward_delay",
@@ -2021,6 +2059,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli update bridge stp hello_time <value>",
           "commandUse": "hello_time",
+          "pathToPrint": "/bridge/%s/stp/hello_time/",
           "commandName": "updateBridgeStpHelloTimeCmd",
           "totParams": 1,
           "summary": "Update operation for hello_time",
@@ -2063,6 +2102,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli retrieve bridge stp hello_time <value>",
           "commandUse": "hello_time",
+          "pathToPrint": "/bridge/%s/stp/hello_time/",
           "commandName": "retrieveBridgeStpHelloTimeCmd",
           "totParams": 1,
           "summary": "Retrieve operation for hello_time",
@@ -2112,6 +2152,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli update bridge stp max_message_age <value>",
           "commandUse": "max_message_age",
+          "pathToPrint": "/bridge/%s/stp/max_message_age/",
           "commandName": "updateBridgeStpMaxMessageAgeCmd",
           "totParams": 1,
           "summary": "Update operation for max_message_age",
@@ -2154,6 +2195,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli retrieve bridge stp max_message_age <value>",
           "commandUse": "max_message_age",
+          "pathToPrint": "/bridge/%s/stp/max_message_age/",
           "commandName": "retrieveBridgeStpMaxMessageAgeCmd",
           "totParams": 1,
           "summary": "Retrieve operation for max_message_age",
@@ -2203,6 +2245,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli update bridge interfaces <value>",
           "commandUse": "interfaces",
+          "pathToPrint": "/bridge/%s/interfaces/",
           "commandName": "updateBridgeInterfacesCmd",
           "totParams": 1,
           "summary": "Update operation for interfaces",
@@ -2250,6 +2293,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli create bridge interfaces <value>",
           "commandUse": "interfaces",
+          "pathToPrint": "/bridge/%s/interfaces/",
           "commandName": "createBridgeInterfacesCmd",
           "totParams": 1,
           "summary": "Create operation for interfaces",
@@ -2289,6 +2333,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli delete bridge interfaces <value>",
           "commandUse": "interfaces",
+          "pathToPrint": "/bridge/%s/interfaces/",
           "commandName": "deleteBridgeInterfacesCmd",
           "totParams": 1,
           "summary": "Delete operation for interfaces",
@@ -2331,6 +2376,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli retrieve bridge interfaces <value>",
           "commandUse": "interfaces",
+          "pathToPrint": "/bridge/%s/interfaces/",
           "commandName": "retrieveBridgeInterfacesCmd",
           "totParams": 1,
           "summary": "Retrieve operation for interfaces",
@@ -2392,6 +2438,7 @@
           ],
           "exampleUse": "config-bridge-cli update bridge interfaces interface <value>",
           "commandUse": "interface",
+          "pathToPrint": "/bridge/%s/interfaces/interface/%s/",
           "commandName": "updateBridgeInterfacesInterfaceCmd",
           "totParams": 2,
           "summary": "Update operation for interface",
@@ -2451,6 +2498,7 @@
           ],
           "exampleUse": "config-bridge-cli create bridge interfaces interface <value>",
           "commandUse": "interface",
+          "pathToPrint": "/bridge/%s/interfaces/interface/%s/",
           "commandName": "createBridgeInterfacesInterfaceCmd",
           "totParams": 2,
           "summary": "Create operation for interface",
@@ -2502,6 +2550,7 @@
           ],
           "exampleUse": "config-bridge-cli delete bridge interfaces interface <value>",
           "commandUse": "interface",
+          "pathToPrint": "/bridge/%s/interfaces/interface/%s/",
           "commandName": "deleteBridgeInterfacesInterfaceCmd",
           "totParams": 2,
           "summary": "Delete operation for interface",
@@ -2556,6 +2605,7 @@
           ],
           "exampleUse": "config-bridge-cli retrieve bridge interfaces interface <value>",
           "commandUse": "interface",
+          "pathToPrint": "/bridge/%s/interfaces/interface/%s/",
           "commandName": "retrieveBridgeInterfacesInterfaceCmd",
           "totParams": 2,
           "summary": "Retrieve operation for interface",
@@ -2612,6 +2662,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli update bridge interfaces interface interface_name <value>",
           "commandUse": "interface_name",
+          "pathToPrint": "/bridge/%s/interfaces/interface/%s/interface_name/",
           "commandName": "updateBridgeInterfacesInterfaceInterfaceNameCmd",
           "totParams": 2,
           "summary": "Update operation for interface_name",
@@ -2661,6 +2712,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli retrieve bridge interfaces interface interface_name <value>",
           "commandUse": "interface_name",
+          "pathToPrint": "/bridge/%s/interfaces/interface/%s/interface_name/",
           "commandName": "retrieveBridgeInterfacesInterfaceInterfaceNameCmd",
           "totParams": 2,
           "summary": "Retrieve operation for interface_name",
@@ -2717,6 +2769,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli update bridge interfaces interface address <value>",
           "commandUse": "address",
+          "pathToPrint": "/bridge/%s/interfaces/interface/%s/address/",
           "commandName": "updateBridgeInterfacesInterfaceAddressCmd",
           "totParams": 2,
           "summary": "Update operation for address",
@@ -2766,6 +2819,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli retrieve bridge interfaces interface address <value>",
           "commandUse": "address",
+          "pathToPrint": "/bridge/%s/interfaces/interface/%s/address/",
           "commandName": "retrieveBridgeInterfacesInterfaceAddressCmd",
           "totParams": 2,
           "summary": "Retrieve operation for address",
@@ -2826,6 +2880,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli update bridge interfaces interface access_mode <value>",
           "commandUse": "access_mode",
+          "pathToPrint": "/bridge/%s/interfaces/interface/%s/access_mode/",
           "commandName": "updateBridgeInterfacesInterfaceAccessModeCmd",
           "totParams": 2,
           "summary": "Update operation for access_mode",
@@ -2879,6 +2934,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli retrieve bridge interfaces interface access_mode <value>",
           "commandUse": "access_mode",
+          "pathToPrint": "/bridge/%s/interfaces/interface/%s/access_mode/",
           "commandName": "retrieveBridgeInterfacesInterfaceAccessModeCmd",
           "totParams": 2,
           "summary": "Retrieve operation for access_mode",
@@ -2935,6 +2991,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli update bridge interfaces interface vlan_id <value>",
           "commandUse": "vlan_id",
+          "pathToPrint": "/bridge/%s/interfaces/interface/%s/vlan_id/",
           "commandName": "updateBridgeInterfacesInterfaceVlanIdCmd",
           "totParams": 2,
           "summary": "Update operation for vlan_id",
@@ -2984,6 +3041,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli retrieve bridge interfaces interface vlan_id <value>",
           "commandUse": "vlan_id",
+          "pathToPrint": "/bridge/%s/interfaces/interface/%s/vlan_id/",
           "commandName": "retrieveBridgeInterfacesInterfaceVlanIdCmd",
           "totParams": 2,
           "summary": "Retrieve operation for vlan_id",
@@ -3040,6 +3098,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli update bridge interfaces interface stp_interface <value>",
           "commandUse": "stp_interface",
+          "pathToPrint": "/bridge/%s/interfaces/interface/%s/stp_interface/",
           "commandName": "updateBridgeInterfacesInterfaceStpInterfaceCmd",
           "totParams": 2,
           "summary": "Update operation for stp_interface",
@@ -3094,6 +3153,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli create bridge interfaces interface stp_interface <value>",
           "commandUse": "stp_interface",
+          "pathToPrint": "/bridge/%s/interfaces/interface/%s/stp_interface/",
           "commandName": "createBridgeInterfacesInterfaceStpInterfaceCmd",
           "totParams": 2,
           "summary": "Create operation for stp_interface",
@@ -3140,6 +3200,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli delete bridge interfaces interface stp_interface <value>",
           "commandUse": "stp_interface",
+          "pathToPrint": "/bridge/%s/interfaces/interface/%s/stp_interface/",
           "commandName": "deleteBridgeInterfacesInterfaceStpInterfaceCmd",
           "totParams": 2,
           "summary": "Delete operation for stp_interface",
@@ -3189,6 +3250,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli retrieve bridge interfaces interface stp_interface <value>",
           "commandUse": "stp_interface",
+          "pathToPrint": "/bridge/%s/interfaces/interface/%s/stp_interface/",
           "commandName": "retrieveBridgeInterfacesInterfaceStpInterfaceCmd",
           "totParams": 2,
           "summary": "Retrieve operation for stp_interface",
@@ -3245,6 +3307,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli update bridge interfaces interface stp_interface path_cost <value>",
           "commandUse": "path_cost",
+          "pathToPrint": "/bridge/%s/interfaces/interface/%s/stp_interface/path_cost/",
           "commandName": "updateBridgeInterfacesInterfaceStpInterfacePathCostCmd",
           "totParams": 2,
           "summary": "Update operation for path_cost",
@@ -3294,6 +3357,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli retrieve bridge interfaces interface stp_interface path_cost <value>",
           "commandUse": "path_cost",
+          "pathToPrint": "/bridge/%s/interfaces/interface/%s/stp_interface/path_cost/",
           "commandName": "retrieveBridgeInterfacesInterfaceStpInterfacePathCostCmd",
           "totParams": 2,
           "summary": "Retrieve operation for path_cost",
@@ -3350,6 +3414,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli update bridge interfaces interface stp_interface port_priority <value>",
           "commandUse": "port_priority",
+          "pathToPrint": "/bridge/%s/interfaces/interface/%s/stp_interface/port_priority/",
           "commandName": "updateBridgeInterfacesInterfaceStpInterfacePortPriorityCmd",
           "totParams": 2,
           "summary": "Update operation for port_priority",
@@ -3399,6 +3464,7 @@
         "x-cliParam": {
           "exampleUse": "config-bridge-cli retrieve bridge interfaces interface stp_interface port_priority <value>",
           "commandUse": "port_priority",
+          "pathToPrint": "/bridge/%s/interfaces/interface/%s/stp_interface/port_priority/",
           "commandName": "retrieveBridgeInterfacesInterfaceStpInterfacePortPriorityCmd",
           "totParams": 2,
           "summary": "Retrieve operation for port_priority",
