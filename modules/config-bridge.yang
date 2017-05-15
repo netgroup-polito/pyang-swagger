@@ -25,7 +25,7 @@ module config-bridge {
 			type ietf:mac-address;
 			default "AA:BB:CC:DD:EE:FF";
 			description	"The MAC address used by the STP";
-			bridge:cli-example "AA:BB:CC:DD:EE:FF";
+			bridge:cli-example "C5:13:2D:36:27:9B";
 		}
 		leaf aging_time {
 			type uint32;
@@ -55,7 +55,7 @@ module config-bridge {
 					mandatory true;
 					type ietf:mac-address;
 					description "The address of the filtering database entry";
-					bridge:cli-example "AA:BB:CC:DD:EE:FF";
+					bridge:cli-example "C5:13:2D:36:27:9B";
 				}
 				leaf entry-type {
 					type enumeration {
@@ -124,7 +124,7 @@ module config-bridge {
 					default "AA:BB:CC:DD:EE:FF";
 					type ietf:mac-address;
 					description "The address of the bridge interface";
-					bridge:cli-example "AA:BB:CC:DD:EE:FF";
+					bridge:cli-example "C5:13:2D:36:27:9B";
 				}
 				leaf access_mode {
 					type enumeration {

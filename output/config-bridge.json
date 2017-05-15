@@ -242,7 +242,7 @@
                             "default": "AA:BB:CC:DD:EE:FF",
                             "type": "string",
                             "description": "The MAC address used by the STP",
-                            "example": "AA:BB:CC:DD:EE:FF"
+                          "example": "C5:13:2D:36:27:9B"
                         },
                         "name": "address",
                         "in": "body"
@@ -277,7 +277,7 @@
                             "default": "AA:BB:CC:DD:EE:FF",
                             "type": "string",
                             "description": "The MAC address used by the STP",
-                            "example": "AA:BB:CC:DD:EE:FF"
+                          "example": "C5:13:2D:36:27:9B"
                         }
                     },
                     "400": {
@@ -2382,7 +2382,7 @@
                             "default": "AA:BB:CC:DD:EE:FF",
                             "type": "string",
                             "description": "The address of the bridge interface",
-                            "example": "AA:BB:CC:DD:EE:FF"
+                          "example": "C5:13:2D:36:27:9B"
                         },
                         "name": "address",
                         "in": "body"
@@ -2417,7 +2417,7 @@
                             "default": "AA:BB:CC:DD:EE:FF",
                             "type": "string",
                             "description": "The address of the bridge interface",
-                            "example": "AA:BB:CC:DD:EE:FF"
+                          "example": "C5:13:2D:36:27:9B"
                         }
                     },
                     "400": {
@@ -3179,7 +3179,7 @@
                                     "address": {
                                         "type": "string",
                                         "description": "The address of the filtering database entry",
-                                        "example": "AA:BB:CC:DD:EE:FF"
+                                      "example": "C5:13:2D:36:27:9B"
                                     }
                                 }
                             },
@@ -3246,7 +3246,7 @@
                     "default": "AA:BB:CC:DD:EE:FF",
                     "type": "string",
                     "description": "The MAC address used by the STP",
-                    "example": "AA:BB:CC:DD:EE:FF"
+                  "example": "C5:13:2D:36:27:9B"
                 },
                 "interfaces": {
                     "description": "The list of interfaces on the bridge",
@@ -3298,7 +3298,7 @@
                                         "default": "AA:BB:CC:DD:EE:FF",
                                         "type": "string",
                                         "description": "The address of the bridge interface",
-                                        "example": "AA:BB:CC:DD:EE:FF"
+                                      "example": "C5:13:2D:36:27:9B"
                                     }
                                 }
                             },
@@ -3348,7 +3348,7 @@
                             "address": {
                                 "type": "string",
                                 "description": "The address of the filtering database entry",
-                                "example": "AA:BB:CC:DD:EE:FF"
+                              "example": "C5:13:2D:36:27:9B"
                             }
                         }
                     },
@@ -3394,7 +3394,7 @@
                 "address": {
                     "type": "string",
                     "description": "The address of the filtering database entry",
-                    "example": "AA:BB:CC:DD:EE:FF"
+                  "example": "C5:13:2D:36:27:9B"
                 }
             }
         },
@@ -3480,7 +3480,7 @@
                                 "default": "AA:BB:CC:DD:EE:FF",
                                 "type": "string",
                                 "description": "The address of the bridge interface",
-                                "example": "AA:BB:CC:DD:EE:FF"
+                              "example": "C5:13:2D:36:27:9B"
                             }
                         }
                     },
@@ -3537,7 +3537,7 @@
                     "default": "AA:BB:CC:DD:EE:FF",
                     "type": "string",
                     "description": "The address of the bridge interface",
-                    "example": "AA:BB:CC:DD:EE:FF"
+                  "example": "C5:13:2D:36:27:9B"
                 }
             }
         },
