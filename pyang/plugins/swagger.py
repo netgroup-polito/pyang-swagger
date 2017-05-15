@@ -284,8 +284,6 @@ def gen_model(children, tree_structure, config=True):
                 elif attribute.keyword == 'default':
                     node['default'] = attribute.arg
                 elif attribute.keyword == 'mandatory':
-                    if attribute.arg is True:
-                        node['required'] = True
                     parent_model = to_upper_camelcase(child.parent.arg)
                     if parent_model not in PARENT_MODELS.keys():
                         PARENT_MODELS[parent_model] = {'models': [], 'discriminator': to_lower_camelcase(child.arg)}
@@ -388,8 +386,8 @@ def gen_apis(children, path, apis, definitions, config=True, is_root=False):
         if is_root:
             global _ROOT_NODE_NAME
             _ROOT_NODE_NAME = child.arg
-
-        gen_api_node(child, path, apis, definitions, config)
+        if not hasattr(child, 'i_is_key') or not child.i_is_key:
+            gen_api_node(child, path, apis, definitions, config)
 
 
 # Generates the API of the current node.
