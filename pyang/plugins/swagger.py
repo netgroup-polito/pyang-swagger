@@ -657,7 +657,7 @@ def generate_retrieve(stmt, schema, path):
     if path:
         path_params = get_input_path_parameters(path)
     get = {}
-    generate_api_header(stmt, get, 'Retrieve', path, stmt.keyword == 'container'
+    generate_api_header(stmt, get, 'Read', path, stmt.keyword == 'container'
                         and not path_params)
     if path:
         get['parameters'] = create_parameter_list(path_params)
@@ -757,11 +757,13 @@ def generate_api_header(stmt, struct, operation, path, is_collection=False):
     The "is_collection" flag is used to decide if an ID is needed.
     """
     child_path = False
-    parent_container = [to_upper_camelcase(element) for i, element in enumerate(str(path).split('/')[1:-1]) if
-                       str(element)[0] == '{' and str(element)[-1] == '}']
+    # parent_container = [to_upper_camelcase(element) for i, element in enumerate(str(path).split('/')[1:-1]) if
+    #                   str(element)[0] == '{' and str(element)[-1] == '}']
 
     path_without_keys = [element for element in str(path).strip('/').split('/')
                          if not str(element)[0] == '{' and not str(element)[-1] == '}']
+
+    parent_container = str(path_without_keys[0]) if path_without_keys else 'default'
 
     if len(path_without_keys) > 1:
         child_path = True
@@ -774,7 +776,7 @@ def generate_api_header(stmt, struct, operation, path, is_collection=False):
     struct['operationId'] = '%s%s%s%s' % (str(operation).lower(),
                                           (parent_container if child_path else ''),
                                           to_upper_camelcase(stmt.arg),
-                                          ('' if is_collection else 'ById'))
+                                          ('' if is_collection else 'ByID'))
     struct['produces'] = ['application/json']
     struct['consumes'] = ['application/json']
 
@@ -793,11 +795,8 @@ def generate_api_header(stmt, struct, operation, path, is_collection=False):
         struct['x-cliParam']['commandUse'] = str(stmt.arg).lower()
         struct['x-cliParam']['parentCommand'] = '{0}{1}Cmd'.format(str(operation).lower(), parent_container)
     else:
-        if str(operation).lower() == 'retrieve':
-            struct['x-cliParam']['commandUse'] = 'read'
-        else:
-            struct['x-cliParam']['commandUse'] = str(operation).lower()
-        struct['x-cliParam']['parentCommand'] = "rootCmd"
+        struct['x-cliParam']['commandUse'] = parent_container
+        struct['x-cliParam']['parentCommand'] = "{0}Cmd".format(str(operation).lower())
 
     # Set the parameters used in the command line for that specific command
     path_list = [element for element in str(path).strip('/').split('/')]
