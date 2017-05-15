@@ -259,7 +259,7 @@ def gen_model(children, tree_structure, config=True):
                         # map all other types to string
                         else:
                             node['type'] = 'string'
-                    elif attribute.arg[:3] == 'int':
+                    elif attribute.arg[:-2] == 'int' or attribute.arg[:-2] == 'uint':
                         node['type'] = 'integer'
                         node['format'] = attribute.arg
                     elif attribute.arg == 'decimal64':
@@ -281,10 +281,16 @@ def gen_model(children, tree_structure, config=True):
                     listkey = to_lower_camelcase(attribute.arg).split()
                 elif attribute.keyword == 'description':
                     node['description'] = attribute.arg
+                elif attribute.keyword == 'default':
+                    node['default'] = attribute.arg
                 elif attribute.keyword == 'mandatory':
+                    if attribute.arg is True:
+                        node['required'] = True
                     parent_model = to_upper_camelcase(child.parent.arg)
                     if parent_model not in PARENT_MODELS.keys():
                         PARENT_MODELS[parent_model] = {'models': [], 'discriminator': to_lower_camelcase(child.arg)}
+                elif attribute.keyword == ("config-bridge", "cli-example"):
+                    node['example'] = attribute.arg
                 elif attribute.keyword == 'config' and attribute.arg == 'false':
                     config = False
 
@@ -727,7 +733,10 @@ def create_body_dict(name, schema):
         body_dict['in'] = 'body'
         body_dict['name'] = name
         body_dict['schema'] = schema
-        body_dict['description'] = name + 'body object'
+        if 'description' in schema:
+            body_dict['description'] = schema['description']
+        else:
+            body_dict['description'] = name + 'body object'
         # body_dict['required'] = True
     return body_dict
 
@@ -777,13 +786,17 @@ def generate_api_header(stmt, struct, operation, path, is_collection=False):
     struct['x-cliParam']['summary'] = '{0} operation for {1}'.format(to_upper_camelcase(str(operation)), str(stmt.arg))
     struct['x-cliParam']['exampleUse'] = "{0}-cli ".format(str(_MODULE_NAME) if _MODULE_NAME else 'default') + \
                                          str(operation).lower() + " " + \
-                                         ' '.join([element for element in path_without_keys]) + \
-                                         " <value>"
+                                         ' '.join([element for element in
+                                                   re.sub(r'{(.*?)}', r'<\1>', str(path)).strip('/').split('/')]) + \
+                                         (" --value <value>" if str(operation).lower() == 'update' else '')
     if child_path:
         struct['x-cliParam']['commandUse'] = str(stmt.arg).lower()
         struct['x-cliParam']['parentCommand'] = '{0}{1}Cmd'.format(str(operation).lower(), parent_container)
     else:
-        struct['x-cliParam']['commandUse'] = str(operation).lower()
+        if str(operation).lower() == 'retrieve':
+            struct['x-cliParam']['commandUse'] = 'read'
+        else:
+            struct['x-cliParam']['commandUse'] = str(operation).lower()
         struct['x-cliParam']['parentCommand'] = "rootCmd"
 
     # Set the parameters used in the command line for that specific command

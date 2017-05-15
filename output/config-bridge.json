@@ -57,7 +57,7 @@
               "key": "name"
             }
           ],
-          "exampleUse": "config-bridge-cli update bridge <value>",
+          "exampleUse": "config-bridge-cli update bridge <name> --value <value>",
           "commandUse": "update",
           "pathToPrint": "/bridge/%s/",
           "commandName": "updateBridgeCmd",
@@ -110,7 +110,7 @@
               "key": "name"
             }
           ],
-          "exampleUse": "config-bridge-cli create bridge <value>",
+          "exampleUse": "config-bridge-cli create bridge <name>",
           "commandUse": "create",
           "pathToPrint": "/bridge/%s/",
           "commandName": "createBridgeCmd",
@@ -155,7 +155,7 @@
               "key": "name"
             }
           ],
-          "exampleUse": "config-bridge-cli delete bridge <value>",
+          "exampleUse": "config-bridge-cli delete bridge <name>",
           "commandUse": "delete",
           "pathToPrint": "/bridge/%s/",
           "commandName": "deleteBridgeCmd",
@@ -203,8 +203,8 @@
               "key": "name"
             }
           ],
-          "exampleUse": "config-bridge-cli retrieve bridge <value>",
-          "commandUse": "retrieve",
+          "exampleUse": "config-bridge-cli retrieve bridge <name>",
+          "commandUse": "read",
           "pathToPrint": "/bridge/%s/",
           "commandName": "retrieveBridgeCmd",
           "totParams": 1,
@@ -237,9 +237,11 @@
             "in": "path"
           },
           {
-            "description": "namebody object",
+            "description": "The name of the bridge",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "description": "The name of the bridge",
+              "example": "br1"
             },
             "name": "name",
             "in": "body"
@@ -253,7 +255,7 @@
         ],
         "summary": "Update name by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli update bridge name <value>",
+          "exampleUse": "config-bridge-cli update bridge <name> name --value <value>",
           "commandUse": "name",
           "pathToPrint": "/bridge/%s/name/",
           "commandName": "updateBridgeNameCmd",
@@ -271,7 +273,9 @@
           "200": {
             "description": "Successful operation",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "description": "The name of the bridge",
+              "example": "br1"
             }
           },
           "400": {
@@ -296,7 +300,7 @@
         ],
         "summary": "Retrieve name by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli retrieve bridge name <value>",
+          "exampleUse": "config-bridge-cli retrieve bridge <name> name",
           "commandUse": "name",
           "pathToPrint": "/bridge/%s/name/",
           "commandName": "retrieveBridgeNameCmd",
@@ -330,10 +334,12 @@
             "in": "path"
           },
           {
-            "description": "addressbody object",
+            "description": "The MAC address used by the STP",
             "schema": {
+              "default": "AA:BB:CC:DD:EE:FF",
               "type": "string",
-              "description": "The MAC address used by the STP."
+              "description": "The MAC address used by the STP",
+              "example": "AA:BB:CC:DD:EE:FF"
             },
             "name": "address",
             "in": "body"
@@ -347,7 +353,7 @@
         ],
         "summary": "Update address by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli update bridge address <value>",
+          "exampleUse": "config-bridge-cli update bridge <name> address --value <value>",
           "commandUse": "address",
           "pathToPrint": "/bridge/%s/address/",
           "commandName": "updateBridgeAddressCmd",
@@ -365,8 +371,10 @@
           "200": {
             "description": "Successful operation",
             "schema": {
+              "default": "AA:BB:CC:DD:EE:FF",
               "type": "string",
-              "description": "The MAC address used by the STP."
+              "description": "The MAC address used by the STP",
+              "example": "AA:BB:CC:DD:EE:FF"
             }
           },
           "400": {
@@ -391,7 +399,7 @@
         ],
         "summary": "Retrieve address by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli retrieve bridge address <value>",
+          "exampleUse": "config-bridge-cli retrieve bridge <name> address",
           "commandUse": "address",
           "pathToPrint": "/bridge/%s/address/",
           "commandName": "retrieveBridgeAddressCmd",
@@ -425,9 +433,13 @@
             "in": "path"
           },
           {
-            "description": "aging_timebody object",
+            "description": "The aging time of the filtering database",
             "schema": {
-              "type": "string"
+              "default": "300",
+              "format": "uint32",
+              "type": "integer",
+              "example": "300",
+              "description": "The aging time of the filtering database"
             },
             "name": "aging_time",
             "in": "body"
@@ -441,7 +453,7 @@
         ],
         "summary": "Update aging_time by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli update bridge aging_time <value>",
+          "exampleUse": "config-bridge-cli update bridge <name> aging_time --value <value>",
           "commandUse": "aging_time",
           "pathToPrint": "/bridge/%s/aging_time/",
           "commandName": "updateBridgeAgingTimeCmd",
@@ -459,7 +471,11 @@
           "200": {
             "description": "Successful operation",
             "schema": {
-              "type": "string"
+              "default": "300",
+              "format": "uint32",
+              "type": "integer",
+              "example": "300",
+              "description": "The aging time of the filtering database"
             }
           },
           "400": {
@@ -484,7 +500,7 @@
         ],
         "summary": "Retrieve aging_time by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli retrieve bridge aging_time <value>",
+          "exampleUse": "config-bridge-cli retrieve bridge <name> aging_time",
           "commandUse": "aging_time",
           "pathToPrint": "/bridge/%s/aging_time/",
           "commandName": "retrieveBridgeAgingTimeCmd",
@@ -518,9 +534,12 @@
             "in": "path"
           },
           {
-            "description": "stp_enabledbody object",
+            "description": "Enable/Disable the STP protocol of the bridge",
             "schema": {
-              "type": "boolean"
+              "default": "false",
+              "type": "boolean",
+              "description": "Enable/Disable the STP protocol of the bridge",
+              "example": "false"
             },
             "name": "stp_enabled",
             "in": "body"
@@ -534,7 +553,7 @@
         ],
         "summary": "Update stp_enabled by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli update bridge stp_enabled <value>",
+          "exampleUse": "config-bridge-cli update bridge <name> stp_enabled --value <value>",
           "commandUse": "stp_enabled",
           "pathToPrint": "/bridge/%s/stp_enabled/",
           "commandName": "updateBridgeStpEnabledCmd",
@@ -552,7 +571,10 @@
           "200": {
             "description": "Successful operation",
             "schema": {
-              "type": "boolean"
+              "default": "false",
+              "type": "boolean",
+              "description": "Enable/Disable the STP protocol of the bridge",
+              "example": "false"
             }
           },
           "400": {
@@ -577,7 +599,7 @@
         ],
         "summary": "Retrieve stp_enabled by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli retrieve bridge stp_enabled <value>",
+          "exampleUse": "config-bridge-cli retrieve bridge <name> stp_enabled",
           "commandUse": "stp_enabled",
           "pathToPrint": "/bridge/%s/stp_enabled/",
           "commandName": "retrieveBridgeStpEnabledCmd",
@@ -591,7 +613,7 @@
         "operationId": "retrieveBridgeStpEnabledById"
       }
         },
-    "/bridge/{name}/fwd-database/": {
+    "/bridge/{name}/filtering-database/": {
       "put": {
         "responses": {
           "200": {
@@ -601,7 +623,7 @@
             "description": "Internal Error"
           }
         },
-        "description": "Update operation of resource: fwd-database",
+        "description": "Update operation of resource: filtering-database",
         "parameters": [
           {
             "description": "ID of name",
@@ -611,11 +633,11 @@
             "in": "path"
           },
           {
-            "description": "fwd-databasebody object",
+            "description": "filtering-databasebody object",
             "schema": {
-              "$ref": "#/definitions/FwdDatabaseSchema"
+              "$ref": "#/definitions/FilteringDatabaseSchema"
             },
-            "name": "fwd-database",
+            "name": "filtering-database",
             "in": "body"
           }
         ],
@@ -625,20 +647,20 @@
         "tags": [
           "bridge"
         ],
-        "summary": "Update fwd-database by ID",
+        "summary": "Update filtering-database by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli update bridge fwd-database <value>",
-          "commandUse": "fwd-database",
-          "pathToPrint": "/bridge/%s/fwd-database/",
-          "commandName": "updateBridgeFwdDatabaseCmd",
+          "exampleUse": "config-bridge-cli update bridge <name> filtering-database --value <value>",
+          "commandUse": "filtering-database",
+          "pathToPrint": "/bridge/%s/filtering-database/",
+          "commandName": "updateBridgeFilteringDatabaseCmd",
           "totParams": 1,
-          "summary": "Update operation for fwd-database",
+          "summary": "Update operation for filtering-database",
           "parentCommand": "updateBridgeCmd"
         },
         "consumes": [
           "application/json"
         ],
-        "operationId": "updateBridgeFwdDatabaseById"
+        "operationId": "updateBridgeFilteringDatabaseById"
       },
       "post": {
         "responses": {
@@ -649,7 +671,7 @@
             "description": "Internal Error"
           }
         },
-        "description": "Create operation of resource: fwd-database",
+        "description": "Create operation of resource: filtering-database",
         "parameters": [
           {
             "description": "ID of name",
@@ -659,11 +681,11 @@
             "in": "path"
           },
           {
-            "description": "fwd-databasebody object",
+            "description": "filtering-databasebody object",
             "schema": {
-              "$ref": "#/definitions/FwdDatabaseSchema"
+              "$ref": "#/definitions/FilteringDatabaseSchema"
             },
-            "name": "fwd-database",
+            "name": "filtering-database",
             "in": "body"
           }
         ],
@@ -673,20 +695,20 @@
         "tags": [
           "bridge"
         ],
-        "summary": "Create fwd-database by ID",
+        "summary": "Create filtering-database by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli create bridge fwd-database <value>",
-          "commandUse": "fwd-database",
-          "pathToPrint": "/bridge/%s/fwd-database/",
-          "commandName": "createBridgeFwdDatabaseCmd",
+          "exampleUse": "config-bridge-cli create bridge <name> filtering-database",
+          "commandUse": "filtering-database",
+          "pathToPrint": "/bridge/%s/filtering-database/",
+          "commandName": "createBridgeFilteringDatabaseCmd",
           "totParams": 1,
-          "summary": "Create operation for fwd-database",
+          "summary": "Create operation for filtering-database",
           "parentCommand": "createBridgeCmd"
         },
         "consumes": [
           "application/json"
         ],
-        "operationId": "createBridgeFwdDatabaseById"
+        "operationId": "createBridgeFilteringDatabaseById"
       },
       "delete": {
         "responses": {
@@ -697,7 +719,7 @@
             "description": "Internal Error"
           }
         },
-        "description": "Delete operation of resource: fwd-database",
+        "description": "Delete operation of resource: filtering-database",
         "parameters": [
           {
             "description": "ID of name",
@@ -713,34 +735,34 @@
         "tags": [
           "bridge"
         ],
-        "summary": "Delete fwd-database by ID",
+        "summary": "Delete filtering-database by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli delete bridge fwd-database <value>",
-          "commandUse": "fwd-database",
-          "pathToPrint": "/bridge/%s/fwd-database/",
-          "commandName": "deleteBridgeFwdDatabaseCmd",
+          "exampleUse": "config-bridge-cli delete bridge <name> filtering-database",
+          "commandUse": "filtering-database",
+          "pathToPrint": "/bridge/%s/filtering-database/",
+          "commandName": "deleteBridgeFilteringDatabaseCmd",
           "totParams": 1,
-          "summary": "Delete operation for fwd-database",
+          "summary": "Delete operation for filtering-database",
           "parentCommand": "deleteBridgeCmd"
         },
         "consumes": [
           "application/json"
         ],
-        "operationId": "deleteBridgeFwdDatabaseById"
+        "operationId": "deleteBridgeFilteringDatabaseById"
       },
       "get": {
         "responses": {
           "200": {
             "description": "Successful operation",
             "schema": {
-              "$ref": "#/definitions/FwdDatabaseSchema"
+              "$ref": "#/definitions/FilteringDatabaseSchema"
             }
           },
           "400": {
             "description": "Internal Error"
           }
         },
-        "description": "Retrieve operation of resource: fwd-database",
+        "description": "Retrieve operation of resource: filtering-database",
         "parameters": [
           {
             "description": "ID of name",
@@ -756,23 +778,23 @@
         "tags": [
           "bridge"
         ],
-        "summary": "Retrieve fwd-database by ID",
+        "summary": "Retrieve filtering-database by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli retrieve bridge fwd-database <value>",
-          "commandUse": "fwd-database",
-          "pathToPrint": "/bridge/%s/fwd-database/",
-          "commandName": "retrieveBridgeFwdDatabaseCmd",
+          "exampleUse": "config-bridge-cli retrieve bridge <name> filtering-database",
+          "commandUse": "filtering-database",
+          "pathToPrint": "/bridge/%s/filtering-database/",
+          "commandName": "retrieveBridgeFilteringDatabaseCmd",
           "totParams": 1,
-          "summary": "Retrieve operation for fwd-database",
+          "summary": "Retrieve operation for filtering-database",
           "parentCommand": "retrieveBridgeCmd"
         },
         "consumes": [
           "application/json"
         ],
-        "operationId": "retrieveBridgeFwdDatabaseById"
+        "operationId": "retrieveBridgeFilteringDatabaseById"
       }
     },
-    "/bridge/{name}/fwd-database/fwd-entry/{vids}/{address}/": {
+    "/bridge/{name}/filtering-database/filtering-entry/{vlan}/{address}/": {
       "put": {
         "responses": {
           "200": {
@@ -782,7 +804,7 @@
             "description": "Internal Error"
           }
         },
-        "description": "Update operation of resource: fwd-entry",
+        "description": "Update operation of resource: filtering-entry",
         "parameters": [
           {
             "description": "ID of name",
@@ -792,10 +814,10 @@
             "in": "path"
           },
           {
-            "description": "ID of vids",
+            "description": "ID of vlan",
             "required": true,
             "type": "string",
-            "name": "vids",
+            "name": "vlan",
             "in": "path"
           },
           {
@@ -806,11 +828,11 @@
             "in": "path"
           },
           {
-            "description": "fwd-entrybody object",
+            "description": "filtering-entrybody object",
             "schema": {
-              "$ref": "#/definitions/FwdEntrySchema"
+              "$ref": "#/definitions/FilteringEntrySchema"
             },
-            "name": "fwd-entry",
+            "name": "filtering-entry",
             "in": "body"
           }
         ],
@@ -820,28 +842,28 @@
         "tags": [
           "bridge"
         ],
-        "summary": "Update fwd-entry by ID",
+        "summary": "Update filtering-entry by ID",
         "x-cliParam": {
           "paramKeys": [
             {
-              "key": "vids"
+              "key": "vlan"
             },
             {
               "key": "address"
             }
           ],
-          "exampleUse": "config-bridge-cli update bridge fwd-database fwd-entry <value>",
-          "commandUse": "fwd-entry",
-          "pathToPrint": "/bridge/%s/fwd-database/fwd-entry/%s/%s/",
-          "commandName": "updateBridgeFwdDatabaseFwdEntryCmd",
+          "exampleUse": "config-bridge-cli update bridge <name> filtering-database filtering-entry <vlan> <address> --value <value>",
+          "commandUse": "filtering-entry",
+          "pathToPrint": "/bridge/%s/filtering-database/filtering-entry/%s/%s/",
+          "commandName": "updateBridgeFilteringDatabaseFilteringEntryCmd",
           "totParams": 3,
-          "summary": "Update operation for fwd-entry",
-          "parentCommand": "updateBridgeFwdDatabaseCmd"
+          "summary": "Update operation for filtering-entry",
+          "parentCommand": "updateBridgeFilteringDatabaseCmd"
         },
         "consumes": [
           "application/json"
         ],
-        "operationId": "updateBridgeFwdDatabaseFwdEntryById"
+        "operationId": "updateBridgeFilteringDatabaseFilteringEntryById"
       },
       "post": {
         "responses": {
@@ -852,7 +874,7 @@
             "description": "Internal Error"
           }
         },
-        "description": "Create operation of resource: fwd-entry",
+        "description": "Create operation of resource: filtering-entry",
         "parameters": [
           {
             "description": "ID of name",
@@ -862,10 +884,10 @@
             "in": "path"
           },
           {
-            "description": "ID of vids",
+            "description": "ID of vlan",
             "required": true,
             "type": "string",
-            "name": "vids",
+            "name": "vlan",
             "in": "path"
           },
           {
@@ -876,11 +898,11 @@
             "in": "path"
           },
           {
-            "description": "fwd-entrybody object",
+            "description": "filtering-entrybody object",
             "schema": {
-              "$ref": "#/definitions/FwdEntrySchema"
+              "$ref": "#/definitions/FilteringEntrySchema"
             },
-            "name": "fwd-entry",
+            "name": "filtering-entry",
             "in": "body"
           }
         ],
@@ -890,28 +912,28 @@
         "tags": [
           "bridge"
         ],
-        "summary": "Create fwd-entry by ID",
+        "summary": "Create filtering-entry by ID",
         "x-cliParam": {
           "paramKeys": [
             {
-              "key": "vids"
+              "key": "vlan"
             },
             {
               "key": "address"
             }
           ],
-          "exampleUse": "config-bridge-cli create bridge fwd-database fwd-entry <value>",
-          "commandUse": "fwd-entry",
-          "pathToPrint": "/bridge/%s/fwd-database/fwd-entry/%s/%s/",
-          "commandName": "createBridgeFwdDatabaseFwdEntryCmd",
+          "exampleUse": "config-bridge-cli create bridge <name> filtering-database filtering-entry <vlan> <address>",
+          "commandUse": "filtering-entry",
+          "pathToPrint": "/bridge/%s/filtering-database/filtering-entry/%s/%s/",
+          "commandName": "createBridgeFilteringDatabaseFilteringEntryCmd",
           "totParams": 3,
-          "summary": "Create operation for fwd-entry",
-          "parentCommand": "createBridgeFwdDatabaseCmd"
+          "summary": "Create operation for filtering-entry",
+          "parentCommand": "createBridgeFilteringDatabaseCmd"
         },
         "consumes": [
           "application/json"
         ],
-        "operationId": "createBridgeFwdDatabaseFwdEntryById"
+        "operationId": "createBridgeFilteringDatabaseFilteringEntryById"
       },
       "delete": {
         "responses": {
@@ -922,7 +944,7 @@
             "description": "Internal Error"
           }
         },
-        "description": "Delete operation of resource: fwd-entry",
+        "description": "Delete operation of resource: filtering-entry",
         "parameters": [
           {
             "description": "ID of name",
@@ -932,10 +954,10 @@
             "in": "path"
           },
           {
-            "description": "ID of vids",
+            "description": "ID of vlan",
             "required": true,
             "type": "string",
-            "name": "vids",
+            "name": "vlan",
             "in": "path"
           },
           {
@@ -952,42 +974,42 @@
         "tags": [
           "bridge"
         ],
-        "summary": "Delete fwd-entry by ID",
+        "summary": "Delete filtering-entry by ID",
         "x-cliParam": {
           "paramKeys": [
             {
-              "key": "vids"
+              "key": "vlan"
             },
             {
               "key": "address"
             }
           ],
-          "exampleUse": "config-bridge-cli delete bridge fwd-database fwd-entry <value>",
-          "commandUse": "fwd-entry",
-          "pathToPrint": "/bridge/%s/fwd-database/fwd-entry/%s/%s/",
-          "commandName": "deleteBridgeFwdDatabaseFwdEntryCmd",
+          "exampleUse": "config-bridge-cli delete bridge <name> filtering-database filtering-entry <vlan> <address>",
+          "commandUse": "filtering-entry",
+          "pathToPrint": "/bridge/%s/filtering-database/filtering-entry/%s/%s/",
+          "commandName": "deleteBridgeFilteringDatabaseFilteringEntryCmd",
           "totParams": 3,
-          "summary": "Delete operation for fwd-entry",
-          "parentCommand": "deleteBridgeFwdDatabaseCmd"
+          "summary": "Delete operation for filtering-entry",
+          "parentCommand": "deleteBridgeFilteringDatabaseCmd"
         },
         "consumes": [
           "application/json"
         ],
-        "operationId": "deleteBridgeFwdDatabaseFwdEntryById"
+        "operationId": "deleteBridgeFilteringDatabaseFilteringEntryById"
       },
       "get": {
         "responses": {
           "200": {
             "description": "Successful operation",
             "schema": {
-              "$ref": "#/definitions/FwdEntrySchema"
+              "$ref": "#/definitions/FilteringEntrySchema"
             }
           },
           "400": {
             "description": "Internal Error"
           }
         },
-        "description": "Retrieve operation of resource: fwd-entry",
+        "description": "Retrieve operation of resource: filtering-entry",
         "parameters": [
           {
             "description": "ID of name",
@@ -997,10 +1019,10 @@
             "in": "path"
           },
           {
-            "description": "ID of vids",
+            "description": "ID of vlan",
             "required": true,
             "type": "string",
-            "name": "vids",
+            "name": "vlan",
             "in": "path"
           },
           {
@@ -1017,31 +1039,158 @@
         "tags": [
           "bridge"
         ],
-        "summary": "Retrieve fwd-entry by ID",
+        "summary": "Retrieve filtering-entry by ID",
         "x-cliParam": {
           "paramKeys": [
             {
-              "key": "vids"
+              "key": "vlan"
             },
             {
               "key": "address"
             }
           ],
-          "exampleUse": "config-bridge-cli retrieve bridge fwd-database fwd-entry <value>",
-          "commandUse": "fwd-entry",
-          "pathToPrint": "/bridge/%s/fwd-database/fwd-entry/%s/%s/",
-          "commandName": "retrieveBridgeFwdDatabaseFwdEntryCmd",
+          "exampleUse": "config-bridge-cli retrieve bridge <name> filtering-database filtering-entry <vlan> <address>",
+          "commandUse": "filtering-entry",
+          "pathToPrint": "/bridge/%s/filtering-database/filtering-entry/%s/%s/",
+          "commandName": "retrieveBridgeFilteringDatabaseFilteringEntryCmd",
           "totParams": 3,
-          "summary": "Retrieve operation for fwd-entry",
-          "parentCommand": "retrieveBridgeFwdDatabaseCmd"
+          "summary": "Retrieve operation for filtering-entry",
+          "parentCommand": "retrieveBridgeFilteringDatabaseCmd"
         },
         "consumes": [
           "application/json"
         ],
-        "operationId": "retrieveBridgeFwdDatabaseFwdEntryById"
+        "operationId": "retrieveBridgeFilteringDatabaseFilteringEntryById"
       }
     },
-    "/bridge/{name}/fwd-database/fwd-entry/{vids}/{address}/address/": {
+    "/bridge/{name}/filtering-database/filtering-entry/{vlan}/{address}/vlan/": {
+      "put": {
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Internal Error"
+          }
+        },
+        "description": "Update operation of resource: vlan",
+        "parameters": [
+          {
+            "description": "ID of name",
+            "required": true,
+            "type": "string",
+            "name": "name",
+            "in": "path"
+          },
+          {
+            "description": "ID of vlan",
+            "required": true,
+            "type": "string",
+            "name": "vlan",
+            "in": "path"
+          },
+          {
+            "description": "ID of address",
+            "required": true,
+            "type": "string",
+            "name": "address",
+            "in": "path"
+          },
+          {
+            "description": "The VLAN identifier for this entry",
+            "schema": {
+              "format": "uint32",
+              "type": "integer",
+              "example": "1",
+              "description": "The VLAN identifier for this entry"
+            },
+            "name": "vlan",
+            "in": "body"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "bridge"
+        ],
+        "summary": "Update vlan by ID",
+        "x-cliParam": {
+          "exampleUse": "config-bridge-cli update bridge <name> filtering-database filtering-entry <vlan> <address> vlan --value <value>",
+          "commandUse": "vlan",
+          "pathToPrint": "/bridge/%s/filtering-database/filtering-entry/%s/%s/vlan/",
+          "commandName": "updateBridgeFilteringDatabaseFilteringEntryVlanCmd",
+          "totParams": 3,
+          "summary": "Update operation for vlan",
+          "parentCommand": "updateBridgeFilteringDatabaseFilteringEntryCmd"
+        },
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "updateBridgeFilteringDatabaseFilteringEntryVlanById"
+      },
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "format": "uint32",
+              "type": "integer",
+              "example": "1",
+              "description": "The VLAN identifier for this entry"
+            }
+          },
+          "400": {
+            "description": "Internal Error"
+          }
+        },
+        "description": "Retrieve operation of resource: vlan",
+        "parameters": [
+          {
+            "description": "ID of name",
+            "required": true,
+            "type": "string",
+            "name": "name",
+            "in": "path"
+          },
+          {
+            "description": "ID of vlan",
+            "required": true,
+            "type": "string",
+            "name": "vlan",
+            "in": "path"
+          },
+          {
+            "description": "ID of address",
+            "required": true,
+            "type": "string",
+            "name": "address",
+            "in": "path"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "bridge"
+        ],
+        "summary": "Retrieve vlan by ID",
+        "x-cliParam": {
+          "exampleUse": "config-bridge-cli retrieve bridge <name> filtering-database filtering-entry <vlan> <address> vlan",
+          "commandUse": "vlan",
+          "pathToPrint": "/bridge/%s/filtering-database/filtering-entry/%s/%s/vlan/",
+          "commandName": "retrieveBridgeFilteringDatabaseFilteringEntryVlanCmd",
+          "totParams": 3,
+          "summary": "Retrieve operation for vlan",
+          "parentCommand": "retrieveBridgeFilteringDatabaseFilteringEntryCmd"
+        },
+        "consumes": [
+          "application/json"
+        ],
+        "operationId": "retrieveBridgeFilteringDatabaseFilteringEntryVlanById"
+      }
+    },
+    "/bridge/{name}/filtering-database/filtering-entry/{vlan}/{address}/address/": {
       "put": {
         "responses": {
           "200": {
@@ -1061,10 +1210,10 @@
             "in": "path"
           },
           {
-            "description": "ID of vids",
+            "description": "ID of vlan",
             "required": true,
             "type": "string",
-            "name": "vids",
+            "name": "vlan",
             "in": "path"
           },
           {
@@ -1075,9 +1224,11 @@
             "in": "path"
           },
           {
-            "description": "addressbody object",
+            "description": "The address of the filtering database entry",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "description": "The address of the filtering database entry",
+              "example": "AA:BB:CC:DD:EE:FF"
             },
             "name": "address",
             "in": "body"
@@ -1091,25 +1242,27 @@
         ],
         "summary": "Update address by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli update bridge fwd-database fwd-entry address <value>",
+          "exampleUse": "config-bridge-cli update bridge <name> filtering-database filtering-entry <vlan> <address> address --value <value>",
           "commandUse": "address",
-          "pathToPrint": "/bridge/%s/fwd-database/fwd-entry/%s/%s/address/",
-          "commandName": "updateBridgeFwdDatabaseFwdEntryAddressCmd",
+          "pathToPrint": "/bridge/%s/filtering-database/filtering-entry/%s/%s/address/",
+          "commandName": "updateBridgeFilteringDatabaseFilteringEntryAddressCmd",
           "totParams": 3,
           "summary": "Update operation for address",
-          "parentCommand": "updateBridgeFwdDatabaseFwdEntryCmd"
+          "parentCommand": "updateBridgeFilteringDatabaseFilteringEntryCmd"
         },
         "consumes": [
           "application/json"
         ],
-        "operationId": "updateBridgeFwdDatabaseFwdEntryAddressById"
+        "operationId": "updateBridgeFilteringDatabaseFilteringEntryAddressById"
       },
       "get": {
         "responses": {
           "200": {
             "description": "Successful operation",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "description": "The address of the filtering database entry",
+              "example": "AA:BB:CC:DD:EE:FF"
             }
           },
           "400": {
@@ -1126,10 +1279,10 @@
             "in": "path"
           },
           {
-            "description": "ID of vids",
+            "description": "ID of vlan",
             "required": true,
             "type": "string",
-            "name": "vids",
+            "name": "vlan",
             "in": "path"
           },
           {
@@ -1148,142 +1301,21 @@
         ],
         "summary": "Retrieve address by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli retrieve bridge fwd-database fwd-entry address <value>",
+          "exampleUse": "config-bridge-cli retrieve bridge <name> filtering-database filtering-entry <vlan> <address> address",
           "commandUse": "address",
-          "pathToPrint": "/bridge/%s/fwd-database/fwd-entry/%s/%s/address/",
-          "commandName": "retrieveBridgeFwdDatabaseFwdEntryAddressCmd",
+          "pathToPrint": "/bridge/%s/filtering-database/filtering-entry/%s/%s/address/",
+          "commandName": "retrieveBridgeFilteringDatabaseFilteringEntryAddressCmd",
           "totParams": 3,
           "summary": "Retrieve operation for address",
-          "parentCommand": "retrieveBridgeFwdDatabaseFwdEntryCmd"
+          "parentCommand": "retrieveBridgeFilteringDatabaseFilteringEntryCmd"
         },
         "consumes": [
           "application/json"
         ],
-        "operationId": "retrieveBridgeFwdDatabaseFwdEntryAddressById"
+        "operationId": "retrieveBridgeFilteringDatabaseFilteringEntryAddressById"
       }
     },
-    "/bridge/{name}/fwd-database/fwd-entry/{vids}/{address}/vids/": {
-      "put": {
-        "responses": {
-          "200": {
-            "description": "Successful operation"
-          },
-          "400": {
-            "description": "Internal Error"
-          }
-        },
-        "description": "Update operation of resource: vids",
-        "parameters": [
-          {
-            "description": "ID of name",
-            "required": true,
-            "type": "string",
-            "name": "name",
-            "in": "path"
-          },
-          {
-            "description": "ID of vids",
-            "required": true,
-            "type": "string",
-            "name": "vids",
-            "in": "path"
-          },
-          {
-            "description": "ID of address",
-            "required": true,
-            "type": "string",
-            "name": "address",
-            "in": "path"
-          },
-          {
-            "description": "vidsbody object",
-            "schema": {
-              "type": "string"
-            },
-            "name": "vids",
-            "in": "body"
-          }
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "bridge"
-        ],
-        "summary": "Update vids by ID",
-        "x-cliParam": {
-          "exampleUse": "config-bridge-cli update bridge fwd-database fwd-entry vids <value>",
-          "commandUse": "vids",
-          "pathToPrint": "/bridge/%s/fwd-database/fwd-entry/%s/%s/vids/",
-          "commandName": "updateBridgeFwdDatabaseFwdEntryVidsCmd",
-          "totParams": 3,
-          "summary": "Update operation for vids",
-          "parentCommand": "updateBridgeFwdDatabaseFwdEntryCmd"
-        },
-        "consumes": [
-          "application/json"
-        ],
-        "operationId": "updateBridgeFwdDatabaseFwdEntryVidsById"
-      },
-      "get": {
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "schema": {
-              "type": "string"
-            }
-          },
-          "400": {
-            "description": "Internal Error"
-          }
-        },
-        "description": "Retrieve operation of resource: vids",
-        "parameters": [
-          {
-            "description": "ID of name",
-            "required": true,
-            "type": "string",
-            "name": "name",
-            "in": "path"
-          },
-          {
-            "description": "ID of vids",
-            "required": true,
-            "type": "string",
-            "name": "vids",
-            "in": "path"
-          },
-          {
-            "description": "ID of address",
-            "required": true,
-            "type": "string",
-            "name": "address",
-            "in": "path"
-          }
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "bridge"
-        ],
-        "summary": "Retrieve vids by ID",
-        "x-cliParam": {
-          "exampleUse": "config-bridge-cli retrieve bridge fwd-database fwd-entry vids <value>",
-          "commandUse": "vids",
-          "pathToPrint": "/bridge/%s/fwd-database/fwd-entry/%s/%s/vids/",
-          "commandName": "retrieveBridgeFwdDatabaseFwdEntryVidsCmd",
-          "totParams": 3,
-          "summary": "Retrieve operation for vids",
-          "parentCommand": "retrieveBridgeFwdDatabaseFwdEntryCmd"
-        },
-        "consumes": [
-          "application/json"
-        ],
-        "operationId": "retrieveBridgeFwdDatabaseFwdEntryVidsById"
-      }
-    },
-    "/bridge/{name}/fwd-database/fwd-entry/{vids}/{address}/entry-type/": {
+    "/bridge/{name}/filtering-database/filtering-entry/{vlan}/{address}/entry-type/": {
       "put": {
         "responses": {
           "200": {
@@ -1303,10 +1335,10 @@
             "in": "path"
           },
           {
-            "description": "ID of vids",
+            "description": "ID of vlan",
             "required": true,
             "type": "string",
-            "name": "vids",
+            "name": "vlan",
             "in": "path"
           },
           {
@@ -1317,13 +1349,16 @@
             "in": "path"
           },
           {
-            "description": "entry-typebody object",
+            "description": "The type of filtering entry",
             "schema": {
+              "default": "static",
               "enum": [
                 "static",
                 "dynamic"
               ],
-              "type": "string"
+              "type": "string",
+              "description": "The type of filtering entry",
+              "example": "static"
             },
             "name": "entry-type",
             "in": "body"
@@ -1337,29 +1372,32 @@
         ],
         "summary": "Update entry-type by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli update bridge fwd-database fwd-entry entry-type <value>",
+          "exampleUse": "config-bridge-cli update bridge <name> filtering-database filtering-entry <vlan> <address> entry-type --value <value>",
           "commandUse": "entry-type",
-          "pathToPrint": "/bridge/%s/fwd-database/fwd-entry/%s/%s/entry-type/",
-          "commandName": "updateBridgeFwdDatabaseFwdEntryEntryTypeCmd",
+          "pathToPrint": "/bridge/%s/filtering-database/filtering-entry/%s/%s/entry-type/",
+          "commandName": "updateBridgeFilteringDatabaseFilteringEntryEntryTypeCmd",
           "totParams": 3,
           "summary": "Update operation for entry-type",
-          "parentCommand": "updateBridgeFwdDatabaseFwdEntryCmd"
+          "parentCommand": "updateBridgeFilteringDatabaseFilteringEntryCmd"
         },
         "consumes": [
           "application/json"
         ],
-        "operationId": "updateBridgeFwdDatabaseFwdEntryEntryTypeById"
+        "operationId": "updateBridgeFilteringDatabaseFilteringEntryEntryTypeById"
       },
       "get": {
         "responses": {
           "200": {
             "description": "Successful operation",
             "schema": {
+              "default": "static",
               "enum": [
                 "static",
                 "dynamic"
               ],
-              "type": "string"
+              "type": "string",
+              "description": "The type of filtering entry",
+              "example": "static"
             }
           },
           "400": {
@@ -1376,10 +1414,10 @@
             "in": "path"
           },
           {
-            "description": "ID of vids",
+            "description": "ID of vlan",
             "required": true,
             "type": "string",
-            "name": "vids",
+            "name": "vlan",
             "in": "path"
           },
           {
@@ -1398,21 +1436,21 @@
         ],
         "summary": "Retrieve entry-type by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli retrieve bridge fwd-database fwd-entry entry-type <value>",
+          "exampleUse": "config-bridge-cli retrieve bridge <name> filtering-database filtering-entry <vlan> <address> entry-type",
           "commandUse": "entry-type",
-          "pathToPrint": "/bridge/%s/fwd-database/fwd-entry/%s/%s/entry-type/",
-          "commandName": "retrieveBridgeFwdDatabaseFwdEntryEntryTypeCmd",
+          "pathToPrint": "/bridge/%s/filtering-database/filtering-entry/%s/%s/entry-type/",
+          "commandName": "retrieveBridgeFilteringDatabaseFilteringEntryEntryTypeCmd",
           "totParams": 3,
           "summary": "Retrieve operation for entry-type",
-          "parentCommand": "retrieveBridgeFwdDatabaseFwdEntryCmd"
+          "parentCommand": "retrieveBridgeFilteringDatabaseFilteringEntryCmd"
         },
         "consumes": [
           "application/json"
         ],
-        "operationId": "retrieveBridgeFwdDatabaseFwdEntryEntryTypeById"
+        "operationId": "retrieveBridgeFilteringDatabaseFilteringEntryEntryTypeById"
       }
     },
-    "/bridge/{name}/fwd-database/fwd-entry/{vids}/{address}/port_no/": {
+    "/bridge/{name}/filtering-database/filtering-entry/{vlan}/{address}/port_number/": {
       "put": {
         "responses": {
           "200": {
@@ -1422,7 +1460,7 @@
             "description": "Internal Error"
           }
         },
-        "description": "Update operation of resource: port_no",
+        "description": "Update operation of resource: port_number",
         "parameters": [
           {
             "description": "ID of name",
@@ -1432,10 +1470,10 @@
             "in": "path"
           },
           {
-            "description": "ID of vids",
+            "description": "ID of vlan",
             "required": true,
             "type": "string",
-            "name": "vids",
+            "name": "vlan",
             "in": "path"
           },
           {
@@ -1446,11 +1484,13 @@
             "in": "path"
           },
           {
-            "description": "port_nobody object",
+            "description": "The output port number",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "description": "The output port number",
+              "example": "2"
             },
-            "name": "port_no",
+            "name": "port_number",
             "in": "body"
           }
         ],
@@ -1460,34 +1500,36 @@
         "tags": [
           "bridge"
         ],
-        "summary": "Update port_no by ID",
+        "summary": "Update port_number by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli update bridge fwd-database fwd-entry port_no <value>",
-          "commandUse": "port_no",
-          "pathToPrint": "/bridge/%s/fwd-database/fwd-entry/%s/%s/port_no/",
-          "commandName": "updateBridgeFwdDatabaseFwdEntryPortNoCmd",
+          "exampleUse": "config-bridge-cli update bridge <name> filtering-database filtering-entry <vlan> <address> port_number --value <value>",
+          "commandUse": "port_number",
+          "pathToPrint": "/bridge/%s/filtering-database/filtering-entry/%s/%s/port_number/",
+          "commandName": "updateBridgeFilteringDatabaseFilteringEntryPortNumberCmd",
           "totParams": 3,
-          "summary": "Update operation for port_no",
-          "parentCommand": "updateBridgeFwdDatabaseFwdEntryCmd"
+          "summary": "Update operation for port_number",
+          "parentCommand": "updateBridgeFilteringDatabaseFilteringEntryCmd"
         },
         "consumes": [
           "application/json"
         ],
-        "operationId": "updateBridgeFwdDatabaseFwdEntryPortNoById"
+        "operationId": "updateBridgeFilteringDatabaseFilteringEntryPortNumberById"
       },
       "get": {
         "responses": {
           "200": {
             "description": "Successful operation",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "description": "The output port number",
+              "example": "2"
             }
           },
           "400": {
             "description": "Internal Error"
           }
         },
-        "description": "Retrieve operation of resource: port_no",
+        "description": "Retrieve operation of resource: port_number",
         "parameters": [
           {
             "description": "ID of name",
@@ -1497,10 +1539,10 @@
             "in": "path"
           },
           {
-            "description": "ID of vids",
+            "description": "ID of vlan",
             "required": true,
             "type": "string",
-            "name": "vids",
+            "name": "vlan",
             "in": "path"
           },
           {
@@ -1517,23 +1559,23 @@
         "tags": [
           "bridge"
         ],
-        "summary": "Retrieve port_no by ID",
+        "summary": "Retrieve port_number by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli retrieve bridge fwd-database fwd-entry port_no <value>",
-          "commandUse": "port_no",
-          "pathToPrint": "/bridge/%s/fwd-database/fwd-entry/%s/%s/port_no/",
-          "commandName": "retrieveBridgeFwdDatabaseFwdEntryPortNoCmd",
+          "exampleUse": "config-bridge-cli retrieve bridge <name> filtering-database filtering-entry <vlan> <address> port_number",
+          "commandUse": "port_number",
+          "pathToPrint": "/bridge/%s/filtering-database/filtering-entry/%s/%s/port_number/",
+          "commandName": "retrieveBridgeFilteringDatabaseFilteringEntryPortNumberCmd",
           "totParams": 3,
-          "summary": "Retrieve operation for port_no",
-          "parentCommand": "retrieveBridgeFwdDatabaseFwdEntryCmd"
+          "summary": "Retrieve operation for port_number",
+          "parentCommand": "retrieveBridgeFilteringDatabaseFilteringEntryCmd"
         },
         "consumes": [
           "application/json"
         ],
-        "operationId": "retrieveBridgeFwdDatabaseFwdEntryPortNoById"
+        "operationId": "retrieveBridgeFilteringDatabaseFilteringEntryPortNumberById"
       }
     },
-    "/bridge/{name}/fwd-database/fwd-entry/{vids}/{address}/age/": {
+    "/bridge/{name}/filtering-database/filtering-entry/{vlan}/{address}/aging-time/": {
       "put": {
         "responses": {
           "200": {
@@ -1543,7 +1585,7 @@
             "description": "Internal Error"
           }
         },
-        "description": "Update operation of resource: age",
+        "description": "Update operation of resource: aging-time",
         "parameters": [
           {
             "description": "ID of name",
@@ -1553,10 +1595,10 @@
             "in": "path"
           },
           {
-            "description": "ID of vids",
+            "description": "ID of vlan",
             "required": true,
             "type": "string",
-            "name": "vids",
+            "name": "vlan",
             "in": "path"
           },
           {
@@ -1567,11 +1609,15 @@
             "in": "path"
           },
           {
-            "description": "agebody object",
+            "description": "The timeout for aging out fwd entries",
             "schema": {
-              "type": "string"
+              "default": "300",
+              "format": "uint32",
+              "type": "integer",
+              "example": "300",
+              "description": "The timeout for aging out fwd entries"
             },
-            "name": "age",
+            "name": "aging-time",
             "in": "body"
           }
         ],
@@ -1581,34 +1627,38 @@
         "tags": [
           "bridge"
         ],
-        "summary": "Update age by ID",
+        "summary": "Update aging-time by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli update bridge fwd-database fwd-entry age <value>",
-          "commandUse": "age",
-          "pathToPrint": "/bridge/%s/fwd-database/fwd-entry/%s/%s/age/",
-          "commandName": "updateBridgeFwdDatabaseFwdEntryAgeCmd",
+          "exampleUse": "config-bridge-cli update bridge <name> filtering-database filtering-entry <vlan> <address> aging-time --value <value>",
+          "commandUse": "aging-time",
+          "pathToPrint": "/bridge/%s/filtering-database/filtering-entry/%s/%s/aging-time/",
+          "commandName": "updateBridgeFilteringDatabaseFilteringEntryAgingTimeCmd",
           "totParams": 3,
-          "summary": "Update operation for age",
-          "parentCommand": "updateBridgeFwdDatabaseFwdEntryCmd"
+          "summary": "Update operation for aging-time",
+          "parentCommand": "updateBridgeFilteringDatabaseFilteringEntryCmd"
         },
         "consumes": [
           "application/json"
         ],
-        "operationId": "updateBridgeFwdDatabaseFwdEntryAgeById"
+        "operationId": "updateBridgeFilteringDatabaseFilteringEntryAgingTimeById"
       },
       "get": {
         "responses": {
           "200": {
             "description": "Successful operation",
             "schema": {
-              "type": "string"
+              "default": "300",
+              "format": "uint32",
+              "type": "integer",
+              "example": "300",
+              "description": "The timeout for aging out fwd entries"
             }
           },
           "400": {
             "description": "Internal Error"
           }
         },
-        "description": "Retrieve operation of resource: age",
+        "description": "Retrieve operation of resource: aging-time",
         "parameters": [
           {
             "description": "ID of name",
@@ -1618,10 +1668,10 @@
             "in": "path"
           },
           {
-            "description": "ID of vids",
+            "description": "ID of vlan",
             "required": true,
             "type": "string",
-            "name": "vids",
+            "name": "vlan",
             "in": "path"
           },
           {
@@ -1638,20 +1688,20 @@
         "tags": [
           "bridge"
         ],
-        "summary": "Retrieve age by ID",
+        "summary": "Retrieve aging-time by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli retrieve bridge fwd-database fwd-entry age <value>",
-          "commandUse": "age",
-          "pathToPrint": "/bridge/%s/fwd-database/fwd-entry/%s/%s/age/",
-          "commandName": "retrieveBridgeFwdDatabaseFwdEntryAgeCmd",
+          "exampleUse": "config-bridge-cli retrieve bridge <name> filtering-database filtering-entry <vlan> <address> aging-time",
+          "commandUse": "aging-time",
+          "pathToPrint": "/bridge/%s/filtering-database/filtering-entry/%s/%s/aging-time/",
+          "commandName": "retrieveBridgeFilteringDatabaseFilteringEntryAgingTimeCmd",
           "totParams": 3,
-          "summary": "Retrieve operation for age",
-          "parentCommand": "retrieveBridgeFwdDatabaseFwdEntryCmd"
+          "summary": "Retrieve operation for aging-time",
+          "parentCommand": "retrieveBridgeFilteringDatabaseFilteringEntryCmd"
         },
         "consumes": [
           "application/json"
         ],
-        "operationId": "retrieveBridgeFwdDatabaseFwdEntryAgeById"
+        "operationId": "retrieveBridgeFilteringDatabaseFilteringEntryAgingTimeById"
       }
     },
     "/bridge/{name}/stp/": {
@@ -1690,7 +1740,7 @@
         ],
         "summary": "Update stp by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli update bridge stp <value>",
+          "exampleUse": "config-bridge-cli update bridge <name> stp --value <value>",
           "commandUse": "stp",
           "pathToPrint": "/bridge/%s/stp/",
           "commandName": "updateBridgeStpCmd",
@@ -1738,7 +1788,7 @@
         ],
         "summary": "Create stp by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli create bridge stp <value>",
+          "exampleUse": "config-bridge-cli create bridge <name> stp",
           "commandUse": "stp",
           "pathToPrint": "/bridge/%s/stp/",
           "commandName": "createBridgeStpCmd",
@@ -1778,7 +1828,7 @@
         ],
         "summary": "Delete stp by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli delete bridge stp <value>",
+          "exampleUse": "config-bridge-cli delete bridge <name> stp",
           "commandUse": "stp",
           "pathToPrint": "/bridge/%s/stp/",
           "commandName": "deleteBridgeStpCmd",
@@ -1821,7 +1871,7 @@
         ],
         "summary": "Retrieve stp by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli retrieve bridge stp <value>",
+          "exampleUse": "config-bridge-cli retrieve bridge <name> stp",
           "commandUse": "stp",
           "pathToPrint": "/bridge/%s/stp/",
           "commandName": "retrieveBridgeStpCmd",
@@ -1855,9 +1905,13 @@
             "in": "path"
           },
           {
-            "description": "prioritybody object",
+            "description": "The bridge priority for STP",
             "schema": {
-              "type": "string"
+              "default": "32768",
+              "format": "uint32",
+              "type": "integer",
+              "example": "32768",
+              "description": "The bridge priority for STP"
             },
             "name": "priority",
             "in": "body"
@@ -1871,7 +1925,7 @@
         ],
         "summary": "Update priority by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli update bridge stp priority <value>",
+          "exampleUse": "config-bridge-cli update bridge <name> stp priority --value <value>",
           "commandUse": "priority",
           "pathToPrint": "/bridge/%s/stp/priority/",
           "commandName": "updateBridgeStpPriorityCmd",
@@ -1889,7 +1943,11 @@
           "200": {
             "description": "Successful operation",
             "schema": {
-              "type": "string"
+              "default": "32768",
+              "format": "uint32",
+              "type": "integer",
+              "example": "32768",
+              "description": "The bridge priority for STP"
             }
           },
           "400": {
@@ -1914,7 +1972,7 @@
         ],
         "summary": "Retrieve priority by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli retrieve bridge stp priority <value>",
+          "exampleUse": "config-bridge-cli retrieve bridge <name> stp priority",
           "commandUse": "priority",
           "pathToPrint": "/bridge/%s/stp/priority/",
           "commandName": "retrieveBridgeStpPriorityCmd",
@@ -1948,9 +2006,13 @@
             "in": "path"
           },
           {
-            "description": "forward_delaybody object",
+            "description": "The delay used by STP bridges for port state transition",
             "schema": {
-              "type": "string"
+              "default": "10",
+              "format": "uint32",
+              "type": "integer",
+              "example": "10",
+              "description": "The delay used by STP bridges for port state transition"
             },
             "name": "forward_delay",
             "in": "body"
@@ -1964,7 +2026,7 @@
         ],
         "summary": "Update forward_delay by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli update bridge stp forward_delay <value>",
+          "exampleUse": "config-bridge-cli update bridge <name> stp forward_delay --value <value>",
           "commandUse": "forward_delay",
           "pathToPrint": "/bridge/%s/stp/forward_delay/",
           "commandName": "updateBridgeStpForwardDelayCmd",
@@ -1982,7 +2044,11 @@
           "200": {
             "description": "Successful operation",
             "schema": {
-              "type": "string"
+              "default": "10",
+              "format": "uint32",
+              "type": "integer",
+              "example": "10",
+              "description": "The delay used by STP bridges for port state transition"
             }
           },
           "400": {
@@ -2007,7 +2073,7 @@
         ],
         "summary": "Retrieve forward_delay by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli retrieve bridge stp forward_delay <value>",
+          "exampleUse": "config-bridge-cli retrieve bridge <name> stp forward_delay",
           "commandUse": "forward_delay",
           "pathToPrint": "/bridge/%s/stp/forward_delay/",
           "commandName": "retrieveBridgeStpForwardDelayCmd",
@@ -2041,9 +2107,13 @@
             "in": "path"
           },
           {
-            "description": "hello_timebody object",
+            "description": "The interval between transmissions of config messages",
             "schema": {
-              "type": "string"
+              "default": "2",
+              "format": "uint32",
+              "type": "integer",
+              "example": "2",
+              "description": "The interval between transmissions of config messages"
             },
             "name": "hello_time",
             "in": "body"
@@ -2057,7 +2127,7 @@
         ],
         "summary": "Update hello_time by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli update bridge stp hello_time <value>",
+          "exampleUse": "config-bridge-cli update bridge <name> stp hello_time --value <value>",
           "commandUse": "hello_time",
           "pathToPrint": "/bridge/%s/stp/hello_time/",
           "commandName": "updateBridgeStpHelloTimeCmd",
@@ -2075,7 +2145,11 @@
           "200": {
             "description": "Successful operation",
             "schema": {
-              "type": "string"
+              "default": "2",
+              "format": "uint32",
+              "type": "integer",
+              "example": "2",
+              "description": "The interval between transmissions of config messages"
             }
           },
           "400": {
@@ -2100,7 +2174,7 @@
         ],
         "summary": "Retrieve hello_time by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli retrieve bridge stp hello_time <value>",
+          "exampleUse": "config-bridge-cli retrieve bridge <name> stp hello_time",
           "commandUse": "hello_time",
           "pathToPrint": "/bridge/%s/stp/hello_time/",
           "commandName": "retrieveBridgeStpHelloTimeCmd",
@@ -2134,9 +2208,13 @@
             "in": "path"
           },
           {
-            "description": "max_message_agebody object",
+            "description": "The maximum age of the information transmitted by the bridge",
             "schema": {
-              "type": "string"
+              "default": "20",
+              "format": "uint32",
+              "type": "integer",
+              "example": "20",
+              "description": "The maximum age of the information transmitted by the bridge"
             },
             "name": "max_message_age",
             "in": "body"
@@ -2150,7 +2228,7 @@
         ],
         "summary": "Update max_message_age by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli update bridge stp max_message_age <value>",
+          "exampleUse": "config-bridge-cli update bridge <name> stp max_message_age --value <value>",
           "commandUse": "max_message_age",
           "pathToPrint": "/bridge/%s/stp/max_message_age/",
           "commandName": "updateBridgeStpMaxMessageAgeCmd",
@@ -2168,7 +2246,11 @@
           "200": {
             "description": "Successful operation",
             "schema": {
-              "type": "string"
+              "default": "20",
+              "format": "uint32",
+              "type": "integer",
+              "example": "20",
+              "description": "The maximum age of the information transmitted by the bridge"
             }
           },
           "400": {
@@ -2193,7 +2275,7 @@
         ],
         "summary": "Retrieve max_message_age by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli retrieve bridge stp max_message_age <value>",
+          "exampleUse": "config-bridge-cli retrieve bridge <name> stp max_message_age",
           "commandUse": "max_message_age",
           "pathToPrint": "/bridge/%s/stp/max_message_age/",
           "commandName": "retrieveBridgeStpMaxMessageAgeCmd",
@@ -2243,7 +2325,7 @@
         ],
         "summary": "Update interfaces by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli update bridge interfaces <value>",
+          "exampleUse": "config-bridge-cli update bridge <name> interfaces --value <value>",
           "commandUse": "interfaces",
           "pathToPrint": "/bridge/%s/interfaces/",
           "commandName": "updateBridgeInterfacesCmd",
@@ -2291,7 +2373,7 @@
         ],
         "summary": "Create interfaces by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli create bridge interfaces <value>",
+          "exampleUse": "config-bridge-cli create bridge <name> interfaces",
           "commandUse": "interfaces",
           "pathToPrint": "/bridge/%s/interfaces/",
           "commandName": "createBridgeInterfacesCmd",
@@ -2331,7 +2413,7 @@
         ],
         "summary": "Delete interfaces by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli delete bridge interfaces <value>",
+          "exampleUse": "config-bridge-cli delete bridge <name> interfaces",
           "commandUse": "interfaces",
           "pathToPrint": "/bridge/%s/interfaces/",
           "commandName": "deleteBridgeInterfacesCmd",
@@ -2374,7 +2456,7 @@
         ],
         "summary": "Retrieve interfaces by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli retrieve bridge interfaces <value>",
+          "exampleUse": "config-bridge-cli retrieve bridge <name> interfaces",
           "commandUse": "interfaces",
           "pathToPrint": "/bridge/%s/interfaces/",
           "commandName": "retrieveBridgeInterfacesCmd",
@@ -2436,7 +2518,7 @@
               "key": "interface_name"
             }
           ],
-          "exampleUse": "config-bridge-cli update bridge interfaces interface <value>",
+          "exampleUse": "config-bridge-cli update bridge <name> interfaces interface <interface_name> --value <value>",
           "commandUse": "interface",
           "pathToPrint": "/bridge/%s/interfaces/interface/%s/",
           "commandName": "updateBridgeInterfacesInterfaceCmd",
@@ -2496,7 +2578,7 @@
               "key": "interface_name"
             }
           ],
-          "exampleUse": "config-bridge-cli create bridge interfaces interface <value>",
+          "exampleUse": "config-bridge-cli create bridge <name> interfaces interface <interface_name>",
           "commandUse": "interface",
           "pathToPrint": "/bridge/%s/interfaces/interface/%s/",
           "commandName": "createBridgeInterfacesInterfaceCmd",
@@ -2548,7 +2630,7 @@
               "key": "interface_name"
             }
           ],
-          "exampleUse": "config-bridge-cli delete bridge interfaces interface <value>",
+          "exampleUse": "config-bridge-cli delete bridge <name> interfaces interface <interface_name>",
           "commandUse": "interface",
           "pathToPrint": "/bridge/%s/interfaces/interface/%s/",
           "commandName": "deleteBridgeInterfacesInterfaceCmd",
@@ -2603,7 +2685,7 @@
               "key": "interface_name"
             }
           ],
-          "exampleUse": "config-bridge-cli retrieve bridge interfaces interface <value>",
+          "exampleUse": "config-bridge-cli retrieve bridge <name> interfaces interface <interface_name>",
           "commandUse": "interface",
           "pathToPrint": "/bridge/%s/interfaces/interface/%s/",
           "commandName": "retrieveBridgeInterfacesInterfaceCmd",
@@ -2644,9 +2726,11 @@
             "in": "path"
           },
           {
-            "description": "interface_namebody object",
+            "description": "The name of the interface",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "description": "The name of the interface",
+              "example": "if1"
             },
             "name": "interface_name",
             "in": "body"
@@ -2660,7 +2744,7 @@
         ],
         "summary": "Update interface_name by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli update bridge interfaces interface interface_name <value>",
+          "exampleUse": "config-bridge-cli update bridge <name> interfaces interface <interface_name> interface_name --value <value>",
           "commandUse": "interface_name",
           "pathToPrint": "/bridge/%s/interfaces/interface/%s/interface_name/",
           "commandName": "updateBridgeInterfacesInterfaceInterfaceNameCmd",
@@ -2678,7 +2762,9 @@
           "200": {
             "description": "Successful operation",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "description": "The name of the interface",
+              "example": "if1"
             }
           },
           "400": {
@@ -2710,7 +2796,7 @@
         ],
         "summary": "Retrieve interface_name by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli retrieve bridge interfaces interface interface_name <value>",
+          "exampleUse": "config-bridge-cli retrieve bridge <name> interfaces interface <interface_name> interface_name",
           "commandUse": "interface_name",
           "pathToPrint": "/bridge/%s/interfaces/interface/%s/interface_name/",
           "commandName": "retrieveBridgeInterfacesInterfaceInterfaceNameCmd",
@@ -2751,9 +2837,12 @@
             "in": "path"
           },
           {
-            "description": "addressbody object",
+            "description": "The address of the bridge interface",
             "schema": {
-              "type": "string"
+              "default": "AA:BB:CC:DD:EE:FF",
+              "type": "string",
+              "description": "The address of the bridge interface",
+              "example": "AA:BB:CC:DD:EE:FF"
             },
             "name": "address",
             "in": "body"
@@ -2767,7 +2856,7 @@
         ],
         "summary": "Update address by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli update bridge interfaces interface address <value>",
+          "exampleUse": "config-bridge-cli update bridge <name> interfaces interface <interface_name> address --value <value>",
           "commandUse": "address",
           "pathToPrint": "/bridge/%s/interfaces/interface/%s/address/",
           "commandName": "updateBridgeInterfacesInterfaceAddressCmd",
@@ -2785,7 +2874,10 @@
           "200": {
             "description": "Successful operation",
             "schema": {
-              "type": "string"
+              "default": "AA:BB:CC:DD:EE:FF",
+              "type": "string",
+              "description": "The address of the bridge interface",
+              "example": "AA:BB:CC:DD:EE:FF"
             }
           },
           "400": {
@@ -2817,7 +2909,7 @@
         ],
         "summary": "Retrieve address by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli retrieve bridge interfaces interface address <value>",
+          "exampleUse": "config-bridge-cli retrieve bridge <name> interfaces interface <interface_name> address",
           "commandUse": "address",
           "pathToPrint": "/bridge/%s/interfaces/interface/%s/address/",
           "commandName": "retrieveBridgeInterfacesInterfaceAddressCmd",
@@ -2858,13 +2950,16 @@
             "in": "path"
           },
           {
-            "description": "access_modebody object",
+            "description": "The type of bridge interface: access/trunk",
             "schema": {
+              "default": "access",
               "enum": [
                 "access",
                 "trunk"
               ],
-              "type": "string"
+              "type": "string",
+              "description": "The type of bridge interface: access/trunk",
+              "example": "access"
             },
             "name": "access_mode",
             "in": "body"
@@ -2878,7 +2973,7 @@
         ],
         "summary": "Update access_mode by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli update bridge interfaces interface access_mode <value>",
+          "exampleUse": "config-bridge-cli update bridge <name> interfaces interface <interface_name> access_mode --value <value>",
           "commandUse": "access_mode",
           "pathToPrint": "/bridge/%s/interfaces/interface/%s/access_mode/",
           "commandName": "updateBridgeInterfacesInterfaceAccessModeCmd",
@@ -2896,11 +2991,14 @@
           "200": {
             "description": "Successful operation",
             "schema": {
+              "default": "access",
               "enum": [
                 "access",
                 "trunk"
               ],
-              "type": "string"
+              "type": "string",
+              "description": "The type of bridge interface: access/trunk",
+              "example": "access"
             }
           },
           "400": {
@@ -2932,7 +3030,7 @@
         ],
         "summary": "Retrieve access_mode by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli retrieve bridge interfaces interface access_mode <value>",
+          "exampleUse": "config-bridge-cli retrieve bridge <name> interfaces interface <interface_name> access_mode",
           "commandUse": "access_mode",
           "pathToPrint": "/bridge/%s/interfaces/interface/%s/access_mode/",
           "commandName": "retrieveBridgeInterfacesInterfaceAccessModeCmd",
@@ -2973,9 +3071,13 @@
             "in": "path"
           },
           {
-            "description": "vlan_idbody object",
+            "description": "The vlan associated with this interface",
             "schema": {
-              "type": "string"
+              "default": "1",
+              "format": "uint32",
+              "type": "integer",
+              "example": "1",
+              "description": "The vlan associated with this interface"
             },
             "name": "vlan_id",
             "in": "body"
@@ -2989,7 +3091,7 @@
         ],
         "summary": "Update vlan_id by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli update bridge interfaces interface vlan_id <value>",
+          "exampleUse": "config-bridge-cli update bridge <name> interfaces interface <interface_name> vlan_id --value <value>",
           "commandUse": "vlan_id",
           "pathToPrint": "/bridge/%s/interfaces/interface/%s/vlan_id/",
           "commandName": "updateBridgeInterfacesInterfaceVlanIdCmd",
@@ -3007,7 +3109,11 @@
           "200": {
             "description": "Successful operation",
             "schema": {
-              "type": "string"
+              "default": "1",
+              "format": "uint32",
+              "type": "integer",
+              "example": "1",
+              "description": "The vlan associated with this interface"
             }
           },
           "400": {
@@ -3039,7 +3145,7 @@
         ],
         "summary": "Retrieve vlan_id by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli retrieve bridge interfaces interface vlan_id <value>",
+          "exampleUse": "config-bridge-cli retrieve bridge <name> interfaces interface <interface_name> vlan_id",
           "commandUse": "vlan_id",
           "pathToPrint": "/bridge/%s/interfaces/interface/%s/vlan_id/",
           "commandName": "retrieveBridgeInterfacesInterfaceVlanIdCmd",
@@ -3096,7 +3202,7 @@
         ],
         "summary": "Update stp_interface by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli update bridge interfaces interface stp_interface <value>",
+          "exampleUse": "config-bridge-cli update bridge <name> interfaces interface <interface_name> stp_interface --value <value>",
           "commandUse": "stp_interface",
           "pathToPrint": "/bridge/%s/interfaces/interface/%s/stp_interface/",
           "commandName": "updateBridgeInterfacesInterfaceStpInterfaceCmd",
@@ -3151,7 +3257,7 @@
         ],
         "summary": "Create stp_interface by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli create bridge interfaces interface stp_interface <value>",
+          "exampleUse": "config-bridge-cli create bridge <name> interfaces interface <interface_name> stp_interface",
           "commandUse": "stp_interface",
           "pathToPrint": "/bridge/%s/interfaces/interface/%s/stp_interface/",
           "commandName": "createBridgeInterfacesInterfaceStpInterfaceCmd",
@@ -3198,7 +3304,7 @@
         ],
         "summary": "Delete stp_interface by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli delete bridge interfaces interface stp_interface <value>",
+          "exampleUse": "config-bridge-cli delete bridge <name> interfaces interface <interface_name> stp_interface",
           "commandUse": "stp_interface",
           "pathToPrint": "/bridge/%s/interfaces/interface/%s/stp_interface/",
           "commandName": "deleteBridgeInterfacesInterfaceStpInterfaceCmd",
@@ -3248,7 +3354,7 @@
         ],
         "summary": "Retrieve stp_interface by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli retrieve bridge interfaces interface stp_interface <value>",
+          "exampleUse": "config-bridge-cli retrieve bridge <name> interfaces interface <interface_name> stp_interface",
           "commandUse": "stp_interface",
           "pathToPrint": "/bridge/%s/interfaces/interface/%s/stp_interface/",
           "commandName": "retrieveBridgeInterfacesInterfaceStpInterfaceCmd",
@@ -3289,9 +3395,13 @@
             "in": "path"
           },
           {
-            "description": "path_costbody object",
+            "description": "The path cost associated with this interface",
             "schema": {
-              "type": "string"
+              "default": "4",
+              "format": "uint32",
+              "type": "integer",
+              "example": "4",
+              "description": "The path cost associated with this interface"
             },
             "name": "path_cost",
             "in": "body"
@@ -3305,7 +3415,7 @@
         ],
         "summary": "Update path_cost by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli update bridge interfaces interface stp_interface path_cost <value>",
+          "exampleUse": "config-bridge-cli update bridge <name> interfaces interface <interface_name> stp_interface path_cost --value <value>",
           "commandUse": "path_cost",
           "pathToPrint": "/bridge/%s/interfaces/interface/%s/stp_interface/path_cost/",
           "commandName": "updateBridgeInterfacesInterfaceStpInterfacePathCostCmd",
@@ -3323,7 +3433,11 @@
           "200": {
             "description": "Successful operation",
             "schema": {
-              "type": "string"
+              "default": "4",
+              "format": "uint32",
+              "type": "integer",
+              "example": "4",
+              "description": "The path cost associated with this interface"
             }
           },
           "400": {
@@ -3355,7 +3469,7 @@
         ],
         "summary": "Retrieve path_cost by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli retrieve bridge interfaces interface stp_interface path_cost <value>",
+          "exampleUse": "config-bridge-cli retrieve bridge <name> interfaces interface <interface_name> stp_interface path_cost",
           "commandUse": "path_cost",
           "pathToPrint": "/bridge/%s/interfaces/interface/%s/stp_interface/path_cost/",
           "commandName": "retrieveBridgeInterfacesInterfaceStpInterfacePathCostCmd",
@@ -3396,9 +3510,13 @@
             "in": "path"
           },
           {
-            "description": "port_prioritybody object",
+            "description": "The port priority of this interface",
             "schema": {
-              "type": "string"
+              "default": "128",
+              "format": "uint32",
+              "type": "integer",
+              "example": "128",
+              "description": "The port priority of this interface"
             },
             "name": "port_priority",
             "in": "body"
@@ -3412,7 +3530,7 @@
         ],
         "summary": "Update port_priority by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli update bridge interfaces interface stp_interface port_priority <value>",
+          "exampleUse": "config-bridge-cli update bridge <name> interfaces interface <interface_name> stp_interface port_priority --value <value>",
           "commandUse": "port_priority",
           "pathToPrint": "/bridge/%s/interfaces/interface/%s/stp_interface/port_priority/",
           "commandName": "updateBridgeInterfacesInterfaceStpInterfacePortPriorityCmd",
@@ -3430,7 +3548,11 @@
           "200": {
             "description": "Successful operation",
             "schema": {
-              "type": "string"
+              "default": "128",
+              "format": "uint32",
+              "type": "integer",
+              "example": "128",
+              "description": "The port priority of this interface"
             }
           },
           "400": {
@@ -3462,7 +3584,7 @@
         ],
         "summary": "Retrieve port_priority by ID",
         "x-cliParam": {
-          "exampleUse": "config-bridge-cli retrieve bridge interfaces interface stp_interface port_priority <value>",
+          "exampleUse": "config-bridge-cli retrieve bridge <name> interfaces interface <interface_name> stp_interface port_priority",
           "commandUse": "port_priority",
           "pathToPrint": "/bridge/%s/interfaces/interface/%s/stp_interface/port_priority/",
           "commandName": "retrieveBridgeInterfacesInterfaceStpInterfacePortPriorityCmd",
@@ -3480,66 +3602,163 @@
   "definitions": {
     "BridgeSchema": {
             "properties": {
+              "filteringDatabase": {
+                "description": "The filtering database of the bridge",
+                "properties": {
+                  "filteringEntry": {
+                    "items": {
+                      "properties": {
+                        "vlan": {
+                          "example": "1",
+                          "type": "integer",
+                          "description": "The VLAN identifier for this entry",
+                          "format": "uint32"
+                        },
+                        "portNumber": {
+                          "type": "string",
+                          "description": "The output port number",
+                          "example": "2"
+                        },
+                        "entryType": {
+                          "default": "static",
+                          "enum": [
+                            "static",
+                            "dynamic"
+                          ],
+                          "type": "string",
+                          "description": "The type of filtering entry",
+                          "example": "static"
+                        },
+                        "agingTime": {
+                          "default": "300",
+                          "example": "300",
+                          "type": "integer",
+                          "description": "The timeout for aging out fwd entries",
+                          "format": "uint32"
+                        },
+                        "address": {
+                          "type": "string",
+                          "description": "The address of the filtering database entry",
+                          "example": "AA:BB:CC:DD:EE:FF"
+                        }
+                      }
+                    },
+                    "x-key": [
+                      "vlan",
+                      "address"
+                    ],
+                    "type": "array",
+                    "description": "Entry associated with the filtering database"
+                  }
+                }
+              },
               "stpEnabled": {
-                "type": "boolean"
+                "default": "false",
+                "type": "boolean",
+                "description": "Enable/Disable the STP protocol of the bridge",
+                "example": "false"
               },
               "stp": {
                 "properties": {
                   "priority": {
-                    "type": "string"
+                    "default": "32768",
+                    "example": "32768",
+                    "type": "integer",
+                    "description": "The bridge priority for STP",
+                    "format": "uint32"
                   },
                   "maxMessageAge": {
-                    "type": "string"
+                    "default": "20",
+                    "example": "20",
+                    "type": "integer",
+                    "description": "The maximum age of the information transmitted by the bridge",
+                    "format": "uint32"
                   },
                   "helloTime": {
-                    "type": "string"
+                    "default": "2",
+                    "example": "2",
+                    "type": "integer",
+                    "description": "The interval between transmissions of config messages",
+                    "format": "uint32"
                   },
                   "forwardDelay": {
-                    "type": "string"
+                    "default": "10",
+                    "example": "10",
+                    "type": "integer",
+                    "description": "The delay used by STP bridges for port state transition",
+                    "format": "uint32"
                   }
                 }
               },
               "name": {
-                "type": "string"
+                "type": "string",
+                "description": "The name of the bridge",
+                "example": "br1"
               },
               "agingTime": {
-                "type": "string"
+                "default": "300",
+                "example": "300",
+                "type": "integer",
+                "description": "The aging time of the filtering database",
+                "format": "uint32"
               },
               "address": {
+                "default": "AA:BB:CC:DD:EE:FF",
                 "type": "string",
-                "description": "The MAC address used by the STP."
+                "description": "The MAC address used by the STP",
+                "example": "AA:BB:CC:DD:EE:FF"
               },
               "interfaces": {
-                "description": "name=\u2019Interface List\u2019",
+                "description": "The list of interfaces on the bridge",
                 "properties": {
                   "interface": {
                     "items": {
                       "properties": {
                         "accessMode": {
+                          "default": "access",
                           "enum": [
                             "access",
                             "trunk"
                           ],
-                          "type": "string"
+                          "type": "string",
+                          "description": "The type of bridge interface: access/trunk",
+                          "example": "access"
                         },
                         "stpInterface": {
                           "properties": {
                             "pathCost": {
-                              "type": "string"
+                              "default": "4",
+                              "example": "4",
+                              "type": "integer",
+                              "description": "The path cost associated with this interface",
+                              "format": "uint32"
                             },
                             "portPriority": {
-                              "type": "string"
+                              "default": "128",
+                              "example": "128",
+                              "type": "integer",
+                              "description": "The port priority of this interface",
+                              "format": "uint32"
                             }
                           }
                         },
                         "name": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "The name of the interface",
+                          "example": "if1"
                         },
                         "vlanId": {
-                          "type": "string"
+                          "default": "1",
+                          "example": "1",
+                          "type": "integer",
+                          "description": "The vlan associated with this interface",
+                          "format": "uint32"
                         },
                         "address": {
-                          "type": "string"
+                          "default": "AA:BB:CC:DD:EE:FF",
+                          "type": "string",
+                          "description": "The address of the bridge interface",
+                          "example": "AA:BB:CC:DD:EE:FF"
                         }
                       }
                     },
@@ -3549,147 +3768,179 @@
                     ]
                   }
                 }
-              },
-              "fwdDatabase": {
-                "properties": {
-                  "fwdEntry": {
+                }
+            }
+    },
+    "FilteringDatabaseSchema": {
+      "description": "The filtering database of the bridge",
+      "properties": {
+        "filteringEntry": {
                     "items": {
                       "properties": {
-                        "vids": {
-                          "type": "string"
+                        "vlan": {
+                          "example": "1",
+                          "type": "integer",
+                          "description": "The VLAN identifier for this entry",
+                          "format": "uint32"
                         },
-                        "age": {
-                          "type": "string"
+                        "portNumber": {
+                          "type": "string",
+                          "description": "The output port number",
+                          "example": "2"
                         },
                         "entryType": {
+                          "default": "static",
                           "enum": [
                             "static",
                             "dynamic"
                           ],
-                          "type": "string"
+                          "type": "string",
+                          "description": "The type of filtering entry",
+                          "example": "static"
                         },
-                        "portNo": {
-                          "type": "string"
+                        "agingTime": {
+                          "default": "300",
+                          "example": "300",
+                          "type": "integer",
+                          "description": "The timeout for aging out fwd entries",
+                          "format": "uint32"
                         },
                         "address": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "The address of the filtering database entry",
+                          "example": "AA:BB:CC:DD:EE:FF"
                         }
                       }
                     },
-                    "type": "array",
                     "x-key": [
-                      "vids",
+                      "vlan",
                       "address"
-                    ]
-                  }
-                }
-              }
-            }
-        },
-    "FwdDatabaseSchema": {
-      "properties": {
-        "fwdEntry": {
-          "items": {
-            "properties": {
-              "vids": {
-                "type": "string"
-              },
-              "age": {
-                "type": "string"
-              },
-              "entryType": {
-                "enum": [
-                  "static",
-                  "dynamic"
-                ],
-                "type": "string"
-              },
-              "portNo": {
-                "type": "string"
-              },
-              "address": {
-                "type": "string"
-              }
-            }
-          },
+                    ],
           "type": "array",
-          "x-key": [
-            "vids",
-            "address"
-          ]
+          "description": "Entry associated with the filtering database"
         }
       }
     },
-    "FwdEntrySchema": {
+    "FilteringEntrySchema": {
             "properties": {
-              "vids": {
-                "type": "string"
+              "vlan": {
+                "example": "1",
+                "type": "integer",
+                "description": "The VLAN identifier for this entry",
+                "format": "uint32"
               },
-              "age": {
-                "type": "string"
+              "portNumber": {
+                "type": "string",
+                "description": "The output port number",
+                "example": "2"
               },
               "entryType": {
+                "default": "static",
                 "enum": [
                   "static",
                   "dynamic"
                 ],
-                "type": "string"
+                "type": "string",
+                "description": "The type of filtering entry",
+                "example": "static"
               },
-              "portNo": {
-                "type": "string"
+              "agingTime": {
+                "default": "300",
+                "example": "300",
+                "type": "integer",
+                "description": "The timeout for aging out fwd entries",
+                "format": "uint32"
               },
               "address": {
-                "type": "string"
+                "type": "string",
+                "description": "The address of the filtering database entry",
+                "example": "AA:BB:CC:DD:EE:FF"
               }
             }
         },
     "StpSchema": {
       "properties": {
         "priority": {
-          "type": "string"
+          "default": "32768",
+          "example": "32768",
+          "type": "integer",
+          "description": "The bridge priority for STP",
+          "format": "uint32"
         },
         "maxMessageAge": {
-          "type": "string"
+          "default": "20",
+          "example": "20",
+          "type": "integer",
+          "description": "The maximum age of the information transmitted by the bridge",
+          "format": "uint32"
         },
         "helloTime": {
-          "type": "string"
+          "default": "2",
+          "example": "2",
+          "type": "integer",
+          "description": "The interval between transmissions of config messages",
+          "format": "uint32"
         },
         "forwardDelay": {
-          "type": "string"
+          "default": "10",
+          "example": "10",
+          "type": "integer",
+          "description": "The delay used by STP bridges for port state transition",
+          "format": "uint32"
         }
       }
     },
     "InterfacesSchema": {
-      "description": "name=\u2019Interface List\u2019",
+      "description": "The list of interfaces on the bridge",
       "properties": {
         "interface": {
           "items": {
             "properties": {
               "accessMode": {
+                "default": "access",
                 "enum": [
                   "access",
                   "trunk"
                 ],
-                "type": "string"
+                "type": "string",
+                "description": "The type of bridge interface: access/trunk",
+                "example": "access"
               },
               "stpInterface": {
                 "properties": {
                   "pathCost": {
-                    "type": "string"
+                    "default": "4",
+                    "example": "4",
+                    "type": "integer",
+                    "description": "The path cost associated with this interface",
+                    "format": "uint32"
                   },
                   "portPriority": {
-                    "type": "string"
+                    "default": "128",
+                    "example": "128",
+                    "type": "integer",
+                    "description": "The port priority of this interface",
+                    "format": "uint32"
                   }
                 }
               },
               "name": {
-                "type": "string"
+                "type": "string",
+                "description": "The name of the interface",
+                "example": "if1"
               },
               "vlanId": {
-                "type": "string"
+                "default": "1",
+                "example": "1",
+                "type": "integer",
+                "description": "The vlan associated with this interface",
+                "format": "uint32"
               },
               "address": {
-                "type": "string"
+                "default": "AA:BB:CC:DD:EE:FF",
+                "type": "string",
+                "description": "The address of the bridge interface",
+                "example": "AA:BB:CC:DD:EE:FF"
               }
             }
           },
@@ -3703,40 +3954,68 @@
     "InterfaceSchema": {
       "properties": {
         "accessMode": {
+          "default": "access",
           "enum": [
             "access",
             "trunk"
           ],
-          "type": "string"
+          "type": "string",
+          "description": "The type of bridge interface: access/trunk",
+          "example": "access"
         },
         "stpInterface": {
           "properties": {
             "pathCost": {
-              "type": "string"
+              "default": "4",
+              "example": "4",
+              "type": "integer",
+              "description": "The path cost associated with this interface",
+              "format": "uint32"
             },
             "portPriority": {
-              "type": "string"
+              "default": "128",
+              "example": "128",
+              "type": "integer",
+              "description": "The port priority of this interface",
+              "format": "uint32"
             }
           }
         },
         "interfaceName": {
-          "type": "string"
+          "type": "string",
+          "description": "The name of the interface",
+          "example": "if1"
         },
         "vlanId": {
-          "type": "string"
+          "default": "1",
+          "example": "1",
+          "type": "integer",
+          "description": "The vlan associated with this interface",
+          "format": "uint32"
         },
         "address": {
-          "type": "string"
+          "default": "AA:BB:CC:DD:EE:FF",
+          "type": "string",
+          "description": "The address of the bridge interface",
+          "example": "AA:BB:CC:DD:EE:FF"
         }
       }
         },
     "StpInterfaceSchema": {
       "properties": {
         "pathCost": {
-          "type": "string"
+          "default": "4",
+          "example": "4",
+          "type": "integer",
+          "description": "The path cost associated with this interface",
+          "format": "uint32"
         },
         "portPriority": {
-          "type": "string"
+          "default": "128",
+          "example": "128",
+          "type": "integer",
+          "description": "The port priority of this interface",
+          "format": "uint32"
         }
       }
     }
