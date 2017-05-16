@@ -64,7 +64,7 @@ module config-bridge {
 					}
 					default static;
 					description "The type of filtering entry";
-					bridge:cli-example "static";
+					bridge:cli-example "static | dynamic";
 				}
 				leaf port_number {
 					mandatory true;

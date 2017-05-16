@@ -596,7 +596,7 @@ def print_api(node, config, ref, path):
         operations['delete'] = generate_delete(node, ref, path)
     else:
         operations['get'] = generate_retrieve(node, ref, path)
-    if S_API or node.keyword == 'leaf':
+    if S_API or node.keyword == 'leaf' or node.arg == _ROOT_NODE_NAME:
         del operations['post']
         del operations['delete']
 
@@ -784,11 +784,10 @@ def generate_api_header(stmt, struct, operation, path, is_collection=False):
                                                                 (parent_container if child_path else ''),
                                                                 to_upper_camelcase(stmt.arg))
     struct['x-cliParam']['summary'] = '{0} operation for {1}'.format(to_upper_camelcase(str(operation)), str(stmt.arg))
-    struct['x-cliParam']['exampleUse'] = "{0}-cli ".format(str(_MODULE_NAME) if _MODULE_NAME else 'default') + \
-                                         str(operation).lower() + " " + \
-                                         ' '.join([element for element in
-                                                   re.sub(r'{(.*?)}', r'<\1>', str(path)).strip('/').split('/')]) + \
-                                         (" --value <value>" if str(operation).lower() == 'update' else '')
+    # struct['x-cliParam']['exampleUse'] = "{0}-cli ".format(str(_MODULE_NAME) if _MODULE_NAME else 'default') + \
+    #                                     str(operation).lower() + " " + \
+    #                                     ' '.join([element for element in re.sub(r'{(.*?)}', r'<\1>', str(path)).strip('/').split('/')]) + \
+    #                                     (" --value <value>" if str(operation).lower() == 'update' else '')
     if child_path:
         struct['x-cliParam']['commandUse'] = str(stmt.arg).lower()
         struct['x-cliParam']['parentCommand'] = '{0}{1}Cmd'.format(str(operation).lower(), parent_container)
