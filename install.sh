@@ -2,7 +2,7 @@
 
 _pwd=$(pwd)
 
-rm -rf /tmp/pyang-swagger
+sudo rm -rf /tmp/pyang-swagger
 mkdir /tmp/pyang-swagger
 
 wget https://github.com/mbj4668/pyang/archive/pyang-1.7.1.tar.gz -O /tmp/pyang-swagger/pyang.tar.gz
