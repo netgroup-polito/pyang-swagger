@@ -596,7 +596,8 @@ def print_api(node, config, ref, path):
         operations['delete'] = generate_delete(node, ref, path)
     else:
         operations['get'] = generate_retrieve(node, ref, path)
-    if S_API or node.keyword == 'leaf' or node.arg == _ROOT_NODE_NAME:
+    if S_API or node.keyword == 'leaf':
+        # or node.arg == _ROOT_NODE_NAME:
         del operations['post']
         del operations['delete']
 
@@ -761,6 +762,8 @@ def generate_api_header(stmt, struct, operation, path, is_collection=False):
     path_without_keys = [element for element in str(path).strip('/').split('/')
                          if not str(element)[0] == '{' and not str(element)[-1] == '}']
 
+    is_path_for_single_element = (stmt.keyword == 'leaf')
+
     parent_container = str(path_without_keys[0]) if path_without_keys else 'default'
 
     if len(path_without_keys) > 1:
@@ -811,7 +814,10 @@ def generate_api_header(stmt, struct, operation, path, is_collection=False):
         if str(element)[0] == '{' and str(element)[-1] == '}':
             struct['x-cliParam']['totParams'] += 1
 
-    if struct['x-cliParam']['totParams'] == 0:
+    if struct['x-cliParam']['totParams'] > 0:
+        if str(operation).lower() == 'update' and is_path_for_single_element:
+            struct['x-cliParam']['totParams'] += 1
+    else:
         struct['x-cliParam'].pop('totParams', None)
 
     struct['x-cliParam']['pathToPrint'] = re.sub(r'{(.*?)}', "%s", path)

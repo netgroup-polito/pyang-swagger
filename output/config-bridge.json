@@ -86,6 +86,136 @@
                 ],
                 "operationId": "updateBridgeByID"
             },
+            "post": {
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Internal Error"
+                    }
+                },
+                "description": "Create operation of resource: bridge",
+                "parameters": [
+                    {
+                        "description": "ID of name",
+                        "required": true,
+                        "type": "string",
+                        "name": "name",
+                        "in": "path"
+                    },
+                    {
+                        "description": "bridgebody object",
+                        "schema": {
+                            "$ref": "#/definitions/BridgeSchema"
+                        },
+                        "name": "bridge",
+                        "in": "body"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "bridge"
+                ],
+                "summary": "Create bridge by ID",
+                "x-cliParam": {
+                    "paramKeys": [
+                        {
+                            "key": "name"
+                        }
+                    ],
+                    "commandUse": "bridge",
+                    "pathToPrint": "/bridge/%s/",
+                    "commandName": "createBridgeCmd",
+                    "totParams": 1,
+                    "summary": "Create operation for bridge",
+                    "primitiveFlagParam": [
+                        {
+                            "name": "address",
+                            "defaultValue": "AA:BB:CC:DD:EE:FF",
+                            "description": "Default description"
+                        },
+                        {
+                            "name": "aging_time",
+                            "defaultValue": "300",
+                            "description": "Default description"
+                        },
+                        {
+                            "name": "stp_enabled",
+                            "defaultValue": "false",
+                            "description": "Default description"
+                        }
+                    ],
+                    "parentCommand": "createCmd"
+                },
+                "consumes": [
+                    "application/json"
+                ],
+                "operationId": "createBridgeByID"
+            },
+            "delete": {
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Internal Error"
+                    }
+                },
+                "description": "Delete operation of resource: bridge",
+                "parameters": [
+                    {
+                        "description": "ID of name",
+                        "required": true,
+                        "type": "string",
+                        "name": "name",
+                        "in": "path"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "bridge"
+                ],
+                "summary": "Delete bridge by ID",
+                "x-cliParam": {
+                    "paramKeys": [
+                        {
+                            "key": "name"
+                        }
+                    ],
+                    "commandUse": "bridge",
+                    "pathToPrint": "/bridge/%s/",
+                    "commandName": "deleteBridgeCmd",
+                    "totParams": 1,
+                    "summary": "Delete operation for bridge",
+                    "primitiveFlagParam": [
+                        {
+                            "name": "address",
+                            "defaultValue": "AA:BB:CC:DD:EE:FF",
+                            "description": "Default description"
+                        },
+                        {
+                            "name": "aging_time",
+                            "defaultValue": "300",
+                            "description": "Default description"
+                        },
+                        {
+                            "name": "stp_enabled",
+                            "defaultValue": "false",
+                            "description": "Default description"
+                        }
+                    ],
+                    "parentCommand": "deleteCmd"
+                },
+                "consumes": [
+                    "application/json"
+                ],
+                "operationId": "deleteBridgeByID"
+            },
             "get": {
                 "responses": {
                     "200": {
@@ -193,7 +323,7 @@
                     "commandUse": "address",
                     "pathToPrint": "/bridge/%s/address/",
                     "commandName": "updateBridgeAddressCmd",
-                    "totParams": 1,
+                    "totParams": 2,
                     "summary": "Update operation for address",
                     "parentCommand": "updateBridgeCmd"
                 },
@@ -291,7 +421,7 @@
                     "commandUse": "aging_time",
                     "pathToPrint": "/bridge/%s/aging_time/",
                     "commandName": "updateBridgeAgingTimeCmd",
-                    "totParams": 1,
+                    "totParams": 2,
                     "summary": "Update operation for aging_time",
                     "parentCommand": "updateBridgeCmd"
                 },
@@ -389,7 +519,7 @@
                     "commandUse": "stp_enabled",
                     "pathToPrint": "/bridge/%s/stp_enabled/",
                     "commandName": "updateBridgeStpEnabledCmd",
-                    "totParams": 1,
+                    "totParams": 2,
                     "summary": "Update operation for stp_enabled",
                     "parentCommand": "updateBridgeCmd"
                 },
@@ -1014,7 +1144,7 @@
                     "commandUse": "entry-type",
                     "pathToPrint": "/bridge/%s/filtering-database/filtering-entry/%s/%s/entry-type/",
                     "commandName": "updateBridgeFilteringDatabaseFilteringEntryEntryTypeCmd",
-                    "totParams": 3,
+                    "totParams": 4,
                     "summary": "Update operation for entry-type",
                     "parentCommand": "updateBridgeFilteringDatabaseFilteringEntryCmd"
                 },
@@ -1142,7 +1272,7 @@
                     "commandUse": "port_number",
                     "pathToPrint": "/bridge/%s/filtering-database/filtering-entry/%s/%s/port_number/",
                     "commandName": "updateBridgeFilteringDatabaseFilteringEntryPortNumberCmd",
-                    "totParams": 3,
+                    "totParams": 4,
                     "summary": "Update operation for port_number",
                     "parentCommand": "updateBridgeFilteringDatabaseFilteringEntryCmd"
                 },
@@ -1267,7 +1397,7 @@
                     "commandUse": "aging-time",
                     "pathToPrint": "/bridge/%s/filtering-database/filtering-entry/%s/%s/aging-time/",
                     "commandName": "updateBridgeFilteringDatabaseFilteringEntryAgingTimeCmd",
-                    "totParams": 3,
+                    "totParams": 4,
                     "summary": "Update operation for aging-time",
                     "parentCommand": "updateBridgeFilteringDatabaseFilteringEntryCmd"
                 },
@@ -1645,7 +1775,7 @@
                     "commandUse": "priority",
                     "pathToPrint": "/bridge/%s/stp/priority/",
                     "commandName": "updateBridgeStpPriorityCmd",
-                    "totParams": 1,
+                    "totParams": 2,
                     "summary": "Update operation for priority",
                     "parentCommand": "updateBridgeStpCmd"
                 },
@@ -1744,7 +1874,7 @@
                     "commandUse": "forward_delay",
                     "pathToPrint": "/bridge/%s/stp/forward_delay/",
                     "commandName": "updateBridgeStpForwardDelayCmd",
-                    "totParams": 1,
+                    "totParams": 2,
                     "summary": "Update operation for forward_delay",
                     "parentCommand": "updateBridgeStpCmd"
                 },
@@ -1843,7 +1973,7 @@
                     "commandUse": "hello_time",
                     "pathToPrint": "/bridge/%s/stp/hello_time/",
                     "commandName": "updateBridgeStpHelloTimeCmd",
-                    "totParams": 1,
+                    "totParams": 2,
                     "summary": "Update operation for hello_time",
                     "parentCommand": "updateBridgeStpCmd"
                 },
@@ -1942,7 +2072,7 @@
                     "commandUse": "max_message_age",
                     "pathToPrint": "/bridge/%s/stp/max_message_age/",
                     "commandName": "updateBridgeStpMaxMessageAgeCmd",
-                    "totParams": 1,
+                    "totParams": 2,
                     "summary": "Update operation for max_message_age",
                     "parentCommand": "updateBridgeStpCmd"
                 },
@@ -2517,7 +2647,7 @@
                     "commandUse": "address",
                     "pathToPrint": "/bridge/%s/interfaces/interface/%s/address/",
                     "commandName": "updateBridgeInterfacesInterfaceAddressCmd",
-                    "totParams": 2,
+                    "totParams": 3,
                     "summary": "Update operation for address",
                     "parentCommand": "updateBridgeInterfacesInterfaceCmd"
                 },
@@ -2632,7 +2762,7 @@
                     "commandUse": "access_mode",
                     "pathToPrint": "/bridge/%s/interfaces/interface/%s/access_mode/",
                     "commandName": "updateBridgeInterfacesInterfaceAccessModeCmd",
-                    "totParams": 2,
+                    "totParams": 3,
                     "summary": "Update operation for access_mode",
                     "parentCommand": "updateBridgeInterfacesInterfaceCmd"
                 },
@@ -2748,7 +2878,7 @@
                     "commandUse": "vlan_id",
                     "pathToPrint": "/bridge/%s/interfaces/interface/%s/vlan_id/",
                     "commandName": "updateBridgeInterfacesInterfaceVlanIdCmd",
-                    "totParams": 2,
+                    "totParams": 3,
                     "summary": "Update operation for vlan_id",
                     "parentCommand": "updateBridgeInterfacesInterfaceCmd"
                 },
@@ -3114,7 +3244,7 @@
                     "commandUse": "path_cost",
                     "pathToPrint": "/bridge/%s/interfaces/interface/%s/stp_interface/path_cost/",
                     "commandName": "updateBridgeInterfacesInterfaceStpInterfacePathCostCmd",
-                    "totParams": 2,
+                    "totParams": 3,
                     "summary": "Update operation for path_cost",
                     "parentCommand": "updateBridgeInterfacesInterfaceStpInterfaceCmd"
                 },
@@ -3227,7 +3357,7 @@
                     "commandUse": "port_priority",
                     "pathToPrint": "/bridge/%s/interfaces/interface/%s/stp_interface/port_priority/",
                     "commandName": "updateBridgeInterfacesInterfaceStpInterfacePortPriorityCmd",
-                    "totParams": 2,
+                    "totParams": 3,
                     "summary": "Update operation for port_priority",
                     "parentCommand": "updateBridgeInterfacesInterfaceStpInterfaceCmd"
                 },
