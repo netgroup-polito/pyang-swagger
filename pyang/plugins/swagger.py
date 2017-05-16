@@ -816,6 +816,22 @@ def generate_api_header(stmt, struct, operation, path, is_collection=False):
 
     struct['x-cliParam']['pathToPrint'] = re.sub(r'{(.*?)}', "%s", path)
 
+    # Add a new parameter to the CLI extension to identify which simple data types are
+    # child of the current node. These child will be treated as flags in the create operation
+    # TODO: Evaluate if to take this info from the swagger-codegen
+    if hasattr(stmt, 'i_children'):
+        struct['x-cliParam']['primitiveParams'] = list()
+        for child in stmt.i_children:
+            # The value is added to the list if the child does not have children, if is not a key in a list
+            # and if is a leaf argument in the yang model
+            if not hasattr(child, 'i_children') and (not hasattr(child, 'i_is_key') or not child.i_is_key) \
+                    and child.keyword == 'leaf':
+                struct['x-cliParam']['primitiveParams'].append({"param": child.arg})
+        if not struct['x-cliParam']['primitiveParams']:
+            struct['x-cliParam'].pop('primitiveParams', None)
+
+
+
     if _ROOT_NODE_NAME:
         struct['tags'] = [_ROOT_NODE_NAME]
 
