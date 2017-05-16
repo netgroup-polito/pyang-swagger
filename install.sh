@@ -2,6 +2,7 @@
 
 _pwd=$(pwd)
 
+rm -rf /tmp/pyang-swagger
 mkdir /tmp/pyang-swagger
 
 wget https://github.com/mbj4668/pyang/archive/pyang-1.7.1.tar.gz -O /tmp/pyang-swagger/pyang.tar.gz
@@ -12,6 +13,6 @@ tar -zxf /tmp/pyang-swagger/pyang.tar.gz -C /tmp/pyang-swagger/pyang/ --strip-co
 cp ./pyang/plugins/swagger.py /tmp/pyang-swagger/pyang/pyang/plugins/
 
 cd /tmp/pyang-swagger/pyang
-python setup.py
+python setup.py install
 
 cd $_pwd
