@@ -838,8 +838,6 @@ def generate_api_header(stmt, struct, operation, path, is_collection=False):
         if not struct['x-cliParam']['primitiveFlagParam']:
             struct['x-cliParam'].pop('primitiveFlagParam', None)
 
-
-
     if _ROOT_NODE_NAME:
         struct['tags'] = [_ROOT_NODE_NAME]
 
