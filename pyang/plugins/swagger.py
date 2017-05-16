@@ -814,10 +814,7 @@ def generate_api_header(stmt, struct, operation, path, is_collection=False):
         if str(element)[0] == '{' and str(element)[-1] == '}':
             struct['x-cliParam']['totParams'] += 1
 
-    if struct['x-cliParam']['totParams'] > 0:
-        if str(operation).lower() == 'update' and is_path_for_single_element:
-            struct['x-cliParam']['totParams'] += 1
-    else:
+    if struct['x-cliParam']['totParams'] == 0:
         struct['x-cliParam'].pop('totParams', None)
 
     struct['x-cliParam']['pathToPrint'] = re.sub(r'{(.*?)}', "%s", path)
