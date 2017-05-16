@@ -9,7 +9,7 @@ mkdir /tmp/pyang-swagger/pyang
 tar -zxf /tmp/pyang-swagger/pyang.tar.gz -C /tmp/pyang-swagger/pyang/ --strip-components=1
 
 #git clone https://github.com/sebymiano/pyang-swagger.git
-cp ./pyang-swagger/pyang/plugins/swagger.py /tmp/pyang-swagger/pyang/pyang/plugins/
+cp ./pyang/plugins/swagger.py /tmp/pyang-swagger/pyang/pyang/plugins/
 
 cd /tmp/pyang-swagger/pyang
 python setup.py
