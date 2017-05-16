@@ -58,21 +58,27 @@
                         }
                     ],
                     "commandUse": "bridge",
-                  "primitiveParams": [
-                    {
-                      "param": "address"
-                    },
-                    {
-                      "param": "aging_time"
-                    },
-                    {
-                      "param": "stp_enabled"
-                    }
-                  ],
                     "pathToPrint": "/bridge/%s/",
                     "commandName": "updateBridgeCmd",
                     "totParams": 1,
                     "summary": "Update operation for bridge",
+                    "primitiveFlagParam": [
+                        {
+                            "name": "address",
+                            "defaultValue": "AA:BB:CC:DD:EE:FF",
+                            "description": "Default description"
+                        },
+                        {
+                            "name": "aging_time",
+                            "defaultValue": "300",
+                            "description": "Default description"
+                        },
+                        {
+                            "name": "stp_enabled",
+                            "defaultValue": "false",
+                            "description": "Default description"
+                        }
+                    ],
                     "parentCommand": "updateCmd"
                 },
                 "consumes": [
@@ -116,21 +122,27 @@
                         }
                     ],
                     "commandUse": "bridge",
-                  "primitiveParams": [
-                    {
-                      "param": "address"
-                    },
-                    {
-                      "param": "aging_time"
-                    },
-                    {
-                      "param": "stp_enabled"
-                    }
-                  ],
                     "pathToPrint": "/bridge/%s/",
                     "commandName": "readBridgeCmd",
                     "totParams": 1,
                     "summary": "Read operation for bridge",
+                    "primitiveFlagParam": [
+                        {
+                            "name": "address",
+                            "defaultValue": "AA:BB:CC:DD:EE:FF",
+                            "description": "Default description"
+                        },
+                        {
+                            "name": "aging_time",
+                            "defaultValue": "300",
+                            "description": "Default description"
+                        },
+                        {
+                            "name": "stp_enabled",
+                            "defaultValue": "false",
+                            "description": "Default description"
+                        }
+                    ],
                     "parentCommand": "readCmd"
                 },
                 "consumes": [
@@ -668,21 +680,27 @@
                         }
                     ],
                     "commandUse": "filtering-entry",
-                  "primitiveParams": [
-                    {
-                      "param": "entry-type"
-                    },
-                    {
-                      "param": "port_number"
-                    },
-                    {
-                      "param": "aging-time"
-                    }
-                  ],
                     "pathToPrint": "/bridge/%s/filtering-database/filtering-entry/%s/%s/",
                     "commandName": "updateBridgeFilteringDatabaseFilteringEntryCmd",
                     "totParams": 3,
                     "summary": "Update operation for filtering-entry",
+                    "primitiveFlagParam": [
+                        {
+                            "name": "entry-type",
+                            "defaultValue": "static",
+                            "description": "Default description"
+                        },
+                        {
+                            "name": "port_number",
+                            "defaultValue": "",
+                            "description": "Default description"
+                        },
+                        {
+                            "name": "aging-time",
+                            "defaultValue": "300",
+                            "description": "Default description"
+                        }
+                    ],
                     "parentCommand": "updateBridgeFilteringDatabaseCmd"
                 },
                 "consumes": [
@@ -748,21 +766,27 @@
                         }
                     ],
                     "commandUse": "filtering-entry",
-                  "primitiveParams": [
-                    {
-                      "param": "entry-type"
-                    },
-                    {
-                      "param": "port_number"
-                    },
-                    {
-                      "param": "aging-time"
-                    }
-                  ],
                     "pathToPrint": "/bridge/%s/filtering-database/filtering-entry/%s/%s/",
                     "commandName": "createBridgeFilteringDatabaseFilteringEntryCmd",
                     "totParams": 3,
                     "summary": "Create operation for filtering-entry",
+                    "primitiveFlagParam": [
+                        {
+                            "name": "entry-type",
+                            "defaultValue": "static",
+                            "description": "Default description"
+                        },
+                        {
+                            "name": "port_number",
+                            "defaultValue": "",
+                            "description": "Default description"
+                        },
+                        {
+                            "name": "aging-time",
+                            "defaultValue": "300",
+                            "description": "Default description"
+                        }
+                    ],
                     "parentCommand": "createBridgeFilteringDatabaseCmd"
                 },
                 "consumes": [
@@ -820,21 +844,27 @@
                         }
                     ],
                     "commandUse": "filtering-entry",
-                  "primitiveParams": [
-                    {
-                      "param": "entry-type"
-                    },
-                    {
-                      "param": "port_number"
-                    },
-                    {
-                      "param": "aging-time"
-                    }
-                  ],
                     "pathToPrint": "/bridge/%s/filtering-database/filtering-entry/%s/%s/",
                     "commandName": "deleteBridgeFilteringDatabaseFilteringEntryCmd",
                     "totParams": 3,
                     "summary": "Delete operation for filtering-entry",
+                    "primitiveFlagParam": [
+                        {
+                            "name": "entry-type",
+                            "defaultValue": "static",
+                            "description": "Default description"
+                        },
+                        {
+                            "name": "port_number",
+                            "defaultValue": "",
+                            "description": "Default description"
+                        },
+                        {
+                            "name": "aging-time",
+                            "defaultValue": "300",
+                            "description": "Default description"
+                        }
+                    ],
                     "parentCommand": "deleteBridgeFilteringDatabaseCmd"
                 },
                 "consumes": [
@@ -895,21 +925,27 @@
                         }
                     ],
                     "commandUse": "filtering-entry",
-                  "primitiveParams": [
-                    {
-                      "param": "entry-type"
-                    },
-                    {
-                      "param": "port_number"
-                    },
-                    {
-                      "param": "aging-time"
-                    }
-                  ],
                     "pathToPrint": "/bridge/%s/filtering-database/filtering-entry/%s/%s/",
                     "commandName": "readBridgeFilteringDatabaseFilteringEntryCmd",
                     "totParams": 3,
                     "summary": "Read operation for filtering-entry",
+                    "primitiveFlagParam": [
+                        {
+                            "name": "entry-type",
+                            "defaultValue": "static",
+                            "description": "Default description"
+                        },
+                        {
+                            "name": "port_number",
+                            "defaultValue": "",
+                            "description": "Default description"
+                        },
+                        {
+                            "name": "aging-time",
+                            "defaultValue": "300",
+                            "description": "Default description"
+                        }
+                    ],
                     "parentCommand": "readBridgeFilteringDatabaseCmd"
                 },
                 "consumes": [
@@ -1337,25 +1373,33 @@
                 ],
                 "summary": "Update stp by ID",
                 "x-cliParam": {
-                  "primitiveParams": [
-                    {
-                      "param": "priority"
-                    },
-                    {
-                      "param": "forward_delay"
-                    },
-                    {
-                      "param": "hello_time"
-                    },
-                    {
-                      "param": "max_message_age"
-                    }
-                  ],
                     "commandUse": "stp",
                     "pathToPrint": "/bridge/%s/stp/",
                     "commandName": "updateBridgeStpCmd",
                     "totParams": 1,
                     "summary": "Update operation for stp",
+                    "primitiveFlagParam": [
+                        {
+                            "name": "priority",
+                            "defaultValue": "32768",
+                            "description": "Default description"
+                        },
+                        {
+                            "name": "forward_delay",
+                            "defaultValue": "10",
+                            "description": "Default description"
+                        },
+                        {
+                            "name": "hello_time",
+                            "defaultValue": "2",
+                            "description": "Default description"
+                        },
+                        {
+                            "name": "max_message_age",
+                            "defaultValue": "20",
+                            "description": "Default description"
+                        }
+                    ],
                     "parentCommand": "updateBridgeCmd"
                 },
                 "consumes": [
@@ -1398,25 +1442,33 @@
                 ],
                 "summary": "Create stp by ID",
                 "x-cliParam": {
-                  "primitiveParams": [
-                    {
-                      "param": "priority"
-                    },
-                    {
-                      "param": "forward_delay"
-                    },
-                    {
-                      "param": "hello_time"
-                    },
-                    {
-                      "param": "max_message_age"
-                    }
-                  ],
                     "commandUse": "stp",
                     "pathToPrint": "/bridge/%s/stp/",
                     "commandName": "createBridgeStpCmd",
                     "totParams": 1,
                     "summary": "Create operation for stp",
+                    "primitiveFlagParam": [
+                        {
+                            "name": "priority",
+                            "defaultValue": "32768",
+                            "description": "Default description"
+                        },
+                        {
+                            "name": "forward_delay",
+                            "defaultValue": "10",
+                            "description": "Default description"
+                        },
+                        {
+                            "name": "hello_time",
+                            "defaultValue": "2",
+                            "description": "Default description"
+                        },
+                        {
+                            "name": "max_message_age",
+                            "defaultValue": "20",
+                            "description": "Default description"
+                        }
+                    ],
                     "parentCommand": "createBridgeCmd"
                 },
                 "consumes": [
@@ -1451,25 +1503,33 @@
                 ],
                 "summary": "Delete stp by ID",
                 "x-cliParam": {
-                  "primitiveParams": [
-                    {
-                      "param": "priority"
-                    },
-                    {
-                      "param": "forward_delay"
-                    },
-                    {
-                      "param": "hello_time"
-                    },
-                    {
-                      "param": "max_message_age"
-                    }
-                  ],
                     "commandUse": "stp",
                     "pathToPrint": "/bridge/%s/stp/",
                     "commandName": "deleteBridgeStpCmd",
                     "totParams": 1,
                     "summary": "Delete operation for stp",
+                    "primitiveFlagParam": [
+                        {
+                            "name": "priority",
+                            "defaultValue": "32768",
+                            "description": "Default description"
+                        },
+                        {
+                            "name": "forward_delay",
+                            "defaultValue": "10",
+                            "description": "Default description"
+                        },
+                        {
+                            "name": "hello_time",
+                            "defaultValue": "2",
+                            "description": "Default description"
+                        },
+                        {
+                            "name": "max_message_age",
+                            "defaultValue": "20",
+                            "description": "Default description"
+                        }
+                    ],
                     "parentCommand": "deleteBridgeCmd"
                 },
                 "consumes": [
@@ -1507,25 +1567,33 @@
                 ],
                 "summary": "Read stp by ID",
                 "x-cliParam": {
-                  "primitiveParams": [
-                    {
-                      "param": "priority"
-                    },
-                    {
-                      "param": "forward_delay"
-                    },
-                    {
-                      "param": "hello_time"
-                    },
-                    {
-                      "param": "max_message_age"
-                    }
-                  ],
                     "commandUse": "stp",
                     "pathToPrint": "/bridge/%s/stp/",
                     "commandName": "readBridgeStpCmd",
                     "totParams": 1,
                     "summary": "Read operation for stp",
+                    "primitiveFlagParam": [
+                        {
+                            "name": "priority",
+                            "defaultValue": "32768",
+                            "description": "Default description"
+                        },
+                        {
+                            "name": "forward_delay",
+                            "defaultValue": "10",
+                            "description": "Default description"
+                        },
+                        {
+                            "name": "hello_time",
+                            "defaultValue": "2",
+                            "description": "Default description"
+                        },
+                        {
+                            "name": "max_message_age",
+                            "defaultValue": "20",
+                            "description": "Default description"
+                        }
+                    ],
                     "parentCommand": "readBridgeCmd"
                 },
                 "consumes": [
@@ -2156,21 +2224,27 @@
                         }
                     ],
                     "commandUse": "interface",
-                  "primitiveParams": [
-                    {
-                      "param": "address"
-                    },
-                    {
-                      "param": "access_mode"
-                    },
-                    {
-                      "param": "vlan_id"
-                    }
-                  ],
                     "pathToPrint": "/bridge/%s/interfaces/interface/%s/",
                     "commandName": "updateBridgeInterfacesInterfaceCmd",
                     "totParams": 2,
                     "summary": "Update operation for interface",
+                    "primitiveFlagParam": [
+                        {
+                            "name": "address",
+                            "defaultValue": "AA:BB:CC:DD:EE:FF",
+                            "description": "Default description"
+                        },
+                        {
+                            "name": "access_mode",
+                            "defaultValue": "access",
+                            "description": "Default description"
+                        },
+                        {
+                            "name": "vlan_id",
+                            "defaultValue": "1",
+                            "description": "Default description"
+                        }
+                    ],
                     "parentCommand": "updateBridgeInterfacesCmd"
                 },
                 "consumes": [
@@ -2226,21 +2300,27 @@
                         }
                     ],
                     "commandUse": "interface",
-                  "primitiveParams": [
-                    {
-                      "param": "address"
-                    },
-                    {
-                      "param": "access_mode"
-                    },
-                    {
-                      "param": "vlan_id"
-                    }
-                  ],
                     "pathToPrint": "/bridge/%s/interfaces/interface/%s/",
                     "commandName": "createBridgeInterfacesInterfaceCmd",
                     "totParams": 2,
                     "summary": "Create operation for interface",
+                    "primitiveFlagParam": [
+                        {
+                            "name": "address",
+                            "defaultValue": "AA:BB:CC:DD:EE:FF",
+                            "description": "Default description"
+                        },
+                        {
+                            "name": "access_mode",
+                            "defaultValue": "access",
+                            "description": "Default description"
+                        },
+                        {
+                            "name": "vlan_id",
+                            "defaultValue": "1",
+                            "description": "Default description"
+                        }
+                    ],
                     "parentCommand": "createBridgeInterfacesCmd"
                 },
                 "consumes": [
@@ -2288,21 +2368,27 @@
                         }
                     ],
                     "commandUse": "interface",
-                  "primitiveParams": [
-                    {
-                      "param": "address"
-                    },
-                    {
-                      "param": "access_mode"
-                    },
-                    {
-                      "param": "vlan_id"
-                    }
-                  ],
                     "pathToPrint": "/bridge/%s/interfaces/interface/%s/",
                     "commandName": "deleteBridgeInterfacesInterfaceCmd",
                     "totParams": 2,
                     "summary": "Delete operation for interface",
+                    "primitiveFlagParam": [
+                        {
+                            "name": "address",
+                            "defaultValue": "AA:BB:CC:DD:EE:FF",
+                            "description": "Default description"
+                        },
+                        {
+                            "name": "access_mode",
+                            "defaultValue": "access",
+                            "description": "Default description"
+                        },
+                        {
+                            "name": "vlan_id",
+                            "defaultValue": "1",
+                            "description": "Default description"
+                        }
+                    ],
                     "parentCommand": "deleteBridgeInterfacesCmd"
                 },
                 "consumes": [
@@ -2353,21 +2439,27 @@
                         }
                     ],
                     "commandUse": "interface",
-                  "primitiveParams": [
-                    {
-                      "param": "address"
-                    },
-                    {
-                      "param": "access_mode"
-                    },
-                    {
-                      "param": "vlan_id"
-                    }
-                  ],
                     "pathToPrint": "/bridge/%s/interfaces/interface/%s/",
                     "commandName": "readBridgeInterfacesInterfaceCmd",
                     "totParams": 2,
                     "summary": "Read operation for interface",
+                    "primitiveFlagParam": [
+                        {
+                            "name": "address",
+                            "defaultValue": "AA:BB:CC:DD:EE:FF",
+                            "description": "Default description"
+                        },
+                        {
+                            "name": "access_mode",
+                            "defaultValue": "access",
+                            "description": "Default description"
+                        },
+                        {
+                            "name": "vlan_id",
+                            "defaultValue": "1",
+                            "description": "Default description"
+                        }
+                    ],
                     "parentCommand": "readBridgeInterfacesCmd"
                 },
                 "consumes": [
@@ -2762,19 +2854,23 @@
                 ],
                 "summary": "Update stp_interface by ID",
                 "x-cliParam": {
-                  "primitiveParams": [
-                    {
-                      "param": "path_cost"
-                    },
-                    {
-                      "param": "port_priority"
-                    }
-                  ],
                     "commandUse": "stp_interface",
                     "pathToPrint": "/bridge/%s/interfaces/interface/%s/stp_interface/",
                     "commandName": "updateBridgeInterfacesInterfaceStpInterfaceCmd",
                     "totParams": 2,
                     "summary": "Update operation for stp_interface",
+                    "primitiveFlagParam": [
+                        {
+                            "name": "path_cost",
+                            "defaultValue": "4",
+                            "description": "Default description"
+                        },
+                        {
+                            "name": "port_priority",
+                            "defaultValue": "128",
+                            "description": "Default description"
+                        }
+                    ],
                     "parentCommand": "updateBridgeInterfacesInterfaceCmd"
                 },
                 "consumes": [
@@ -2824,19 +2920,23 @@
                 ],
                 "summary": "Create stp_interface by ID",
                 "x-cliParam": {
-                  "primitiveParams": [
-                    {
-                      "param": "path_cost"
-                    },
-                    {
-                      "param": "port_priority"
-                    }
-                  ],
                     "commandUse": "stp_interface",
                     "pathToPrint": "/bridge/%s/interfaces/interface/%s/stp_interface/",
                     "commandName": "createBridgeInterfacesInterfaceStpInterfaceCmd",
                     "totParams": 2,
                     "summary": "Create operation for stp_interface",
+                    "primitiveFlagParam": [
+                        {
+                            "name": "path_cost",
+                            "defaultValue": "4",
+                            "description": "Default description"
+                        },
+                        {
+                            "name": "port_priority",
+                            "defaultValue": "128",
+                            "description": "Default description"
+                        }
+                    ],
                     "parentCommand": "createBridgeInterfacesInterfaceCmd"
                 },
                 "consumes": [
@@ -2878,19 +2978,23 @@
                 ],
                 "summary": "Delete stp_interface by ID",
                 "x-cliParam": {
-                  "primitiveParams": [
-                    {
-                      "param": "path_cost"
-                    },
-                    {
-                      "param": "port_priority"
-                    }
-                  ],
                     "commandUse": "stp_interface",
                     "pathToPrint": "/bridge/%s/interfaces/interface/%s/stp_interface/",
                     "commandName": "deleteBridgeInterfacesInterfaceStpInterfaceCmd",
                     "totParams": 2,
                     "summary": "Delete operation for stp_interface",
+                    "primitiveFlagParam": [
+                        {
+                            "name": "path_cost",
+                            "defaultValue": "4",
+                            "description": "Default description"
+                        },
+                        {
+                            "name": "port_priority",
+                            "defaultValue": "128",
+                            "description": "Default description"
+                        }
+                    ],
                     "parentCommand": "deleteBridgeInterfacesInterfaceCmd"
                 },
                 "consumes": [
@@ -2935,19 +3039,23 @@
                 ],
                 "summary": "Read stp_interface by ID",
                 "x-cliParam": {
-                  "primitiveParams": [
-                    {
-                      "param": "path_cost"
-                    },
-                    {
-                      "param": "port_priority"
-                    }
-                  ],
                     "commandUse": "stp_interface",
                     "pathToPrint": "/bridge/%s/interfaces/interface/%s/stp_interface/",
                     "commandName": "readBridgeInterfacesInterfaceStpInterfaceCmd",
                     "totParams": 2,
                     "summary": "Read operation for stp_interface",
+                    "primitiveFlagParam": [
+                        {
+                            "name": "path_cost",
+                            "defaultValue": "4",
+                            "description": "Default description"
+                        },
+                        {
+                            "name": "port_priority",
+                            "defaultValue": "128",
+                            "description": "Default description"
+                        }
+                    ],
                     "parentCommand": "readBridgeInterfacesInterfaceCmd"
                 },
                 "consumes": [
