@@ -10,7 +10,7 @@ mkdir /tmp/pyang-swagger/pyang
 tar -zxf /tmp/pyang-swagger/pyang.tar.gz -C /tmp/pyang-swagger/pyang/ --strip-components=1
 
 #git clone https://github.com/sebymiano/pyang-swagger.git
-cp ./pyang/plugins/swagger.py /tmp/pyang-swagger/pyang/pyang/plugins/
+cp $(pwd)/pyang/plugins/swagger.py /tmp/pyang-swagger/pyang/pyang/plugins/
 
 cd /tmp/pyang-swagger/pyang
 sudo pip -r requirements.txt
