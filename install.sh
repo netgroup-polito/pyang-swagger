@@ -13,7 +13,7 @@ tar -zxf /tmp/pyang-swagger/pyang.tar.gz -C /tmp/pyang-swagger/pyang/ --strip-co
 cp $(pwd)/pyang/plugins/swagger.py /tmp/pyang-swagger/pyang/pyang/plugins/
 
 cd /tmp/pyang-swagger/pyang
-sudo pip -r requirements.txt
+sudo pip install -r requirements.txt
 sudo python setup.py install
 
 cd $_pwd
