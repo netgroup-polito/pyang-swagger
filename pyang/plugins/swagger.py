@@ -22,6 +22,8 @@ from collections import OrderedDict
 
 from pyang import plugin
 from pyang import statements
+from pyang import error
+from pyang import types
 
 TYPEDEFS = dict()
 PARENT_MODELS = dict()
@@ -73,6 +75,10 @@ class SwaggerPlugin(plugin.PyangPlugin):
     def setup_fmt(self, ctx):
         ctx.implicit_errors = False
 
+    def pre_validate(self, ctx, modules):
+        for module in modules:
+            add_fake_list_at_beginning(module)
+
     def emit(self, ctx, modules, fd):
         # TODO: the path variable is currently not used.
         if ctx.opts.swagger_path is not None:
@@ -85,6 +91,105 @@ class SwaggerPlugin(plugin.PyangPlugin):
         S_API = ctx.opts.s_api
         emit_swagger_spec(ctx, modules, fd, ctx.opts.path)
 
+
+def add_fake_list_at_beginning(module):
+    top_list = statements.Statement(module, module, error.Position("Automatically inserted statement"), "list",
+                                    module.arg)
+
+    leaf_name = statements.Statement(module, top_list, error.Position("Automatically inserted statement"), "leaf",
+                                     "name")
+
+    add_leaf_name_parameters(leaf_name, module)
+
+    top_list.i_config = True
+    top_list.i_is_validated = True
+    top_list.i_key = [leaf_name]
+    top_list.i_module = module
+    top_list.i_origin_module = module
+    top_list.i_typedefs = dict()
+    top_list.i_unique = list()
+    top_list.i_uniques = list()
+    top_list.is_grammatically_valid = True
+
+    leaf_name_keyword = statements.Statement(module, top_list, error.Position("Automatically inserted statement"),
+                                             "key", "name")
+    leaf_name_keyword.i_groupings = dict()
+    leaf_name_keyword.i_module = module
+    leaf_name_keyword.i_origin_module = module
+    leaf_name_keyword.i_typedefs = dict()
+    leaf_name_keyword.i_uniques = list()
+    leaf_name_keyword.is_grammatically_valid = True
+
+    old_list = list(module.i_children)
+    del module.i_children[:]
+
+    top_list.i_children = [leaf_name]
+    top_list.i_children.extend(old_list)
+
+    top_list.substmts.append(leaf_name_keyword)
+    top_list.substmts.append(leaf_name)
+    top_list.substmts.extend(old_list)
+
+    module.i_children.append(top_list)
+
+    del module.substmts[-len(old_list):]
+    module.substmts.append(top_list)
+
+
+def add_leaf_name_parameters(leaf_name, module):
+    leaf_name.i_config = True
+    leaf_name.i_default = None
+    leaf_name.i_default_str = ""
+    leaf_name.i_groupings = dict()
+    leaf_name.i_is_key = True
+    leaf_name.i_leafref = None
+    leaf_name.i_leafref_expanded = False
+    leaf_name.i_leafref_ptr = None
+    leaf_name.i_module = module
+    leaf_name.i_origin_module = module
+    leaf_name.i_typedefs = dict()
+    leaf_name.i_uniques = list()
+    leaf_name.is_grammatically_valid = True
+
+    leaf_name_type = statements.Statement(module, leaf_name, error.Position("Automatically inserted statement"), "type",
+                                          "string")
+    leaf_name_type.i_groupings = dict()
+    leaf_name_type.i_is_derived = False
+    leaf_name_type.i_is_validated = True
+    leaf_name_type.i_lengths = list()
+    leaf_name_type.i_module = module
+    leaf_name_type.i_origin_module = module
+    leaf_name_type.i_ranges = list()
+    leaf_name_type.i_type_spec = types.StringTypeSpec()
+    leaf_name_type.i_type_spec.base = None
+    leaf_name_type.i_type_spec.definition = ""
+    leaf_name_type.i_type_spec.name = "string"
+    leaf_name_type.i_typedef = None
+    leaf_name_type.i_typedefs = dict()
+    leaf_name_type.i_uniques = list()
+    leaf_name_type.is_grammatically_valid = True
+
+    leaf_name_mandatory = statements.Statement(module, leaf_name, error.Position("Automatically inserted statement"),
+                                               "mandatory", "true")
+    leaf_name_mandatory.i_groupings = dict()
+    leaf_name_mandatory.i_module = module
+    leaf_name_mandatory.i_origin_module = module
+    leaf_name_mandatory.i_typedefs = dict()
+    leaf_name_mandatory.i_uniques = list()
+    leaf_name_mandatory.is_grammatically_valid = True
+
+    leaf_name_description = statements.Statement(module, leaf_name, error.Position("Automatically inserted statement"),
+                                                 "description", "Name of the {0} service".format(module.arg))
+    leaf_name_description.i_groupings = dict()
+    leaf_name_description.i_module = module
+    leaf_name_description.i_origin_module = module
+    leaf_name_description.i_typedefs = dict()
+    leaf_name_description.i_uniques = list()
+    leaf_name_description.is_grammatically_valid = True
+
+    leaf_name.substmts.append(leaf_name_type)
+    leaf_name.substmts.append(leaf_name_mandatory)
+    leaf_name.substmts.append(leaf_name_description)
 
 def print_header(module, fd, children):
     """ Print the swagger header information."""
@@ -598,8 +703,8 @@ def print_api(node, config, ref, path):
         operations['get'] = generate_retrieve(node, ref, path)
     if S_API or node.keyword == 'leaf':
         # or node.arg == _ROOT_NODE_NAME:
-        del operations['post']
-        del operations['delete']
+        if 'post' in operations: del operations['post']
+        if 'delete' in operations: del operations['delete']
 
     return operations
 
