@@ -51,11 +51,10 @@ class SwaggerPlugin(plugin.PyangPlugin):
                 action='store_true',
                 help='Print help on swagger options and exit'),
             optparse.make_option(
-                '--swagger-depth',
-                type='int',
-                dest='swagger_depth',
-                default=5,
-                help='Number of levels to print'),
+                '--swagger-start-name',
+                type='string',
+                dest='swagger_start_name',
+                help='Name of the base path to print'),
             optparse.make_option(
                 '--simplify-api',
                 default=False,
@@ -87,17 +86,16 @@ class SwaggerPlugin(plugin.PyangPlugin):
                 path = path[1:]
         else:
             path = None
+
         global S_API
         S_API = ctx.opts.s_api
         emit_swagger_spec(ctx, modules, fd, ctx.opts.path)
 
 
 def add_fake_list_at_beginning(module):
-    top_list = statements.Statement(module, module, error.Position("Automatically inserted statement"), "list",
-                                    module.arg)
+    top_list = statements.Statement(module, module, error.Position("Automatically inserted statement"), "list", module.arg)
 
-    leaf_name = statements.Statement(module, top_list, error.Position("Automatically inserted statement"), "leaf",
-                                     "name")
+    leaf_name = statements.Statement(module, top_list, error.Position("Automatically inserted statement"), "leaf", "name")
 
     add_leaf_name_parameters(leaf_name, module)
 
@@ -111,8 +109,7 @@ def add_fake_list_at_beginning(module):
     top_list.i_uniques = list()
     top_list.is_grammatically_valid = True
 
-    leaf_name_keyword = statements.Statement(module, top_list, error.Position("Automatically inserted statement"),
-                                             "key", "name")
+    leaf_name_keyword = statements.Statement(module, top_list, error.Position("Automatically inserted statement"), "key", "name")
     leaf_name_keyword.i_groupings = dict()
     leaf_name_keyword.i_module = module
     leaf_name_keyword.i_origin_module = module
@@ -134,7 +131,6 @@ def add_fake_list_at_beginning(module):
 
     del module.substmts[-len(old_list):]
     module.substmts.append(top_list)
-
 
 def add_leaf_name_parameters(leaf_name, module):
     leaf_name.i_config = True
@@ -279,6 +275,9 @@ def emit_swagger_spec(ctx, modules, fd, path):
             gen_apis(chs, path, model['paths'], definitions, is_root=True)
 
         model['definitions'] = definitions
+        modulepath = "/{0}/".format(module.arg)
+        del model['paths'][modulepath]
+
         fd.write(json.dumps(model, indent=4, separators=(',', ': ')))
 
 
@@ -500,6 +499,7 @@ def gen_apis(children, path, apis, definitions, config=True, is_root=False):
 def gen_api_node(node, path, apis, definitions, config=True):
     """ Generate the API for a node."""
     path += str(node.arg) + '/'
+    list_path = str(path)
     tree = {}
     schema = {}
     keyList = []
@@ -605,6 +605,12 @@ def gen_api_node(node, path, apis, definitions, config=True):
         else:
             new_schema = {"$ref": schema['$ref']}
         apis[str(path)] = print_api(node, config, new_schema, path)
+        if node.keyword == 'list':
+            list_schema = {
+                "type": "array",
+                "items" : { "$ref": schema['$ref'] }
+            }
+            apis[str(list_path)] = print_api(node, config, list_schema, list_path, isList=True)
 
     elif node.keyword == 'rpc':
         schema_out = dict()
@@ -691,16 +697,16 @@ def print_rpc(node, schema_in, schema_out):
 
 
 # print the API JSON structure.
-def print_api(node, config, ref, path):
+def print_api(node, config, ref, path, isList=False):
     """ Creates the available operations for the node."""
     operations = {}
     if config and config != 'false':
-        operations['post'] = generate_create(node, ref, path)
-        operations['get'] = generate_retrieve(node, ref, path)
-        operations['put'] = generate_update(node, ref, path)
-        operations['delete'] = generate_delete(node, ref, path)
+        operations['post'] = generate_create(node, ref, path, isList=isList)
+        operations['get'] = generate_retrieve(node, ref, path, isList=isList)
+        operations['put'] = generate_update(node, ref, path, isList=isList)
+        operations['delete'] = generate_delete(node, ref, path, isList=isList)
     else:
-        operations['get'] = generate_retrieve(node, ref, path)
+        operations['get'] = generate_retrieve(node, ref, path, isList=isList)
     if S_API or node.keyword == 'leaf':
         # or node.arg == _ROOT_NODE_NAME:
         if 'post' in operations: del operations['post']
@@ -726,13 +732,13 @@ def get_input_path_parameters(path):
 
 # CREATE
 
-def generate_create(stmt, schema, path, rpc=None):
+def generate_create(stmt, schema, path, rpc=None, isList=False):
     """ Generates the create function definitions."""
     path_params = None
     if path:
         path_params = get_input_path_parameters(path)
     post = {}
-    generate_api_header(stmt, post, 'Create', path)
+    generate_api_header(stmt, post, 'Create', path, isList=isList)
     # Input parameters
     if path:
         post['parameters'] = create_parameter_list(path_params)
@@ -755,14 +761,14 @@ def generate_create(stmt, schema, path, rpc=None):
 
 # RETRIEVE
 
-def generate_retrieve(stmt, schema, path):
+def generate_retrieve(stmt, schema, path, isList=False):
     """ Generates the retrieve function definitions."""
     path_params = None
     if path:
         path_params = get_input_path_parameters(path)
     get = {}
     generate_api_header(stmt, get, 'Read', path, stmt.keyword == 'container'
-                        and not path_params)
+                        and not path_params, isList=isList)
     if path:
         get['parameters'] = create_parameter_list(path_params)
 
@@ -774,13 +780,13 @@ def generate_retrieve(stmt, schema, path):
 
 # UPDATE
 
-def generate_update(stmt, schema, path):
+def generate_update(stmt, schema, path, isList=False):
     """ Generates the update function definitions."""
     path_params = None
     if path:
         path_params = get_input_path_parameters(path)
     put = {}
-    generate_api_header(stmt, put, 'Update', path)
+    generate_api_header(stmt, put, 'Update', path, isList=isList)
     # Input parameters
     if path:
         put['parameters'] = create_parameter_list(path_params)
@@ -801,11 +807,11 @@ def generate_update(stmt, schema, path):
 
 # DELETE
 
-def generate_delete(stmt, ref, path):
+def generate_delete(stmt, ref, path, isList=False):
     """ Generates the delete function definitions."""
     path_params = get_input_path_parameters(path)
     delete = {}
-    generate_api_header(stmt, delete, 'Delete', path)
+    generate_api_header(stmt, delete, 'Delete', path, isList=isList)
     # Input parameters
     if path_params:
         delete['parameters'] = create_parameter_list(path_params)
@@ -856,7 +862,7 @@ def create_responses(name, schema=None):
     return response
 
 
-def generate_api_header(stmt, struct, operation, path, is_collection=False):
+def generate_api_header(stmt, struct, operation, path, is_collection=False, isList=False):
     """ Auxiliary function to generate the API-header skeleton.
     The "is_collection" flag is used to decide if an ID is needed.
     """
@@ -879,9 +885,10 @@ def generate_api_header(stmt, struct, operation, path, is_collection=False):
         str(operation), str(stmt.arg),
         ('' if is_collection else ' by ID'))
     struct['description'] = str(operation) + ' operation of resource: ' + str(stmt.arg)
-    struct['operationId'] = '%s%s%s%s' % (str(operation).lower(),
+    struct['operationId'] = '%s%s%s%s%s' % (str(operation).lower(),
                                           (parent_container if child_path else ''),
                                           to_upper_camelcase(stmt.arg),
+                                            ('List' if isList else ''),
                                           ('' if is_collection else 'ByID'))
     struct['produces'] = ['application/json']
     struct['consumes'] = ['application/json']
