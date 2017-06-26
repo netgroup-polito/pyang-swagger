@@ -1,115 +1,57 @@
-[![Build Status](https://travis-ci.org/mbj4668/pyang.svg?branch=master)](https://travis-ci.org/mbj4668/pyang)
-[![Coverage Status](https://coveralls.io/repos/mbj4668/pyang/badge.svg)](https://coveralls.io/r/mbj4668/pyang)
+# Pyang plugin for Swagger
 
-## News ##
-**2017-06-14 - Version 1.7.2 released**
+Most of the code has been taken from the [Pyang-COP](https://github.com/ict-strauss/COP/tree/master/pyang_plugins) repository and modified to fit our requirements
 
-  * Added support for external plugins, using setuptools entry_points,
-    with the entry point "pyang.plugin".
+[Pyang](https://github.com/mbj4668/pyang) is an extensible YANG validator and converter written in python.
 
-  * ... and various other enhancements and bug fixes, see CHANGES.
+It can be used to validate YANG modules for correctness, to transform YANG modules into other formats, and to generate code from the modules. We have written a pyang plugin to obtain the RESTCONF API from a yang model.
 
-**2016-11-02 - Version 1.7.1 released**
-
-  * This is mainly a bug fix release, see CHANGES for details.
-
-**2016-06-16 - Version 1.7 released**
-  * Support for YANG 1.1, with the exception of the new submodule scoping rules. 
+The RESTCONF API of the YANG model is interpreted with [Swagger](http://swagger.io/), which is a powerful framework for API description. This framework will be used to generate a Stub server for the YANG module.
 
 
-**2015-10-06 - Version 1.6 released**
+##Install pyang
 
-  * pyang can now be installed via [PyPi](https://pypi.python.org/pypi).
+Download pyang [here](https://github.com/mbj4668/pyang/releases) (tested with version pyang-1.7.1)
+Extract the archive to a folder of you choice.
+Install pyang  by running the following command inside that folder:
 
-  * A new plugin 'lint' has been added. It checks if a module follow
-    the generic guidelines defined in RFC 6087.  The 'ietf' plugin
-    still exists, but is rewritten to use the new 'lint' plugin.
+```
+sudo python setup.py install
+```
 
-  * By default, pyang now scans the YANG module path recursively,
-    i.e., it searches for YANG modules also in subdirectories to the
-    directories in the load path.  This behavior can be disabled with
-    '--no-path-recurse'.
+### Copy the swagger plugin to pyang's plugin directory:
 
-  * A bash completions file has been added.
+```
+sudo cp pyang_plugins/swagger.py /usr/local/lib/python2.7/dist-packages/{pyang_directory}/plugins/
+```
 
-  * ... and various other enhancements and bug fixes, see CHANGES.
+## Run pyang swagger plugin
 
-**2014-11-18 - Version 1.5 released**
+```
+pyang -f swagger -p modules modules/config-bridge.yang -o config-bridge-swagger.json
 
-  * A new plugin 'check-update' has been added. It can be used to check if a new revision of a module follows the update rules from RFC 6020.
+      --use the option '-p' to specify the path of the yang models for import purposes.
+```
 
-  * A new plugin 'omni' has been added.  It generates an OmniGraffle script file from a model.
+### Have a look at the auto-generated JSON output 
 
-  * ... and various other enhancements and bug fixes.
+[config-bridge.json](./output/config-bridge.json)
 
-**2013-11-11 - Version 1.4.1 released**
-  * Exactly as 1.4, but fixed to that it works with Python 3.
+### Have a look at the auto-generated Swagger API on swaggerhub.com 
+[config-bridge-api](https://app.swaggerhub.com/apis/sebymiano/config-bridge_api/1.0.0)
 
-**2013-10-24 - Version 1.4 released**
-  * lots of bugfixes
+License
+-------
+Copyright 2017 Politecnico di Torino.
 
-**2013-01-31 - Version 1.3 released**
-  * New plugins: hypertree, jstree, jsonxsl, jtox
-  * lots of bugfixes
+Copyright 2015 CTTC.
 
-**2011-07-27 - Version 1.2 released**
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at [apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
 
-**2011-02-16 - Version 1.1 released**
-
-  * A new UML plugin has been added. It is used to generate UML
-    diagrams for visualization of YANG data models.  See
-    [UMLOutput](https://github.com/mbj4668/pyang/wiki/UMLOutput) for
-    an example.
-  * The DSDL plugin is updated to [RFC 6110](http://tools.ietf.org/html/rfc6110)
-  * ... and various bug fixes.
-
-
----
-
-
-## Overview ##
-
-YANG ([RFC 7950](http://tools.ietf.org/html/rfc7950)) is a data modeling language for NETCONF ([RFC 6241](http://tools.ietf.org/html/rfc6241)), developed by the IETF [NETMOD](http://www.ietf.org/html.charters/netmod-charter.html) WG.
-
-pyang is a YANG validator, transformator and code generator, written in python. It can be used to validate YANG modules for correctness, to transform YANG modules into other formats, and to generate code from the modules.
-
-### Compatibility ###
-
-pyang is compatible with the following IETF RFCs:
-
-  * [RFC 6020](http://tools.ietf.org/html/rfc6020)
-  * [RFC 6087](http://tools.ietf.org/html/rfc6087)
-  * [RFC 6110](http://tools.ietf.org/html/rfc6110)
-  * [RFC 6643](http://tools.ietf.org/html/rfc6643)
-  * [RFC 7950](http://tools.ietf.org/html/rfc7950)
-  * [RFC 7952](http://tools.ietf.org/html/rfc7952)
-
-## Features ##
-
-  * Validate YANG modules.
-  * Convert YANG modules to YIN, and YIN to YANG.
-  * Translate YANG data models to DSDL schemas, which can be used for
-    validating various XML instance documents. See
-    [InstanceValidation](https://github.com/mbj4668/pyang/wiki/InstanceValidation).
-  * Translate YANG data models to XSD.
-  * Generate UML diagrams from YANG models. See
-    [UMLOutput](https://github.com/mbj4668/pyang/wiki/UMLOutput) for
-    an example.
-  * Generate compact tree representation of YANG models for quick
-  visualization. See
-  [TreeOutput](https://github.com/mbj4668/pyang/wiki/TreeOutput) for
-  an example.
-  * Generate a skeleton XML instance document from the data model.
-  * Schema-aware translation of instance documents encoded in XML to
-    JSON and vice-versa. See
-    [XmlJson](https://github.com/mbj4668/pyang/wiki/XmlJson).
-  * Plugin framework for simple development of other outputs, such as
-    code generation.
-
-
----
-
-
-## Documentation ##
-
-See [Documentation](https://github.com/mbj4668/pyang/wiki/Documentation).
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
