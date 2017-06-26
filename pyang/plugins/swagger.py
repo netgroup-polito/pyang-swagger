@@ -132,6 +132,7 @@ def add_fake_list_at_beginning(module):
     del module.substmts[-len(old_list):]
     module.substmts.append(top_list)
 
+
 def add_leaf_name_parameters(leaf_name, module):
     leaf_name.i_config = True
     leaf_name.i_default = None
@@ -186,6 +187,7 @@ def add_leaf_name_parameters(leaf_name, module):
     leaf_name.substmts.append(leaf_name_type)
     leaf_name.substmts.append(leaf_name_mandatory)
     leaf_name.substmts.append(leaf_name_description)
+
 
 def print_header(module, fd, children):
     """ Print the swagger header information."""
@@ -610,9 +612,9 @@ def gen_api_node(node, path, apis, definitions, config=True):
                 "type": "array",
                 "items" : { "$ref": schema['$ref'] }
             }
-            apis[str(list_path)] = print_api(node, config, list_schema, list_path, isList=True)
+            apis[str(list_path)] = print_api(node, config, list_schema, list_path, is_list=True)
 
-    elif node.keyword == 'rpc':
+    elif node.keyword == 'rpc' or node.keyword == 'action':
         schema_out = dict()
         for child in node.i_children:
             if child.keyword == 'input':
@@ -624,9 +626,12 @@ def gen_api_node(node, path, apis, definitions, config=True):
                 # of the body input schema i.e {"child.arg":schema} -> schema
                 if schema[to_lower_camelcase(child.arg)]:
                     if not '$ref' in schema[to_lower_camelcase(child.arg)]:
-                        definitions[to_upper_camelcase(node.arg + 'RPC_input_schema')] = schema[
+                        definitions[to_upper_camelcase(node.arg + 'RPC_input_schema' if node.keyword == 'rpc'
+                                                       else 'ACTION_input_schema')] = schema[
                             to_lower_camelcase(child.arg)]
-                        schema = {'$ref': '#/definitions/' + to_upper_camelcase(node.arg + 'RPC_input_schema')}
+                        schema = {'$ref': '#/definitions/' + to_upper_camelcase(node.arg + 'RPC_input_schema'
+                                                                                if node.keyword == 'rpc'
+                                                                                else 'ACTION_input_schema')}
                     else:
                         schema = schema[to_lower_camelcase(node.arg)]
                 else:
@@ -641,15 +646,18 @@ def gen_api_node(node, path, apis, definitions, config=True):
                 # of the body input schema i.e {"child.arg":schema} -> schema
                 if schema_out[to_lower_camelcase(child.arg)]:
                     if not '$ref' in schema_out[to_lower_camelcase(child.arg)]:
-                        definitions[to_upper_camelcase(node.arg + 'RPC_output_schema')] = schema_out[
+                        definitions[to_upper_camelcase(node.arg + 'RPC_output_schema' if node.keyword == 'rpc'
+                                                       else 'ACTION_output_schema')] = schema_out[
                             to_lower_camelcase(child.arg)]
-                        schema_out = {'$ref': '#/definitions/' + to_upper_camelcase(node.arg + 'RPC_output_schema')}
+                        schema_out = {'$ref': '#/definitions/' + to_upper_camelcase(node.arg + 'RPC_output_schema'
+                                                                                    if node.keyword == 'rpc'
+                                                                                    else 'ACTION_output_schema')}
                     else:
                         schema_out = schema_out[to_lower_camelcase(child.arg)]
                 else:
                     schema_out = None
 
-        apis[str(path)] = print_rpc(node, schema, schema_out)
+        apis[str(path)] = print_rpc(node, schema, path, schema_out)
         return apis
 
     elif node.keyword == 'notification':
@@ -691,22 +699,22 @@ def print_notification(node, schema_out):
     return operations
 
 
-def print_rpc(node, schema_in, schema_out):
-    operations = {'post': generate_create(node, schema_in, None, schema_out)}
+def print_rpc(node, schema_in, path, schema_out):
+    operations = {'post': generate_create(node, schema_in, path, rpc=schema_out)}
     return operations
 
 
 # print the API JSON structure.
-def print_api(node, config, ref, path, isList=False):
+def print_api(node, config, ref, path, is_list=False):
     """ Creates the available operations for the node."""
     operations = {}
     if config and config != 'false':
-        operations['post'] = generate_create(node, ref, path, isList=isList)
-        operations['get'] = generate_retrieve(node, ref, path, isList=isList)
-        operations['put'] = generate_update(node, ref, path, isList=isList)
-        operations['delete'] = generate_delete(node, ref, path, isList=isList)
+        operations['post'] = generate_create(node, ref, path, is_list=is_list)
+        operations['get'] = generate_retrieve(node, ref, path, is_list=is_list)
+        operations['put'] = generate_update(node, ref, path, is_list=is_list)
+        operations['delete'] = generate_delete(node, ref, path, is_list=is_list)
     else:
-        operations['get'] = generate_retrieve(node, ref, path, isList=isList)
+        operations['get'] = generate_retrieve(node, ref, path, is_list=is_list)
     if S_API or node.keyword == 'leaf':
         # or node.arg == _ROOT_NODE_NAME:
         if 'post' in operations: del operations['post']
@@ -732,13 +740,13 @@ def get_input_path_parameters(path):
 
 # CREATE
 
-def generate_create(stmt, schema, path, rpc=None, isList=False):
+def generate_create(stmt, schema, path, rpc=None, is_list=False):
     """ Generates the create function definitions."""
     path_params = None
     if path:
         path_params = get_input_path_parameters(path)
     post = {}
-    generate_api_header(stmt, post, 'Create', path, isList=isList)
+    generate_api_header(stmt, post, 'Create', path, is_list=is_list)
     # Input parameters
     if path:
         post['parameters'] = create_parameter_list(path_params)
@@ -761,14 +769,14 @@ def generate_create(stmt, schema, path, rpc=None, isList=False):
 
 # RETRIEVE
 
-def generate_retrieve(stmt, schema, path, isList=False):
+def generate_retrieve(stmt, schema, path, is_list=False):
     """ Generates the retrieve function definitions."""
     path_params = None
     if path:
         path_params = get_input_path_parameters(path)
     get = {}
     generate_api_header(stmt, get, 'Read', path, stmt.keyword == 'container'
-                        and not path_params, isList=isList)
+                        and not path_params, is_list=is_list)
     if path:
         get['parameters'] = create_parameter_list(path_params)
 
@@ -780,13 +788,13 @@ def generate_retrieve(stmt, schema, path, isList=False):
 
 # UPDATE
 
-def generate_update(stmt, schema, path, isList=False):
+def generate_update(stmt, schema, path, is_list=False):
     """ Generates the update function definitions."""
     path_params = None
     if path:
         path_params = get_input_path_parameters(path)
     put = {}
-    generate_api_header(stmt, put, 'Update', path, isList=isList)
+    generate_api_header(stmt, put, 'Update', path, is_list=is_list)
     # Input parameters
     if path:
         put['parameters'] = create_parameter_list(path_params)
@@ -807,11 +815,11 @@ def generate_update(stmt, schema, path, isList=False):
 
 # DELETE
 
-def generate_delete(stmt, ref, path, isList=False):
+def generate_delete(stmt, ref, path, is_list=False):
     """ Generates the delete function definitions."""
     path_params = get_input_path_parameters(path)
     delete = {}
-    generate_api_header(stmt, delete, 'Delete', path, isList=isList)
+    generate_api_header(stmt, delete, 'Delete', path, is_list=is_list)
     # Input parameters
     if path_params:
         delete['parameters'] = create_parameter_list(path_params)
@@ -847,7 +855,7 @@ def create_body_dict(name, schema):
             body_dict['description'] = schema['description']
         else:
             body_dict['description'] = name + 'body object'
-        # body_dict['required'] = True
+        body_dict['required'] = True
     return body_dict
 
 
@@ -862,7 +870,7 @@ def create_responses(name, schema=None):
     return response
 
 
-def generate_api_header(stmt, struct, operation, path, is_collection=False, isList=False):
+def generate_api_header(stmt, struct, operation, path, is_collection=False, is_list=False):
     """ Auxiliary function to generate the API-header skeleton.
     The "is_collection" flag is used to decide if an ID is needed.
     """
@@ -888,12 +896,12 @@ def generate_api_header(stmt, struct, operation, path, is_collection=False, isLi
     struct['operationId'] = '%s%s%s%s%s' % (str(operation).lower(),
                                           (parent_container if child_path else ''),
                                           to_upper_camelcase(stmt.arg),
-                                            ('List' if isList else ''),
+                                            ('List' if is_list else ''),
                                           ('' if is_collection else 'ByID'))
     struct['produces'] = ['application/json']
     struct['consumes'] = ['application/json']
 
-    if stmt.keyword != 'rpc':
+    if stmt.keyword != 'rpc' and stmt.keyword != 'action':
         # This is a vendor extension added to support the automatic CLI generation
         struct['x-cliParam'] = dict()
         struct['x-cliParam']['commandName'] = '{0}{1}{2}Cmd'.format(str(operation).lower(),
