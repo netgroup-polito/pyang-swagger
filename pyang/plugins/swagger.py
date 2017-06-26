@@ -893,65 +893,66 @@ def generate_api_header(stmt, struct, operation, path, is_collection=False, isLi
     struct['produces'] = ['application/json']
     struct['consumes'] = ['application/json']
 
-    # This is a vendor extension added to support the automatic CLI generation
-    struct['x-cliParam'] = dict()
-    struct['x-cliParam']['commandName'] = '{0}{1}{2}Cmd'.format(str(operation).lower(),
-                                                                (parent_container if child_path else ''),
-                                                                to_upper_camelcase(stmt.arg))
-    struct['x-cliParam']['summary'] = '{0} operation for {1}'.format(to_upper_camelcase(str(operation)), str(stmt.arg))
-    # struct['x-cliParam']['exampleUse'] = "{0}-cli ".format(str(_MODULE_NAME) if _MODULE_NAME else 'default') + \
-    #                                     str(operation).lower() + " " + \
-    #                                     ' '.join([element for element in re.sub(r'{(.*?)}', r'<\1>', str(path)).strip('/').split('/')]) + \
-    #                                     (" --value <value>" if str(operation).lower() == 'update' else '')
-    if child_path:
-        struct['x-cliParam']['commandUse'] = str(stmt.arg).lower()
-        struct['x-cliParam']['parentCommand'] = '{0}{1}Cmd'.format(str(operation).lower(), parent_container)
-    else:
-        struct['x-cliParam']['commandUse'] = parent_container
-        struct['x-cliParam']['parentCommand'] = "{0}Cmd".format(str(operation).lower())
+    if stmt.keyword != 'rpc':
+        # This is a vendor extension added to support the automatic CLI generation
+        struct['x-cliParam'] = dict()
+        struct['x-cliParam']['commandName'] = '{0}{1}{2}Cmd'.format(str(operation).lower(),
+                                                                    (parent_container if child_path else ''),
+                                                                    to_upper_camelcase(stmt.arg))
+        struct['x-cliParam']['summary'] = '{0} operation for {1}'.format(to_upper_camelcase(str(operation)), str(stmt.arg))
+        # struct['x-cliParam']['exampleUse'] = "{0}-cli ".format(str(_MODULE_NAME) if _MODULE_NAME else 'default') + \
+        #                                     str(operation).lower() + " " + \
+        #                                     ' '.join([element for element in re.sub(r'{(.*?)}', r'<\1>', str(path)).strip('/').split('/')]) + \
+        #                                     (" --value <value>" if str(operation).lower() == 'update' else '')
+        if child_path:
+            struct['x-cliParam']['commandUse'] = str(stmt.arg).lower()
+            struct['x-cliParam']['parentCommand'] = '{0}{1}Cmd'.format(str(operation).lower(), parent_container)
+        else:
+            struct['x-cliParam']['commandUse'] = parent_container
+            struct['x-cliParam']['parentCommand'] = "{0}Cmd".format(str(operation).lower())
 
-    # Set the parameters used in the command line for that specific command
-    path_list = [element for element in str(path).strip('/').split('/')]
-    if str(path_list[-1])[0] == '{' and str(path_list[-1])[-1] == '}':
-        # Include the keys in the parameters information
-        struct['x-cliParam']['paramKeys'] = list()
-        for elem in reversed(path_list):
-            if str(elem)[0] == '{' and str(elem[-1]) == '}':
-                struct['x-cliParam']['paramKeys'].insert(0, {"key": elem[1:-1]})
-            else:
-                break
+        # Set the parameters used in the command line for that specific command
+        path_list = [element for element in str(path).strip('/').split('/')]
+        if str(path_list[-1])[0] == '{' and str(path_list[-1])[-1] == '}':
+            # Include the keys in the parameters information
+            struct['x-cliParam']['paramKeys'] = list()
+            for elem in reversed(path_list):
+                if str(elem)[0] == '{' and str(elem[-1]) == '}':
+                    struct['x-cliParam']['paramKeys'].insert(0, {"key": elem[1:-1]})
+                else:
+                    break
 
-    struct['x-cliParam']['totParams'] = 0
-    for element in path_list:
-        if str(element)[0] == '{' and str(element)[-1] == '}':
-            struct['x-cliParam']['totParams'] += 1
+        struct['x-cliParam']['totParams'] = 0
+        for element in path_list:
+            if str(element)[0] == '{' and str(element)[-1] == '}':
+                struct['x-cliParam']['totParams'] += 1
 
-    if struct['x-cliParam']['totParams'] == 0:
-        struct['x-cliParam'].pop('totParams', None)
+        if struct['x-cliParam']['totParams'] == 0:
+            struct['x-cliParam'].pop('totParams', None)
 
-    struct['x-cliParam']['pathToPrint'] = re.sub(r'{(.*?)}', "%s", path)
+        struct['x-cliParam']['pathToPrint'] = re.sub(r'{(.*?)}', "%s", path)
 
-    # Add a new parameter to the CLI extension to identify which simple data types are
-    # child of the current node. These child will be treated as flags in the create operation
-    # TODO: Evaluate if to take this info from the swagger-codegen
-    if hasattr(stmt, 'i_children'):
-        struct['x-cliParam']['primitiveFlagParam'] = list()
-        for child in stmt.i_children:
-            # The value is added to the list if the child does not have children, if is not a key in a list
-            # and if is a leaf argument in the yang model
-            if not hasattr(child, 'i_children') and (not hasattr(child, 'i_is_key') or not child.i_is_key) \
-                    and child.keyword == 'leaf':
-                primitive_flag_param = OrderedDict()
-                primitive_flag_param['name'] = child.arg
-                primitive_flag_param['defaultValue'] = child.i_default_str if hasattr(child, "i_default_str") \
-                    else "default"
-                for subchild in child.substmts:
-                    primitive_flag_param['description'] = subchild.arg if subchild.keyword == 'description' \
-                        else "Default description"
+        # Add a new parameter to the CLI extension to identify which simple data types are
+        # child of the current node. These child will be treated as flags in the create operation
+        # TODO: Evaluate if to take this info from the swagger-codegen
+        if hasattr(stmt, 'i_children'):
+            struct['x-cliParam']['primitiveFlagParam'] = list()
+            for child in stmt.i_children:
+                # The value is added to the list if the child does not have children, if is not a key in a list
+                # and if is a leaf argument in the yang model
+                if not hasattr(child, 'i_children') and (not hasattr(child, 'i_is_key') or not child.i_is_key) \
+                        and child.keyword == 'leaf':
+                    primitive_flag_param = OrderedDict()
+                    primitive_flag_param['name'] = child.arg
+                    primitive_flag_param['defaultValue'] = child.i_default_str if hasattr(child, "i_default_str") \
+                        else "default"
+                    for subchild in child.substmts:
+                        primitive_flag_param['description'] = subchild.arg if subchild.keyword == 'description' \
+                            else "Default description"
 
-                struct['x-cliParam']['primitiveFlagParam'].append(primitive_flag_param)
-        if not struct['x-cliParam']['primitiveFlagParam']:
-            struct['x-cliParam'].pop('primitiveFlagParam', None)
+                    struct['x-cliParam']['primitiveFlagParam'].append(primitive_flag_param)
+            if not struct['x-cliParam']['primitiveFlagParam']:
+                struct['x-cliParam'].pop('primitiveFlagParam', None)
 
     if _ROOT_NODE_NAME:
         struct['tags'] = [_ROOT_NODE_NAME]
