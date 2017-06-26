@@ -649,7 +649,7 @@ def gen_api_node(node, path, apis, definitions, config=True):
                 else:
                     schema_out = None
 
-        apis['/operations' + str(path)] = print_rpc(node, schema, schema_out)
+        apis[str(path)] = print_rpc(node, schema, schema_out)
         return apis
 
     elif node.keyword == 'notification':
