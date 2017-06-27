@@ -207,7 +207,7 @@ def print_header(module, fd, children):
     header['host'] = 'localhost:8080'
     # TODO: introduce flexible base path. (CLI options?)
     header['basePath'] = '/'
-    header['schemes'] = ['https']
+    header['schemes'] = ['http']
 
     # Add tags to the header to group the APIs based on every root node found in the YANG
     if len(children) > 0:
@@ -474,6 +474,10 @@ def gen_model(children, tree_structure, config=True):
             if referenced:
                 node['$ref'] = ref
 
+            if child.keyword == 'input' or child.keyword == 'output':
+                # TODO: This is because pyang does not support the action keyword
+                child.arg = str(child.keyword)
+
             tree_structure[to_lower_camelcase(child.arg)] = node
 
 
@@ -481,7 +485,8 @@ def gen_model_node(node, tree_structure, config=True):
     """ Generates the properties sub-tree of the current node."""
     if hasattr(node, 'i_children'):
         properties = {}
-        gen_model(node.i_children, properties, config)
+        children_list = node.i_children if node.i_children else node.substmts
+        gen_model(children_list, properties, config)
         if properties:
             tree_structure['properties'] = properties
 
@@ -616,8 +621,13 @@ def gen_api_node(node, path, apis, definitions, config=True):
 
     elif node.keyword == 'rpc' or node.keyword == 'action':
         schema_out = dict()
-        for child in node.i_children:
+
+        list_to_iterate = node.i_children if hasattr(node, 'i_children') and node.i_children else node.substmts
+
+        for child in list_to_iterate:
             if child.keyword == 'input':
+                # TODO: This is done because pyang does not support the action keyword
+                child.arg = 'input'
                 gen_model([child], schema, config)
 
                 # If a body input params has not been defined as a schema (not included in the definitions set),
@@ -638,6 +648,8 @@ def gen_api_node(node, path, apis, definitions, config=True):
                     schema = None
 
             elif child.keyword == 'output':
+                # TODO: This is done because pyang does not support the action keyword
+                child.arg = 'output'
                 gen_model([child], schema_out, config)
 
                 # If a body input params has not been defined as a schema (not included in the definitions set),
@@ -646,12 +658,12 @@ def gen_api_node(node, path, apis, definitions, config=True):
                 # of the body input schema i.e {"child.arg":schema} -> schema
                 if schema_out[to_lower_camelcase(child.arg)]:
                     if not '$ref' in schema_out[to_lower_camelcase(child.arg)]:
-                        definitions[to_upper_camelcase(node.arg + 'RPC_output_schema' if node.keyword == 'rpc'
-                                                       else 'ACTION_output_schema')] = schema_out[
+                        definitions[to_upper_camelcase(node.arg + ('RPC_output_schema' if node.keyword == 'rpc'
+                                                       else 'ACTION_output_schema'))] = schema_out[
                             to_lower_camelcase(child.arg)]
-                        schema_out = {'$ref': '#/definitions/' + to_upper_camelcase(node.arg + 'RPC_output_schema'
+                        schema_out = {'$ref': '#/definitions/' + to_upper_camelcase(node.arg + ('RPC_output_schema'
                                                                                     if node.keyword == 'rpc'
-                                                                                    else 'ACTION_output_schema')}
+                                                                                    else 'ACTION_output_schema'))}
                     else:
                         schema_out = schema_out[to_lower_camelcase(child.arg)]
                 else:
