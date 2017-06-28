@@ -19,6 +19,7 @@ import json
 import re
 import string
 from collections import OrderedDict
+import copy
 
 from pyang import plugin
 from pyang import statements
@@ -339,7 +340,7 @@ def find_typedefs(ctx, module, children, referenced_types):
 pending_models = list()
 
 
-def gen_model(children, tree_structure, config=True):
+def gen_model(children, tree_structure, config=True, definitions=None):
     """ Generates the swagger definition tree."""
     for child in children:
         referenced = False
@@ -424,7 +425,7 @@ def gen_model(children, tree_structure, config=True):
         # does not go deeper into the sub-tree of the referenced model.
         if not referenced:
             if not nonRefChildren:
-                gen_model_node(child, node, config)
+                gen_model_node(child, node, config, definitions=definitions)
             else:
                 node_ext = dict()
                 properties = dict()
@@ -457,11 +458,29 @@ def gen_model(children, tree_structure, config=True):
                     allOf = list(node['allOf'])
                     node['items']['allOf'] = allOf
                     del node['allOf']
-                elif 'properties' in node:
-                    properties = dict(node['properties'])
-                    node['items']['properties'] = properties
-                    del node['properties']
+                # elif 'properties' in node:
+                #    properties = dict(node['properties'])
+                #    node['items']['properties'] = properties
+                #    del node['properties']
+            parent_list = get_parent_list(child)
+            parents_name = '_'.join(parent_list) + ('_' if parent_list else '')
+            node_schema_name = to_upper_camelcase(parents_name + child.arg + '_schema')
+            if node_schema_name not in definitions:
+                definitions[node_schema_name] = dict()
+                definitions[node_schema_name]['properties'] = copy.deepcopy(node['properties'])
 
+            del node['properties']
+            node['items']['$ref'] = '#/definitions/{0}'.format(node_schema_name)
+            tree_structure[to_lower_camelcase(child.arg)] = node
+        elif child.keyword == 'container':
+            parent_list = get_parent_list(child)
+            parents_name = '_'.join(parent_list) + ('_' if parent_list else '')
+            node_schema_name = to_upper_camelcase(parents_name + child.arg + '_schema')
+            if node_schema_name not in definitions:
+                definitions[node_schema_name] = copy.deepcopy(node)
+
+            node.clear()
+            node['$ref'] = '#/definitions/{0}'.format(node_schema_name)
             tree_structure[to_lower_camelcase(child.arg)] = node
 
         # elif child.keyword == 'leaf':
@@ -481,12 +500,22 @@ def gen_model(children, tree_structure, config=True):
             tree_structure[to_lower_camelcase(child.arg)] = node
 
 
-def gen_model_node(node, tree_structure, config=True):
+def get_parent_list(child):
+    parent = child.parent
+    parent_list = list()
+    while parent is not None:
+        parent_list.append(parent.arg)
+        parent = parent.parent
+
+    return list(reversed(parent_list[:-1]))
+
+
+def gen_model_node(node, tree_structure, config=True, definitions=None):
     """ Generates the properties sub-tree of the current node."""
     if hasattr(node, 'i_children'):
         properties = {}
         children_list = node.i_children if node.i_children else node.substmts
-        gen_model(children_list, properties, config)
+        gen_model(children_list, properties, config, definitions=definitions)
         if properties:
             tree_structure['properties'] = properties
 
@@ -559,7 +588,7 @@ def gen_api_node(node, path, apis, definitions, config=True):
                         path += '{' + to_lower_camelcase(key) + '}/'
 
             schema_list = {}
-            gen_model([node], schema_list, config)
+            gen_model([node], schema_list, config, definitions=definitions)
 
             # If a body input params has not been defined as a schema (not included in the definitions set),
             # a new definition is created, named the parent node name and the extension Schema
@@ -573,7 +602,7 @@ def gen_api_node(node, path, apis, definitions, config=True):
                 schema = dict(schema_list[to_lower_camelcase(node.arg)]['items'])
 
         elif node.keyword == 'container':
-            gen_model([node], schema, config)
+            gen_model([node], schema, config, definitions=definitions)
 
             # If a body input params has not been defined as a schema (not included in the definitions set),
             # a new definition is created, named the parent node name and the extension Schema
@@ -586,7 +615,7 @@ def gen_api_node(node, path, apis, definitions, config=True):
                 schema = schema[to_lower_camelcase(node.arg)]
 
         elif node.keyword == 'leaf':
-            gen_model([node], schema, config)
+            gen_model([node], schema, config, definitions=definitions)
 
             # There is only one attribute, I do not want to create a new schema for this
             updated_schema = dict()
@@ -615,7 +644,7 @@ def gen_api_node(node, path, apis, definitions, config=True):
         if node.keyword == 'list':
             list_schema = {
                 "type": "array",
-                "items" : { "$ref": schema['$ref'] }
+                "items": {"$ref": schema['$ref']}
             }
             apis[str(list_path)] = print_api(node, config, list_schema, list_path, is_list=True)
 
