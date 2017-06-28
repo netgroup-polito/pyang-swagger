@@ -1,143 +1,144 @@
 module bridge {
-	namespace "http://netgroup.ipv6.polito.it/vnf";
+	yang-version 1.1;
+	namespace "http://iovisor.org/iovnet/bridge";
 	prefix "bridge";
 
+	import base-iovnet-service-model { prefix "basemodel"; }
+
 	organization "Politecnico di Torino";
- 	description "Contains the Bridge configuration information.";
+ 	description "Data model for an IOVisor-based bridge";
 
 	extension cli-example {
-		description "A sample value used by the CLI generator";
 		argument "value";
+		description "A sample value used by the CLI generator";
 	}
 
 	leaf address {
 		type string;
 		default "AA:BB:CC:DD:EE:FF";
-		description	"The MAC address used by the STP";
+		description "Main MAC address used by the STP";
 		bridge:cli-example "C5:13:2D:36:27:9B";
 	}
-	leaf aging_time {
+	leaf agingTime {
 		type uint32;
 		units seconds;
 		default 300;
-		description "The aging time of the filtering database";
+		description "Aging time of the filtering database";
 		bridge:cli-example "300";
 	}
-	leaf stp_enabled {
+	leaf stpEnabled {
 		type boolean;
 		default false;
 		description "Enable/Disable the STP protocol of the bridge";
 		bridge:cli-example "false";
 	}
-	list filtering-entry {
-		description "Entry associated with the filtering database";
+
+	uses "basemodel:base-yang-module" {
+ 		augment ports {
+ 			leaf address {
+				type string;
+				default "AA:BB:CC:DD:EE:FF";
+				description "MAC address of the port";
+				bridge:cli-example "C5:13:2D:36:27:9B";
+			}
+			leaf accessMode {
+				type enumeration {
+					enum access;
+					enum trunk;
+				}
+				default access;
+				description "Type of bridge interface: access/trunk";
+				bridge:cli-example "access";
+			}
+			leaf vlanId {
+				type uint32;
+				default 1;
+				description "VLAN associated with this interface";
+				bridge:cli-example "1";
+			}
+			container stp {
+				leaf pathCost {
+					type uint32;
+					default 4;
+					description "STP cost associated with this interface";
+					bridge:cli-example "4";
+				}
+				leaf portPriority {
+					type uint32;
+					default 128;
+					description "Port priority of this interface";
+					bridge:cli-example "128";
+				}
+			}
+ 		}
+ 	}
+
+	list filteringDatabase {
 		key "vlan address";
+		description "Entry associated with the filtering database";
 		leaf vlan {
-			mandatory true;
 			type uint32;
-			description "The VLAN identifier for this entry";
+			mandatory true;
+			description "VLAN identifier for this entry";
 			bridge:cli-example "1";
 		}
 		leaf address {
-			mandatory true;
 			type string;
-			description "The address of the filtering database entry";
+			mandatory true;
+			description "Address of the filtering database entry";
 			bridge:cli-example "C5:13:2D:36:27:9B";
 		}
-		leaf entry-type {
+		leaf entryType {
 			type enumeration {
 				enum static;
 				enum dynamic;
 			}
 			default static;
-			description "The type of filtering entry";
+			description "Type of filtering entry";
 			bridge:cli-example "static | dynamic";
 		}
-		leaf port_number {
+		leaf port {
+			type string;
 			mandatory true;
-			type string; 
-			description "The output port number";
-			bridge:cli-example "2";
+			description "Output port name";
+			bridge:cli-example "port2";
 		}
-		leaf aging-time {
+		leaf agingTime {
 			type uint32;
 			units seconds;
 			default 300;
-			description "The timeout for aging out fwd entries";
+			description "Age of the current filtering database entry";
 			bridge:cli-example "300";
 		}
 	}
+
 	container stp {
 		leaf priority {
 			type uint32;
 			default 32768;
-			description "The bridge priority for STP";
+			description "Bridge priority for STP";
 			bridge:cli-example "32768";
 		}
-		leaf forward_delay {
+		leaf forwardDelay {
 			type uint32;
 			units seconds;
 			default 10;
-			description "The delay used by STP bridges for port state transition";
+			description "Delay used by STP bridges for port state transition";
 			bridge:cli-example "10";
 		}
-		leaf hello_time {
+		leaf helloTime {
 			type uint32;
 			units seconds;
 			default 2;
-			description "The interval between transmissions of config messages";
+			description "Interval between transmissions of BPDU messages";
 			bridge:cli-example "2";
 		}
-		leaf max_message_age {
+		leaf maxMessageAge {
 			type uint32;
 			units seconds;
 			default 20;
-			description "The maximum age of the information transmitted by the bridge";
+			description "Maximum age of a BPDU";
 			bridge:cli-example "20";
-		}
-	}
-	list interface {
-		key name;
-		leaf name {
-			type string;
-			mandatory true;
-			description "The name of the interface";
-			bridge:cli-example "if1";
-		}
-		leaf address {
-			default "AA:BB:CC:DD:EE:FF";
-			type string;
-			description "The address of the bridge interface";
-			bridge:cli-example "C5:13:2D:36:27:9B";
-		}
-		leaf access_mode {
-			type enumeration {
-				enum access;
-				enum trunk;
-			}
-			default access;
-			description "The type of bridge interface: access/trunk";
-			bridge:cli-example "access";
-		}
-		leaf vlan_id {
-			type uint32;
-			default 1;
-			description "The vlan associated with this interface";
-			bridge:cli-example "1";
-		}
-		container stp_interface {
-			leaf path_cost {
-				type uint32;
-				default 4;
-				description "The path cost associated with this interface";
-				bridge:cli-example "4";
-			}
-			leaf port_priority {
-				type uint32;
-				default 128;
-				description "The port priority of this interface";
-				bridge:cli-example "128";
-			}
 		}
 	}
 }

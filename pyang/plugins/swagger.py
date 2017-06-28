@@ -497,7 +497,8 @@ def gen_model(children, tree_structure, config=True, definitions=None):
                 # TODO: This is because pyang does not support the action keyword
                 child.arg = str(child.keyword)
 
-            tree_structure[to_lower_camelcase(child.arg)] = node
+            if node:
+                tree_structure[to_lower_camelcase(child.arg)] = node
 
 
 def get_parent_list(child):
