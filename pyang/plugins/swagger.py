@@ -398,6 +398,7 @@ def gen_model(children, tree_structure, config=True, definitions=None):
                     node['example'] = attribute.arg
                 elif attribute.keyword == 'config' and attribute.arg == 'false':
                     config = False
+                    node['readOnly'] = True
 
                 # Process the reference to another model.
                 # We differentiate between single and array references.
