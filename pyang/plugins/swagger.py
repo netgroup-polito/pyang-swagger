@@ -235,7 +235,6 @@ def emit_swagger_spec(ctx, modules, fd, path):
         # extract children which contain data definition keywords
         chs = [ch for ch in module.i_children
                if ch.keyword in (statements.data_definition_keywords + ['rpc', 'notification'])]
-
         if not printed_header:
             model = print_header(module, fd, chs)
             printed_header = True
@@ -279,7 +278,39 @@ def emit_swagger_spec(ctx, modules, fd, path):
 
         model['definitions'] = definitions
         modulepath = "/{0}/".format(module.arg)
-        del model['paths'][modulepath]
+        del model['paths'][modulepath]['put']
+        del model['paths'][modulepath]['delete']
+        del model['paths'][modulepath]['post']
+
+        # mark methods that have a default implementation
+        # service level
+        model['paths'][modulepath]['get']['x-has-default-impl'] = True
+
+        # instance level
+        model['paths'][modulepath + '{name}/']['post']['x-has-default-impl'] = True
+        model['paths'][modulepath + '{name}/']['delete']['x-has-default-impl'] = True
+        model['paths'][modulepath + '{name}/uuid/']['get']['x-has-default-impl'] = True
+
+        # port list level?
+        model['paths'][modulepath + '{name}/ports/']['post']['x-has-default-impl'] = True
+        model['paths'][modulepath + '{name}/ports/']['put']['x-has-default-impl'] = True
+        model['paths'][modulepath + '{name}/ports/']['get']['x-has-default-impl'] = True
+        model['paths'][modulepath + '{name}/ports/']['delete']['x-has-default-impl'] = True
+
+        # ports level
+        model['paths'][modulepath + '{name}/ports/{ports_name}/']['post']['x-has-default-impl'] = True
+        model['paths'][modulepath + '{name}/ports/{ports_name}/']['put']['x-has-default-impl'] = True
+        model['paths'][modulepath + '{name}/ports/{ports_name}/']['get']['x-has-default-impl'] = True
+        model['paths'][modulepath + '{name}/ports/{ports_name}/']['delete']['x-has-default-impl'] = True
+
+        # sub-elements in port
+        model['paths'][modulepath + '{name}/ports/{ports_name}/peer/']['put']['x-has-default-impl'] = True
+        model['paths'][modulepath + '{name}/ports/{ports_name}/peer/']['get']['x-has-default-impl'] = True
+
+        model['paths'][modulepath + '{name}/ports/{ports_name}/uuid/']['get']['x-has-default-impl'] = True
+
+        model['paths'][modulepath + '{name}/ports/{ports_name}/status/']['get']['x-has-default-impl'] = True
+        model['paths'][modulepath + '{name}/ports/{ports_name}/status/']['put']['x-has-default-impl'] = True
 
         fd.write(json.dumps(model, indent=4, separators=(',', ': ')))
 
@@ -468,8 +499,10 @@ def gen_model(children, tree_structure, config=True, definitions=None):
             node_schema_name = to_upper_camelcase(parents_name + child.arg + '_schema')
             if node_schema_name not in definitions:
                 definitions[node_schema_name] = dict()
+                # TODO: maybe we have to add an key_index for multikey support
+                for key in listkey:
+                    node['properties'][key]['x-is-key'] = True
                 definitions[node_schema_name]['properties'] = copy.deepcopy(node['properties'])
-
             del node['properties']
             node['items']['$ref'] = '#/definitions/{0}'.format(node_schema_name)
             tree_structure[to_lower_camelcase(child.arg)] = node
