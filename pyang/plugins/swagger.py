@@ -838,7 +838,7 @@ def generate_create(stmt, schema, path, rpc=None, is_list=False):
     if rpc:
         response = create_responses(stmt.arg, rpc)
     else:
-        response = create_responses(stmt.arg)
+        response = create_responses(stmt.arg, schema)
     post['responses'] = response
     return post
 
