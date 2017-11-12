@@ -65,7 +65,13 @@ class SwaggerPlugin(plugin.PyangPlugin):
                 '--swagger-path',
                 dest='swagger_path',
                 type='string',
-                help='Path to print')]
+                help='Path to print'),
+            optparse.make_option(
+                '--swagger-base-path',
+                dest='swagger_base_path',
+                type='string',
+                help='Base path to add')
+            ]
         optgrp = optparser.add_option_group('Swagger specific options')
         optgrp.add_options(optlist)
 
@@ -131,6 +137,7 @@ def add_fake_list_at_beginning(module):
                                              "key", "name")
     add_leaf_name_keyword_parameters(leaf_name_keyword, module)
 
+
     old_list = list(module.i_children)
     del module.i_children[:]
 
@@ -141,6 +148,38 @@ def add_fake_list_at_beginning(module):
     del module.substmts[-len(old_list):]
     module.substmts.append(top_list)
 
+def add_leaf_name_type_parameters(leaf_name_type, module, types):
+    leaf_name_type.i_groupings = dict()
+    leaf_name_type.i_is_derived = False
+    leaf_name_type.i_is_validated = True
+    leaf_name_type.i_lengths = list()
+    leaf_name_type.i_module = module
+    leaf_name_type.i_origin_module = module
+    leaf_name_type.i_ranges = list()
+    leaf_name_type.i_type_spec = types.StringTypeSpec()
+    leaf_name_type.i_type_spec.base = None
+    leaf_name_type.i_type_spec.definition = ""
+    leaf_name_type.i_type_spec.name = "string"
+    leaf_name_type.i_typedef = None
+    leaf_name_type.i_typedefs = dict()
+    leaf_name_type.i_uniques = list()
+    leaf_name_type.is_grammatically_valid = True
+
+def add_leaf_name_mandatory_parameters(leaf_name_mandatory, module):
+    leaf_name_mandatory.i_groupings = dict()
+    leaf_name_mandatory.i_module = module
+    leaf_name_mandatory.i_origin_module = module
+    leaf_name_mandatory.i_typedefs = dict()
+    leaf_name_mandatory.i_uniques = list()
+    leaf_name_mandatory.is_grammatically_valid = True
+
+def add_leaf_name_description_parameters(leaf_name_description, module):
+    leaf_name_description.i_groupings = dict()
+    leaf_name_description.i_module = module
+    leaf_name_description.i_origin_module = module
+    leaf_name_description.i_typedefs = dict()
+    leaf_name_description.i_uniques = list()
+    leaf_name_description.is_grammatically_valid = True
 
 def add_leaf_name_parameters(leaf_name, module):
     leaf_name.i_config = True
@@ -159,39 +198,15 @@ def add_leaf_name_parameters(leaf_name, module):
 
     leaf_name_type = statements.Statement(module, leaf_name, error.Position("Automatically inserted statement"), "type",
                                           "string")
-    leaf_name_type.i_groupings = dict()
-    leaf_name_type.i_is_derived = False
-    leaf_name_type.i_is_validated = True
-    leaf_name_type.i_lengths = list()
-    leaf_name_type.i_module = module
-    leaf_name_type.i_origin_module = module
-    leaf_name_type.i_ranges = list()
-    leaf_name_type.i_type_spec = types.StringTypeSpec()
-    leaf_name_type.i_type_spec.base = None
-    leaf_name_type.i_type_spec.definition = ""
-    leaf_name_type.i_type_spec.name = "string"
-    leaf_name_type.i_typedef = None
-    leaf_name_type.i_typedefs = dict()
-    leaf_name_type.i_uniques = list()
-    leaf_name_type.is_grammatically_valid = True
+    add_leaf_name_type_parameters(leaf_name_type, module, types)
 
     leaf_name_mandatory = statements.Statement(module, leaf_name, error.Position("Automatically inserted statement"),
                                                "mandatory", "true")
-    leaf_name_mandatory.i_groupings = dict()
-    leaf_name_mandatory.i_module = module
-    leaf_name_mandatory.i_origin_module = module
-    leaf_name_mandatory.i_typedefs = dict()
-    leaf_name_mandatory.i_uniques = list()
-    leaf_name_mandatory.is_grammatically_valid = True
+    add_leaf_name_mandatory_parameters(leaf_name_mandatory, module)
 
     leaf_name_description = statements.Statement(module, leaf_name, error.Position("Automatically inserted statement"),
                                                  "description", "Name of the {0} service".format(module.arg))
-    leaf_name_description.i_groupings = dict()
-    leaf_name_description.i_module = module
-    leaf_name_description.i_origin_module = module
-    leaf_name_description.i_typedefs = dict()
-    leaf_name_description.i_uniques = list()
-    leaf_name_description.is_grammatically_valid = True
+    add_leaf_name_description_parameters(leaf_name_description, module)
 
     leaf_name.substmts.append(leaf_name_type)
     leaf_name.substmts.append(leaf_name_mandatory)
@@ -214,17 +229,20 @@ def print_header(module, fd, children):
         'title': str(module_name + ' API')
     }
     header['host'] = 'localhost:8080'
-    # TODO: introduce flexible base path. (CLI options?)
-    header['basePath'] = '/'
+    # Introduced flexible base path. (CLI options?)
+    if swagger_base_path in locals():
+        header['basePath'] = swagger_base_path
+    else:
+        header['basePath'] = '/'
     header['schemes'] = ['https']
 
     # Add tags to the header to group the APIs based on every root node found in the YANG
     if len(children) > 0:
         header['tags'] = list(dict())
-        for i, child in enumerate(children):
+        for child in enumerate(children):
             value = {
                 'name': child.arg
-                # TODO: Add here additional information for the tag
+                # Add here additional information for the tag
             }
             header['tags'].append(value.copy())
 
