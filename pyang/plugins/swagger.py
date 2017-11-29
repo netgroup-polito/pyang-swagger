@@ -425,8 +425,10 @@ def gen_model(children, tree_structure, config=True, definitions=None):
                     parent_model = to_upper_camelcase(child.parent.arg)
                     if parent_model not in PARENT_MODELS.keys():
                         PARENT_MODELS[parent_model] = {'models': [], 'discriminator': to_lower_camelcase(child.arg)}
-                elif attribute.keyword == ("config-bridge", "cli-example"):
+                elif isinstance(attribute.keyword, tuple) and attribute.keyword[1] == "cli-example":
                     node['example'] = attribute.arg
+                elif isinstance(attribute.keyword, tuple) and attribute.keyword[1] == "iovnet-class":
+                    node['x-inherits-from'] = attribute.arg
                 elif attribute.keyword == 'config' and attribute.arg == 'false':
                     config = False
                     node['readOnly'] = True
@@ -500,11 +502,22 @@ def gen_model(children, tree_structure, config=True, definitions=None):
             if node_schema_name not in definitions:
                 definitions[node_schema_name] = dict()
                 # TODO: maybe we have to add an key_index for multikey support
+                node['x-key-list'] = list()
                 for key in listkey:
                     node['properties'][key]['x-is-key'] = True
+                    key_dict = OrderedDict()
+                    key_dict['name'] = key
+                    key_dict['type'] = node['properties'][key]['type']
+                    node['x-key-list'].append(key_dict)
                 definitions[node_schema_name]['properties'] = copy.deepcopy(node['properties'])
             del node['properties']
             node['items']['$ref'] = '#/definitions/{0}'.format(node_schema_name)
+
+            if 'x-inherits-from' in node:
+                definitions[node_schema_name]['x-inherits-from'] = node['x-inherits-from']
+                del node['x-inherits-from']
+
+            definitions[node_schema_name]['x-parent-schema'] = to_upper_camelcase(((child.parent.arg + '_') if not parents_name else parents_name) + 'schema')
             tree_structure[to_lower_camelcase(child.arg)] = node
         elif child.keyword == 'container':
             parent_list = get_parent_list(child)
@@ -515,7 +528,12 @@ def gen_model(children, tree_structure, config=True, definitions=None):
 
             node.clear()
             node['$ref'] = '#/definitions/{0}'.format(node_schema_name)
+            definitions[node_schema_name]['x-parent-schema'] = to_upper_camelcase(((child.parent.arg + '_') if not parents_name else parents_name) + 'schema')
             tree_structure[to_lower_camelcase(child.arg)] = node
+
+            if 'x-inherits-from' in node:
+                definitions[node_schema_name]['x-inherits-from'] = node['x-inherits-from']
+                del node['x-inherits-from']
 
         # elif child.keyword == 'leaf':
         #    copy_node = dict()
