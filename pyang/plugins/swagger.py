@@ -497,11 +497,13 @@ def gen_model(children, tree_structure, config=True, definitions=None):
                 #    node['items']['properties'] = properties
                 #    del node['properties']
             parent_list = get_parent_list(child)
-            parents_name = '_'.join(parent_list) + ('_' if parent_list else '')
-            node_schema_name = to_upper_camelcase(parents_name + child.arg + '_schema')
+            parents_name = '_'.join(parent_list) 
+            node_schema_name = to_upper_camelcase(parents_name + ('_' if parent_list else '') + child.arg)
             if node_schema_name not in definitions:
                 definitions[node_schema_name] = dict()
                 # TODO: maybe we have to add an key_index for multikey support
+                if node['type'] == 'array':
+                    definitions[node_schema_name]['x-is-list'] = 'true'
                 node['x-key-list'] = list()
                 for key in listkey:
                     node['properties'][key]['x-is-key'] = True
@@ -517,18 +519,18 @@ def gen_model(children, tree_structure, config=True, definitions=None):
                 definitions[node_schema_name]['x-inherits-from'] = node['x-inherits-from']
                 del node['x-inherits-from']
 
-            definitions[node_schema_name]['x-parent-schema'] = to_upper_camelcase(((child.parent.arg + '_') if not parents_name else parents_name) + 'schema')
+            definitions[node_schema_name]['x-parent'] = to_upper_camelcase(((child.parent.arg) if not parents_name else parents_name))
             tree_structure[to_lower_camelcase(child.arg)] = node
         elif child.keyword == 'container':
             parent_list = get_parent_list(child)
-            parents_name = '_'.join(parent_list) + ('_' if parent_list else '')
-            node_schema_name = to_upper_camelcase(parents_name + child.arg + '_schema')
+            parents_name = '_'.join(parent_list)
+            node_schema_name = to_upper_camelcase(parents_name + ('_' if parent_list else '') + child.arg)
             if node_schema_name not in definitions:
                 definitions[node_schema_name] = copy.deepcopy(node)
 
             node.clear()
             node['$ref'] = '#/definitions/{0}'.format(node_schema_name)
-            definitions[node_schema_name]['x-parent-schema'] = to_upper_camelcase(((child.parent.arg + '_') if not parents_name else parents_name) + 'schema')
+            definitions[node_schema_name]['x-parent'] = to_upper_camelcase(((child.parent.arg) if not parents_name else parents_name))
             tree_structure[to_lower_camelcase(child.arg)] = node
 
             if 'x-inherits-from' in node:
@@ -648,9 +650,9 @@ def gen_api_node(node, path, apis, definitions, config=True):
             # (i.e., NodenameSchema). This new definition is a schema containing the content
             # of the body input schema i.e {"child.arg":schema} -> schema
             if '$ref' not in schema_list[to_lower_camelcase(node.arg)]['items']:
-                definitions[to_upper_camelcase(node.arg + '_schema')] = dict(
+                definitions[to_upper_camelcase(node.arg)] = dict(
                     schema_list[to_lower_camelcase(node.arg)]['items'])
-                schema['$ref'] = '#/definitions/{0}'.format(to_upper_camelcase(node.arg + '_schema'))
+                schema['$ref'] = '#/definitions/{0}'.format(to_upper_camelcase(node.arg))
             else:
                 schema = dict(schema_list[to_lower_camelcase(node.arg)]['items'])
 
@@ -662,8 +664,8 @@ def gen_api_node(node, path, apis, definitions, config=True):
             # (i.e., NodenameSchema). This new definition is a schema containing the content
             # of the body input schema i.e {"child.arg":schema} -> schema
             if '$ref' not in schema[to_lower_camelcase(node.arg)]:
-                definitions[to_upper_camelcase(node.arg + '_schema')] = schema[to_lower_camelcase(node.arg)]
-                schema['$ref'] = '#/definitions/' + to_upper_camelcase(node.arg + '_schema')
+                definitions[to_upper_camelcase(node.arg)] = schema[to_lower_camelcase(node.arg)]
+                schema['$ref'] = '#/definitions/' + to_upper_camelcase(node.arg)
             else:
                 schema = schema[to_lower_camelcase(node.arg)]
 
@@ -827,6 +829,20 @@ def get_input_path_parameters(path):
             path_params.append(param[1:-1])
     return path_params
 
+def get_input_path_parameters_create(path):
+	""""Get the input parameters for create functions"""
+	path_without_keys = []
+	path_params = []
+	params = path.split('/')
+	for param in params:
+		if len(param) > 0 and param[0] != '{' and param[len(param) -1] != '}':
+			path_without_keys.append(param)
+	parent_keys = path.split(path_without_keys[-1])
+	params = parent_keys[0].split('/')
+	for param in params:
+		if len(param) > 0 and param [0] == '{' and param[len(param) - 1] == '}':
+			path_params.append(param[1:-1])
+	return path_params
 
 ###########################################################
 ############### Creating CRUD Operations ##################
@@ -838,7 +854,7 @@ def generate_create(stmt, schema, path, rpc=None, is_list=False):
     """ Generates the create function definitions."""
     path_params = None
     if path:
-        path_params = get_input_path_parameters(path)
+        path_params = get_input_path_parameters_create(path)
     post = {}
     generate_api_header(stmt, post, 'Create', path, is_list=is_list)
     # Input parameters
