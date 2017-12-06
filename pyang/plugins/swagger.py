@@ -65,7 +65,22 @@ class SwaggerPlugin(plugin.PyangPlugin):
                 '--swagger-path',
                 dest='swagger_path',
                 type='string',
-                help='Path to print')]
+                help='Path to print'),
+            optparse.make_option(
+                '--swagger-base-path',
+                dest='swagger_base_path',
+                type='string',
+                help='Base path to add'),
+            optparse.make_option(
+                '--restconf-path',
+                dest='is_restconf_path',
+                action='store_true',
+                help='Flag indicating if the base path is a restconf path'),
+            optparse.make_option(
+                '--all-restconf-methods',
+                dest = 'generate_all_restconf_methods',
+                action = 'store_true',
+                help = 'If flag set to true, methods OPTIONS and HEAD are generated')]
         optgrp = optparser.add_option_group('Swagger specific options')
         optgrp.add_options(optlist)
 
@@ -93,13 +108,7 @@ class SwaggerPlugin(plugin.PyangPlugin):
         emit_swagger_spec(ctx, modules, fd, ctx.opts.path)
 
 
-def add_fake_list_at_beginning(module):
-    top_list = statements.Statement(module, module, error.Position("Automatically inserted statement"), "list", module.arg)
-
-    leaf_name = statements.Statement(module, top_list, error.Position("Automatically inserted statement"), "leaf", "name")
-
-    add_leaf_name_parameters(leaf_name, module)
-
+def add_top_list_parameters(top_list, old_list, leaf_name, leaf_name_keyword, module):
     top_list.i_config = True
     top_list.i_is_validated = True
     top_list.i_key = [leaf_name]
@@ -110,23 +119,36 @@ def add_fake_list_at_beginning(module):
     top_list.i_uniques = list()
     top_list.is_grammatically_valid = True
 
-    leaf_name_keyword = statements.Statement(module, top_list, error.Position("Automatically inserted statement"), "key", "name")
+    top_list.i_children = [leaf_name]
+    top_list.i_children.extend(old_list)
+    top_list.substmts.append(leaf_name_keyword)
+    top_list.substmts.append(leaf_name)
+    top_list.substmts.extend(old_list)
+
+
+def add_leaf_name_keyword_parameters(leaf_name_keyword, module):
     leaf_name_keyword.i_groupings = dict()
     leaf_name_keyword.i_module = module
     leaf_name_keyword.i_origin_module = module
     leaf_name_keyword.i_typedefs = dict()
     leaf_name_keyword.i_uniques = list()
-    leaf_name_keyword.is_grammatically_valid = True
+    leaf_name_keyword.is_grammatically_valid = True        
+
+
+def add_fake_list_at_beginning(module):
+    top_list = statements.Statement(module, module, error.Position("Automatically inserted statement"), "list", module.arg)
+
+    leaf_name = statements.Statement(module, top_list, error.Position("Automatically inserted statement"), "leaf", "name")
+
+    add_leaf_name_parameters(leaf_name, module)
+
+    leaf_name_keyword = statements.Statement(module, top_list, error.Position("Automatically inserted statement"), "key", "name")
+    add_leaf_name_keyword_parameters(leaf_name_keyword, module)
 
     old_list = list(module.i_children)
     del module.i_children[:]
 
-    top_list.i_children = [leaf_name]
-    top_list.i_children.extend(old_list)
-
-    top_list.substmts.append(leaf_name_keyword)
-    top_list.substmts.append(leaf_name)
-    top_list.substmts.extend(old_list)
+    add_top_list_parameters(top_list, old_list, leaf_name, leaf_name_keyword, module)
 
     module.i_children.append(top_list)
 
@@ -206,8 +228,12 @@ def print_header(module, fd, children):
         'title': str(module_name + ' API')
     }
     header['host'] = 'localhost:8080'
-    # TODO: introduce flexible base path. (CLI options?)
-    header['basePath'] = '/'
+
+    if 'swagger_base_path' in locals():
+        header['basePath'] = swagger_base_path
+    else:
+        header['basePath'] = '/'
+
     header['schemes'] = ['http']
 
     # Add tags to the header to group the APIs based on every root node found in the YANG
@@ -371,6 +397,40 @@ def find_typedefs(ctx, module, children, referenced_types):
 pending_models = list()
 
 
+
+def distinguish_attribute_type(attribute, node):
+    if len(attribute.arg.split(':')) > 1:
+        attribute.arg = attribute.arg.split(':')[-1]
+    # Firstly, it is checked if the attribute type has been previously define in typedefs.
+    if attribute.arg in TYPEDEFS:
+        if TYPEDEFS[attribute.arg]['type'][:3] == 'int':
+            node['type'] = 'integer'
+            node['format'] = TYPEDEFS[attribute.arg]['format']
+        elif TYPEDEFS[attribute.arg]['type'] == 'enumeration':
+            node['type'] = 'string'
+            node['enum'] = [e for e in TYPEDEFS[attribute.arg]['enum']]
+        # map all other types to string
+        else:
+            node['type'] = 'string'
+    elif attribute.arg[:-2] == 'int' or attribute.arg[:-2] == 'uint':
+        node['type'] = 'integer'
+        node['format'] = attribute.arg
+    elif attribute.arg == 'decimal64':
+        node['type'] = 'number'
+        node['format'] = 'double'
+    elif attribute.arg == 'boolean':
+        node['type'] = attribute.arg
+    elif attribute.arg == 'enumeration':
+        node['type'] = 'string'
+        node['enum'] = [e[0] for e in attribute.i_type_spec.enums]
+    elif attribute.arg == 'leafref':
+        node['type'] = 'string'
+        node['x-path'] = attribute.i_type_spec.path_.arg
+    # map all other types to string
+    else:
+        node['type'] = 'string'
+
+
 def gen_model(children, tree_structure, config=True, definitions=None):
     """ Generates the swagger definition tree."""
     for child in children:
@@ -384,37 +444,7 @@ def gen_model(children, tree_structure, config=True, definitions=None):
                 # process the 'type' attribute:
                 # Currently integer, enumeration and string are supported.
                 if attribute.keyword == 'type':
-                    if len(attribute.arg.split(':')) > 1:
-                        attribute.arg = attribute.arg.split(':')[-1]
-                    # Firstly, it is checked if the attribute type has been previously define in typedefs.
-                    if attribute.arg in TYPEDEFS:
-                        if TYPEDEFS[attribute.arg]['type'][:3] == 'int':
-                            node['type'] = 'integer'
-                            node['format'] = TYPEDEFS[attribute.arg]['format']
-                        elif TYPEDEFS[attribute.arg]['type'] == 'enumeration':
-                            node['type'] = 'string'
-                            node['enum'] = [e for e in TYPEDEFS[attribute.arg]['enum']]
-                        # map all other types to string
-                        else:
-                            node['type'] = 'string'
-                    elif attribute.arg[:-2] == 'int' or attribute.arg[:-2] == 'uint':
-                        node['type'] = 'integer'
-                        node['format'] = attribute.arg
-                    elif attribute.arg == 'decimal64':
-                        node['type'] = 'number'
-                        node['format'] = 'double'
-                    elif attribute.arg == 'boolean':
-                        node['type'] = attribute.arg
-                    elif attribute.arg == 'enumeration':
-                        node['type'] = 'string'
-                        node['enum'] = [e[0]
-                                        for e in attribute.i_type_spec.enums]
-                    elif attribute.arg == 'leafref':
-                        node['type'] = 'string'
-                        node['x-path'] = attribute.i_type_spec.path_.arg
-                    # map all other types to string
-                    else:
-                        node['type'] = 'string'
+                    distinguish_attribute_type(attribute, node)
                 elif attribute.keyword == 'key':
                     listkey = to_lower_camelcase(attribute.arg).split()
                 elif attribute.keyword == 'description':
@@ -574,6 +604,22 @@ def gen_model_node(node, tree_structure, config=True, definitions=None):
         if properties:
             tree_structure['properties'] = properties
 
+def generate_yang_lib_api():
+    get = {}
+    get['description'] = "Read YANG library version revision date"
+    get['parameters'] = list()
+    get['produces'] = ['application/json']
+    get['consumes'] = []
+    get['operationId'] = to_upper_camelcase('read' + _ROOT_NODE_NAME + 'LibraryVersion')
+    get['tags'] = [_ROOT_NODE_NAME]
+    get['responses'] = {
+        '200': {'description': 'OK: Successful operation'},
+        '400': {'description': 'Bad request'},
+        '404': {'description': 'Not found'},
+        '405': {'description': 'Method not allowed: Use POST to invoke operations'}
+    }
+    return get
+
 
 def gen_apis(children, path, apis, definitions, config=True, is_root=False):
     """ Generates the swagger path tree for the APIs."""
@@ -584,6 +630,110 @@ def gen_apis(children, path, apis, definitions, config=True, is_root=False):
         if not hasattr(child, 'i_is_key') or not child.i_is_key:
             gen_api_node(child, path, apis, definitions, config)
 
+    apis['/yang-library-version'] = dict()
+    apis['/yang-library-version']['get'] = generate_yang_lib_api() #"2016-06-21" #found in the repository: /modules/ietf/ietf-yang-library.yang
+
+
+def gen_api_for_node_list(node, schema, config, keyList, path, definitions):
+    # Key statement must be present if config statement is True and may
+    # be present otherwise.
+    if config:
+        for key in keyList:
+            if not key:
+                raise Exception('Invalid list statement, key parameter is required')
+
+    # It is checked that there is not name duplication within the input parameters list (i.e., path).
+    # In case of duplicity the input param. is upgrade to node.arg
+    # (parent node name) + _ + the input param (key).
+    # Example:
+    #          /config/Context/{uuid}/_topology/{uuid}/_link/{uuid}/_transferCost/costCharacteristic/{costAlgorithm}/
+    #
+    # is replaced by:
+    #
+    #          /config/Context/{uuid}/_topology/{topology_uuid}/_link/{link_uuid}/_transferCost/costCharacteristic/{costAlgorithm}/
+    for key in keyList:
+        if key:
+            match = re.search(r"\{([A-Za-z0-9_]+)\}", path)
+            if match and key == match.group(1):
+                if node.arg[0] == '_':
+                    new_param_name = node.arg[1:] + '_' + to_lower_camelcase(key)
+                else:
+                    new_param_name = node.arg + '_' + to_lower_camelcase(key)
+                path += '{' + new_param_name + '}/'
+                for child in node.i_children:
+                    if child.arg == key:
+                        child.arg = new_param_name
+            else:
+                path += '{' + to_lower_camelcase(key) + '}/'
+
+    schema_list = {}
+    gen_model([node], schema_list, config, definitions=definitions)
+
+    # If a body input params has not been defined as a schema (not included in the definitions set),
+    # a new definition is created, named the parent node name and the extension Schema
+    # (i.e., NodenameSchema). This new definition is a schema containing the content
+    # of the body input schema i.e {"child.arg":schema} -> schema
+    if '$ref' not in schema_list[to_lower_camelcase(node.arg)]['items']:
+        definitions[to_upper_camelcase(node.arg)] = dict(
+            schema_list[to_lower_camelcase(node.arg)]['items'])
+        schema['$ref'] = '#/definitions/{0}'.format(to_upper_camelcase(node.arg))
+    else:
+        schema = dict(schema_list[to_lower_camelcase(node.arg)]['items'])
+
+    return path, schema
+
+
+def gen_api_for_node_rpc(node, schema, config, path, definitions, apis):
+    schema_out = dict()
+
+    list_to_iterate = node.i_children if hasattr(node, 'i_children') and node.i_children else node.substmts
+
+    for child in list_to_iterate:
+        if child.keyword == 'input':
+            # TODO: This is done because pyang does not support the action keyword
+            child.arg = 'input'
+            gen_model([child], schema, config)
+
+            # If a body input params has not been defined as a schema (not included in the definitions set),
+            # a new definition is created, named the parent node name and the extension Schema
+            # (i.e., NodenameRPCInputSchema). This new definition is a schema containing the content
+            # of the body input schema i.e {"child.arg":schema} -> schema
+            if schema[to_lower_camelcase(child.arg)]:
+                if not '$ref' in schema[to_lower_camelcase(child.arg)]:
+                    definitions[to_upper_camelcase(node.arg + 'RPC_input_schema' if node.keyword == 'rpc'
+                                                   else 'ACTION_input_schema')] = schema[
+                        to_lower_camelcase(child.arg)]
+                    schema = {'$ref': '#/definitions/' + to_upper_camelcase(node.arg + 'RPC_input_schema'
+                                                                            if node.keyword == 'rpc'
+                                                                            else 'ACTION_input_schema')}
+                else:
+                    schema = schema[to_lower_camelcase(node.arg)]
+            else:
+                schema = None
+
+        elif child.keyword == 'output':
+            # TODO: This is done because pyang does not support the action keyword
+            child.arg = 'output'
+            gen_model([child], schema_out, config)
+
+            # If a body input params has not been defined as a schema (not included in the definitions set),
+            # a new definition is created, named the parent node name and the extension Schema
+            # (i.e., NodenameRPCOutputSchema). This new definition is a schema containing the content
+            # of the body input schema i.e {"child.arg":schema} -> schema
+            if schema_out[to_lower_camelcase(child.arg)]:
+                if not '$ref' in schema_out[to_lower_camelcase(child.arg)]:
+                    definitions[to_upper_camelcase(node.arg + ('RPC_output_schema' if node.keyword == 'rpc'
+                                                   else 'ACTION_output_schema'))] = schema_out[
+                        to_lower_camelcase(child.arg)]
+                    schema_out = {'$ref': '#/definitions/' + to_upper_camelcase(node.arg + ('RPC_output_schema'
+                                                                                if node.keyword == 'rpc'
+                                                                                else 'ACTION_output_schema'))}
+                else:
+                    schema_out = schema_out[to_lower_camelcase(child.arg)]
+            else:
+                schema_out = None
+
+    apis[str(path)] = print_rpc(node, schema, path, schema_out)
 
 # Generates the API of the current node.
 
@@ -611,50 +761,7 @@ def gen_api_node(node, path, apis, definitions, config=True):
         # We take only the schema model of a single item inside the list as a "body"
         # parameter or response model for the API implementation of the list statement.
         if node.keyword == 'list':
-            # Key statement must be present if config statement is True and may
-            # be present otherwise.
-            if config:
-                for key in keyList:
-                    if not key:
-                        raise Exception('Invalid list statement, key parameter is required')
-
-            # It is checked that there is not name duplication within the input parameters list (i.e., path).
-            # In case of duplicity the input param. is upgrade to node.arg
-            # (parent node name) + _ + the input param (key).
-            # Example:
-            #          /config/Context/{uuid}/_topology/{uuid}/_link/{uuid}/_transferCost/costCharacteristic/{costAlgorithm}/
-            #
-            # is replaced by:
-            #
-            #          /config/Context/{uuid}/_topology/{topology_uuid}/_link/{link_uuid}/_transferCost/costCharacteristic/{costAlgorithm}/
-            for key in keyList:
-                if key:
-                    match = re.search(r"\{([A-Za-z0-9_]+)\}", path)
-                    if match and key == match.group(1):
-                        if node.arg[0] == '_':
-                            new_param_name = node.arg[1:] + '_' + to_lower_camelcase(key)
-                        else:
-                            new_param_name = node.arg + '_' + to_lower_camelcase(key)
-                        path += '{' + new_param_name + '}/'
-                        for child in node.i_children:
-                            if child.arg == key:
-                                child.arg = new_param_name
-                    else:
-                        path += '{' + to_lower_camelcase(key) + '}/'
-
-            schema_list = {}
-            gen_model([node], schema_list, config, definitions=definitions)
-
-            # If a body input params has not been defined as a schema (not included in the definitions set),
-            # a new definition is created, named the parent node name and the extension Schema
-            # (i.e., NodenameSchema). This new definition is a schema containing the content
-            # of the body input schema i.e {"child.arg":schema} -> schema
-            if '$ref' not in schema_list[to_lower_camelcase(node.arg)]['items']:
-                definitions[to_upper_camelcase(node.arg)] = dict(
-                    schema_list[to_lower_camelcase(node.arg)]['items'])
-                schema['$ref'] = '#/definitions/{0}'.format(to_upper_camelcase(node.arg))
-            else:
-                schema = dict(schema_list[to_lower_camelcase(node.arg)]['items'])
+            path, schema = gen_api_for_node_list(node, schema, config, keyList, path, definitions)
 
         elif node.keyword == 'container':
             gen_model([node], schema, config, definitions=definitions)
@@ -677,83 +784,28 @@ def gen_api_node(node, path, apis, definitions, config=True):
             updated_schema = dict.copy(schema[to_lower_camelcase(node.arg)])
             schema = updated_schema
 
-            # This old code is used to create a new schema for each element,
-            # even for those containing only one attribute
-            #
-            # if '$ref' not in schema[to_lower_camelcase(node.arg)]:
-            #     updated_schema = dict()
-            #     updated_schema['properties'] = dict()
-            #     updated_schema['properties'][to_lower_camelcase(node.arg)] = dict.copy(schema[to_lower_camelcase(node.arg)])
-            #     schema[to_lower_camelcase(node.arg)] = updated_schema
-            #
-            #     definitions[to_upper_camelcase(node.arg + '_schema')] = schema[to_lower_camelcase(node.arg)]
-            #     schema['$ref'] = '#/definitions/' + to_upper_camelcase(node.arg + '_schema')
-            # else:
-            #     schema = schema[to_lower_camelcase(node.arg)]
-
         if node.keyword == 'leaf':
             new_schema = schema
         else:
             new_schema = {"$ref": schema['$ref']}
-        apis[str(path)] = print_api(node, config, new_schema, path)
+
+        if 'is_restconf_path' in locals() and is_restconf_path:
+            apis['/data' + str(path)] = print_api(node, config, new_schema, path)
+        else:
+            apis[str(path)] = print_api(node, config, new_schema, path)
         if node.keyword == 'list':
             list_schema = {
                 "type": "array",
                 "items": {"$ref": schema['$ref']}
             }
-            apis[str(list_path)] = print_api(node, config, list_schema, list_path, is_list=True)
+            if 'is_restconf_path' in locals() and is_restconf_path:
+                apis['/data' + str(list_path)] = print_api(node, config, list_schema, list_path, is_list=True)
+            else:
+                apis[str(list_path)] = print_api(node, config, list_schema, list_path, is_list=True)
+            
 
     elif node.keyword == 'rpc' or node.keyword == 'action':
-        schema_out = dict()
-
-        list_to_iterate = node.i_children if hasattr(node, 'i_children') and node.i_children else node.substmts
-
-        for child in list_to_iterate:
-            if child.keyword == 'input':
-                # TODO: This is done because pyang does not support the action keyword
-                child.arg = 'input'
-                gen_model([child], schema, config)
-
-                # If a body input params has not been defined as a schema (not included in the definitions set),
-                # a new definition is created, named the parent node name and the extension Schema
-                # (i.e., NodenameRPCInputSchema). This new definition is a schema containing the content
-                # of the body input schema i.e {"child.arg":schema} -> schema
-                if schema[to_lower_camelcase(child.arg)]:
-                    if not '$ref' in schema[to_lower_camelcase(child.arg)]:
-                        definitions[to_upper_camelcase(node.arg + 'RPC_input_schema' if node.keyword == 'rpc'
-                                                       else 'ACTION_input_schema')] = schema[
-                            to_lower_camelcase(child.arg)]
-                        schema = {'$ref': '#/definitions/' + to_upper_camelcase(node.arg + 'RPC_input_schema'
-                                                                                if node.keyword == 'rpc'
-                                                                                else 'ACTION_input_schema')}
-                    else:
-                        schema = schema[to_lower_camelcase(node.arg)]
-                else:
-                    schema = None
-
-            elif child.keyword == 'output':
-                # TODO: This is done because pyang does not support the action keyword
-                child.arg = 'output'
-                gen_model([child], schema_out, config)
-
-                # If a body input params has not been defined as a schema (not included in the definitions set),
-                # a new definition is created, named the parent node name and the extension Schema
-                # (i.e., NodenameRPCOutputSchema). This new definition is a schema containing the content
-                # of the body input schema i.e {"child.arg":schema} -> schema
-                if schema_out[to_lower_camelcase(child.arg)]:
-                    if not '$ref' in schema_out[to_lower_camelcase(child.arg)]:
-                        definitions[to_upper_camelcase(node.arg + ('RPC_output_schema' if node.keyword == 'rpc'
-                                                       else 'ACTION_output_schema'))] = schema_out[
-                            to_lower_camelcase(child.arg)]
-                        schema_out = {'$ref': '#/definitions/' + to_upper_camelcase(node.arg + ('RPC_output_schema'
-                                                                                    if node.keyword == 'rpc'
-                                                                                    else 'ACTION_output_schema'))}
-                    else:
-                        schema_out = schema_out[to_lower_camelcase(child.arg)]
-                else:
-                    schema_out = None
-
-        apis[str(path)] = print_rpc(node, schema, path, schema_out)
+        gen_api_for_node_rpc(node, schema, config, path, definitions, apis)
         return apis
 
     elif node.keyword == 'notification':
@@ -807,8 +859,12 @@ def print_api(node, config, ref, path, is_list=False):
     if config and config != 'false':
         operations['post'] = generate_create(node, ref, path, is_list=is_list)
         operations['get'] = generate_retrieve(node, ref, path, is_list=is_list)
-        operations['put'] = generate_update(node, ref, path, is_list=is_list)
+        operations['patch'] = generate_update(node, ref, path, is_list=is_list)
+        operations['put'] = generate_replace(node, ref, path, is_list=is_list)
         operations['delete'] = generate_delete(node, ref, path, is_list=is_list)
+        if 'generate_all_restconf_methods' in locals() and generate_all_restconf_methods:
+            operations['options'] = generate_discovery(node, ref, path, is_list=is_list)
+            operations['head'] = generate_header_retrieval(node, ref, path, is_list=is_list)
     else:
         operations['get'] = generate_retrieve(node, ref, path, is_list=is_list)
     if S_API or node.keyword == 'leaf':
@@ -830,19 +886,19 @@ def get_input_path_parameters(path):
     return path_params
 
 def get_input_path_parameters_create(path):
-	""""Get the input parameters for create functions"""
-	path_without_keys = []
-	path_params = []
-	params = path.split('/')
-	for param in params:
-		if len(param) > 0 and param[0] != '{' and param[len(param) -1] != '}':
-			path_without_keys.append(param)
-	parent_keys = path.split(path_without_keys[-1])
-	params = parent_keys[0].split('/')
-	for param in params:
-		if len(param) > 0 and param [0] == '{' and param[len(param) - 1] == '}':
-			path_params.append(param[1:-1])
-	return path_params
+    """"Get the input parameters for create functions"""
+    path_without_keys = []
+    path_params = []
+    params = path.split('/')
+    for param in params:
+        if len(param) > 0 and param[0] != '{' and param[len(param) -1] != '}':
+            path_without_keys.append(param)
+    parent_keys = path.split(path_without_keys[-1])
+    params = parent_keys[0].split('/')
+    for param in params:
+        if len(param) > 0 and param [0] == '{' and param[len(param) - 1] == '}':
+            path_params.append(param[1:-1])
+    return path_params
 
 ###########################################################
 ############### Creating CRUD Operations ##################
@@ -870,9 +926,20 @@ def generate_create(stmt, schema, path, rpc=None, is_list=False):
             del post['parameters']
     # Responses
     if rpc:
-        response = create_responses(stmt.arg, rpc)
+        response = {
+            '200': {'description': 'OK: Successful operation'},
+            '204': {'description': 'No content: Successful operation'},
+            '403': {'description': 'Forbidden: User not authorized'},
+            '404': {'description': 'Operation not found'}
+        }
+        response['200']['schema'] = rpc
     else:
-        response = create_responses(stmt.arg, schema)
+        response = {
+            '201': {'description': 'Created: Successful operation'},
+            '403': {'description': 'Forbidden: User not authorized'},
+            '404': {'description': 'Not found: Resource not created'},
+            '409': {'description': 'Conflict: Resource not created'}
+        }
     post['responses'] = response
     return post
 
@@ -891,7 +958,12 @@ def generate_retrieve(stmt, schema, path, is_list=False):
         get['parameters'] = create_parameter_list(path_params)
 
     # Responses
-    response = create_responses(stmt.arg, schema)
+    response = {
+        '200': {'description': 'OK: Successful operation'},
+        '400': {'description': 'Bad request'},
+        '404': {'description': 'Not found'},
+        '405': {'description': 'Method not allowed: Use POST to invoke operations'}
+    }
     get['responses'] = response
     return get
 
@@ -903,25 +975,50 @@ def generate_update(stmt, schema, path, is_list=False):
     path_params = None
     if path:
         path_params = get_input_path_parameters(path)
-    put = {}
-    generate_api_header(stmt, put, 'Update', path, is_list=is_list)
+    patch = {}
+    generate_api_header(stmt, patch, 'Update', path, is_list=is_list)
     # Input parameters
     if path:
-        put['parameters'] = create_parameter_list(path_params)
+        patch['parameters'] = create_parameter_list(path_params)
     else:
-        put['parameters'] = []
+        patch['parameters'] = []
     in_params = create_body_dict(stmt.arg, schema)
     if in_params:
-        put['parameters'].append(in_params)
+        patch['parameters'].append(in_params)
     else:
-        if not put['parameters']:
-            del put['parameters']
+        if not patch['parameters']:
+            del patch['parameters']
     # Responses
-    response = create_responses(stmt.arg)
+    response = {
+        '200': {'description': 'OK: Successful update'},
+        '204': {'description': 'No content: Successful update'},
+        '403': {'description': 'Forbidden: User not authorized'},
+        '404': {'description': 'Resource not found'}
+    }
 
+    patch['responses'] = response
+    return patch
+
+# PUT
+
+def generate_replace(stmt, ref, path, is_list=False):
+    """ Generate the put function definitions."""
+    path_params = None
+    if path:
+        path_params = get_input_path_parameters(path)
+    put = {}
+    generate_api_header(stmt, put, 'Replace', path, is_list=is_list)
+    if path:
+        put['parameters'] = create_parameter_list(path_params)
+
+    response = {
+        '201': {'description': 'OK: Resource replaced successfully'},
+        '204': {'description': 'No content: Resource modified successfully'},
+        '400': {'description': 'Bad request: resource not replaced'},
+        '404': {'description': 'Resource not found'}
+    }
     put['responses'] = response
     return put
-
 
 # DELETE
 
@@ -935,9 +1032,49 @@ def generate_delete(stmt, ref, path, is_list=False):
         delete['parameters'] = create_parameter_list(path_params)
 
     # Responses
-    response = create_responses(stmt.arg)
+    response = {
+        '204': {'description': 'No content: Resource deleted'},
+        '403': {'description': 'Forbidden: User not authorized'},
+        '404': {'description': 'Resource not found'}
+    }
     delete['responses'] = response
     return delete
+
+# OPTIONS
+
+def generate_discovery(stmt, ref, path, is_list=False):
+    """ Generate the options function definitions."""
+    path_params = None
+    if path:
+        path_params = get_input_path_parameters(path)
+    options = {}
+    generate_api_header(stmt, options, 'Discovery', path, is_list=is_list)
+    if path:
+        options['parameters'] = create_parameter_list(path_params)
+
+    response = {
+        '200': {'description': 'OK: Successful operation'}
+    }
+    options['responses'] = response
+    return options
+
+# HEAD
+
+def generate_header_retrieval(stmt, ref, path, is_list=False):
+    """ Generate the head function definitions."""
+    path_params = None
+    if path:
+        path_params = get_input_path_parameters(path)
+    head = {}
+    generate_api_header(stmt, head, 'Header Get', path, is_list=is_list)
+    if path:
+        head['parameters'] = create_parameter_list(path_params)
+
+    response = {
+        '200': {'description': 'OK: Successful operation'}
+    }
+    head['responses'] = response
+    return head
 
 
 def create_parameter_list(path_params):
