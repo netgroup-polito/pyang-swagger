@@ -1001,7 +1001,7 @@ def generate_update(stmt, schema, path, is_list=False):
 
 # PUT
 
-def generate_replace(stmt, ref, path, is_list=False):
+def generate_replace(stmt, schema, path, is_list=False):
     """ Generate the put function definitions."""
     path_params = None
     if path:
@@ -1010,6 +1010,16 @@ def generate_replace(stmt, ref, path, is_list=False):
     generate_api_header(stmt, put, 'Replace', path, is_list=is_list)
     if path:
         put['parameters'] = create_parameter_list(path_params)
+    else:
+        put['parameters'] = []
+    
+    in_params = create_body_dict(stmt.arg, schema)
+
+    if in_params:
+        put['parameters'].append(in_params)
+    else:
+        if not put['parameters']:
+            del put['parameters']
 
     response = {
         '201': {'description': 'OK: Resource replaced successfully'},
@@ -1154,13 +1164,12 @@ def to_lower_camelcase(name):
     """ Converts the name string to lower camelcase by using "-" and "_" as
     markers.
     """
-    return re.sub(r"(?:\B_|\b\-)([a-zA-Z0-9])", lambda l: l.group(1).upper(),
-                  name)
+    return name
+    #return re.sub(r"(?:\B_|\b\-)([a-zA-Z0-9])", lambda l: l.group(1).upper(), name)
 
 
 def to_upper_camelcase(name):
     """ Converts the name string to upper camelcase by using "-" and "_" as
     markers.
     """
-    return re.sub(r"(?:\B_|\b\-|^)([a-zA-Z0-9])", lambda l: l.group(1).upper(),
-                  name)
+    return re.sub(r"(?:\B_|\b\-|^)([a-zA-Z0-9])", lambda l: l.group(1).upper(), name)
