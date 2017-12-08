@@ -594,6 +594,24 @@ def get_parent_list(child):
 
     return list(reversed(parent_list[:-1]))
 
+def get_parent_schema_list(child):
+    parent = child.parent
+    parent_list = list()
+    while parent is not None:
+        parent_list.append(to_upper_camelcase(parent.arg))
+        parent = parent.parent
+
+    parent_list = list(reversed(parent_list))
+    final_list = list()
+    for i, elem in enumerate(parent_list,start=1):
+        subparentlist=parent_list[1:i]
+        schema_name = to_upper_camelcase('_'.join(subparentlist))
+        if schema_name:
+            final_list.append(schema_name)
+        else:
+            final_list.append(elem)
+
+    return final_list
 
 def gen_model_node(node, tree_structure, config=True, definitions=None):
     """ Generates the properties sub-tree of the current node."""
@@ -784,24 +802,22 @@ def gen_api_node(node, path, apis, definitions, config=True):
             updated_schema = dict.copy(schema[to_lower_camelcase(node.arg)])
             schema = updated_schema
 
+        if 'is_restconf_path' in locals() and is_restconf_path:
+            path = '/data' + str(path)
+
         if node.keyword == 'leaf':
             new_schema = schema
         else:
             new_schema = {"$ref": schema['$ref']}
 
-        if 'is_restconf_path' in locals() and is_restconf_path:
-            apis['/data' + str(path)] = print_api(node, config, new_schema, path)
-        else:
-            apis[str(path)] = print_api(node, config, new_schema, path)
+        apis[str(path)] = print_api(node, config, new_schema, path, definitions)
+
         if node.keyword == 'list':
             list_schema = {
                 "type": "array",
                 "items": {"$ref": schema['$ref']}
             }
-            if 'is_restconf_path' in locals() and is_restconf_path:
-                apis['/data' + str(list_path)] = print_api(node, config, list_schema, list_path, is_list=True)
-            else:
-                apis[str(list_path)] = print_api(node, config, list_schema, list_path, is_list=True)
+            apis[str(list_path)] = print_api(node, config, list_schema, list_path, definitions, is_list=True)
             
 
     elif node.keyword == 'rpc' or node.keyword == 'action':
@@ -853,20 +869,31 @@ def print_rpc(node, schema_in, path, schema_out):
 
 
 # print the API JSON structure.
-def print_api(node, config, ref, path, is_list=False):
+def print_api(node, config, ref, path, definitions, is_list=False):
     """ Creates the available operations for the node."""
     operations = {}
-    if config and config != 'false':
-        operations['post'] = generate_create(node, ref, path, is_list=is_list)
-        operations['get'] = generate_retrieve(node, ref, path, is_list=is_list)
-        operations['patch'] = generate_update(node, ref, path, is_list=is_list)
-        operations['put'] = generate_replace(node, ref, path, is_list=is_list)
-        operations['delete'] = generate_delete(node, ref, path, is_list=is_list)
-        if 'generate_all_restconf_methods' in locals() and generate_all_restconf_methods:
-            operations['options'] = generate_discovery(node, ref, path, is_list=is_list)
-            operations['head'] = generate_header_retrieval(node, ref, path, is_list=is_list)
+    if node.keyword == 'leaf':
+        node_name = node.parent
     else:
-        operations['get'] = generate_retrieve(node, ref, path, is_list=is_list)
+        node_name = node
+    parent_list = get_parent_schema_list(node_name)
+    parents_name = parent_list[-1] if len(parent_list) > 1 else ''
+    node_schema_name = to_upper_camelcase(node_name.arg) if not parents_name else to_upper_camelcase(parents_name + '_' + node_name.arg)
+    parent_set = set(parent_list)
+    parent_set.add(node_schema_name)
+    schema_list = list(parent_set)
+
+    if config and config != 'false':
+        operations['post'] = generate_create(node, ref, path, definitions, schema_list, is_list=is_list)
+        operations['get'] = generate_retrieve(node, ref, path, definitions, schema_list, is_list=is_list)
+        operations['patch'] = generate_update(node, ref, path, definitions, schema_list, is_list=is_list)
+        operations['put'] = generate_replace(node, ref, path, definitions, schema_list, is_list=is_list)
+        operations['delete'] = generate_delete(node, ref, path, definitions, schema_list, is_list=is_list)
+        if 'generate_all_restconf_methods' in locals() and generate_all_restconf_methods:
+            operations['options'] = generate_discovery(node, ref, path, definitions, schema_list, is_list=is_list)
+            operations['head'] = generate_header_retrieval(node, ref, path, definitions, schema_list, is_list=is_list)
+    else:
+        operations['get'] = generate_retrieve(node, ref, path, definitions, schema_list, is_list=is_list)
     if S_API or node.keyword == 'leaf':
         # or node.arg == _ROOT_NODE_NAME:
         if 'post' in operations: del operations['post']
@@ -906,7 +933,7 @@ def get_input_path_parameters_create(path):
 
 # CREATE
 
-def generate_create(stmt, schema, path, rpc=None, is_list=False):
+def generate_create(stmt, schema, path, definitions, schema_list, rpc=None, is_list=False):
     """ Generates the create function definitions."""
     path_params = None
     if path:
@@ -915,7 +942,7 @@ def generate_create(stmt, schema, path, rpc=None, is_list=False):
     generate_api_header(stmt, post, 'Create', path, is_list=is_list)
     # Input parameters
     if path:
-        post['parameters'] = create_parameter_list(path_params)
+        post['parameters'] = create_parameter_list(path_params, schema, definitions, schema_list)
     else:
         post['parameters'] = []
     in_params = create_body_dict(stmt.arg, schema)
@@ -946,7 +973,7 @@ def generate_create(stmt, schema, path, rpc=None, is_list=False):
 
 # RETRIEVE
 
-def generate_retrieve(stmt, schema, path, is_list=False):
+def generate_retrieve(stmt, schema, path, definitions, schema_list, is_list=False):
     """ Generates the retrieve function definitions."""
     path_params = None
     if path:
@@ -955,7 +982,7 @@ def generate_retrieve(stmt, schema, path, is_list=False):
     generate_api_header(stmt, get, 'Read', path, stmt.keyword == 'container'
                         and not path_params, is_list=is_list)
     if path:
-        get['parameters'] = create_parameter_list(path_params)
+        get['parameters'] = create_parameter_list(path_params, schema, definitions, schema_list)
 
     # Responses
     response = {
@@ -970,7 +997,7 @@ def generate_retrieve(stmt, schema, path, is_list=False):
 
 # UPDATE
 
-def generate_update(stmt, schema, path, is_list=False):
+def generate_update(stmt, schema, path, definitions, schema_list, is_list=False):
     """ Generates the update function definitions."""
     path_params = None
     if path:
@@ -979,7 +1006,7 @@ def generate_update(stmt, schema, path, is_list=False):
     generate_api_header(stmt, patch, 'Update', path, is_list=is_list)
     # Input parameters
     if path:
-        patch['parameters'] = create_parameter_list(path_params)
+        patch['parameters'] = create_parameter_list(path_params, schema, definitions, schema_list)
     else:
         patch['parameters'] = []
     in_params = create_body_dict(stmt.arg, schema)
@@ -1001,7 +1028,7 @@ def generate_update(stmt, schema, path, is_list=False):
 
 # PUT
 
-def generate_replace(stmt, schema, path, is_list=False):
+def generate_replace(stmt, schema, path, definitions, schema_list, is_list=False):
     """ Generate the put function definitions."""
     path_params = None
     if path:
@@ -1009,7 +1036,7 @@ def generate_replace(stmt, schema, path, is_list=False):
     put = {}
     generate_api_header(stmt, put, 'Replace', path, is_list=is_list)
     if path:
-        put['parameters'] = create_parameter_list(path_params)
+        put['parameters'] = create_parameter_list(path_params, schema, definitions, schema_list)
     else:
         put['parameters'] = []
     
@@ -1032,14 +1059,14 @@ def generate_replace(stmt, schema, path, is_list=False):
 
 # DELETE
 
-def generate_delete(stmt, ref, path, is_list=False):
+def generate_delete(stmt, ref, path, definitions, schema_list, is_list=False):
     """ Generates the delete function definitions."""
     path_params = get_input_path_parameters(path)
     delete = {}
     generate_api_header(stmt, delete, 'Delete', path, is_list=is_list)
     # Input parameters
     if path_params:
-        delete['parameters'] = create_parameter_list(path_params)
+        delete['parameters'] = create_parameter_list(path_params, ref, definitions, schema_list)
 
     # Responses
     response = {
@@ -1052,7 +1079,7 @@ def generate_delete(stmt, ref, path, is_list=False):
 
 # OPTIONS
 
-def generate_discovery(stmt, ref, path, is_list=False):
+def generate_discovery(stmt, ref, path, definitions, schema_list, is_list=False):
     """ Generate the options function definitions."""
     path_params = None
     if path:
@@ -1060,7 +1087,7 @@ def generate_discovery(stmt, ref, path, is_list=False):
     options = {}
     generate_api_header(stmt, options, 'Discovery', path, is_list=is_list)
     if path:
-        options['parameters'] = create_parameter_list(path_params)
+        options['parameters'] = create_parameter_list(path_params, ref, definitions, schema_list)
 
     response = {
         '200': {'description': 'OK: Successful operation'}
@@ -1070,7 +1097,7 @@ def generate_discovery(stmt, ref, path, is_list=False):
 
 # HEAD
 
-def generate_header_retrieval(stmt, ref, path, is_list=False):
+def generate_header_retrieval(stmt, ref, path, definitions, schema_list, is_list=False):
     """ Generate the head function definitions."""
     path_params = None
     if path:
@@ -1078,7 +1105,7 @@ def generate_header_retrieval(stmt, ref, path, is_list=False):
     head = {}
     generate_api_header(stmt, head, 'Header Get', path, is_list=is_list)
     if path:
-        head['parameters'] = create_parameter_list(path_params)
+        head['parameters'] = create_parameter_list(path_params, ref, definitions, schema_list)
 
     response = {
         '200': {'description': 'OK: Successful operation'}
@@ -1087,18 +1114,37 @@ def generate_header_retrieval(stmt, ref, path, is_list=False):
     return head
 
 
-def create_parameter_list(path_params):
+def create_parameter_list(path_params, schema, definitions, schema_list):
     """ Create description from a list of path parameters."""
     param_list = []
-    for param in path_params:
+    for i, param in enumerate(path_params):
         parameter = dict()
         parameter['in'] = 'path'
         parameter['name'] = str(param)
         parameter['description'] = 'ID of ' + str(param)
         parameter['required'] = True
-        parameter['type'] = 'string'
+
+        if not fill_right_type_for_path_param(schema, param, definitions, parameter, schema_list):
+            parameter['type'] = 'string'
+
         param_list.append(parameter)
     return param_list
+
+def fill_right_type_for_path_param(schema, param, definitions, parameter, schema_list):
+    found = False
+
+    for j, _ in enumerate(schema_list):
+        schema = definitions[str(schema_list[j])]
+        if str(param) in schema['properties']:
+            parameter['type'] = schema['properties'][str(param)]['type'] if 'type' in schema['properties'][str(param)] else 'string'
+            parameter['format'] = schema['properties'][str(param)]['format'] if 'format' in schema['properties'][str(param)] else ''
+            found = True
+            break;
+
+    if 'format' in parameter and not parameter['format']:
+        del parameter['format']
+
+    return found
 
 
 def create_body_dict(name, schema):
