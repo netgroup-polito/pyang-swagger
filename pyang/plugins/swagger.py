@@ -1158,6 +1158,8 @@ def create_body_dict(name, schema):
             body_dict['description'] = schema['description']
         else:
             body_dict['description'] = name + 'body object'
+        if 'enum' in schema:
+            body_dict['x-is-enum'] = 'true'
         body_dict['required'] = True
     return body_dict
 
@@ -1170,6 +1172,8 @@ def create_responses(name, schema=None):
     }
     if schema:
         response['200']['schema'] = schema
+        if 'enum' in schema:
+            response['200']['x-is-enum'] = 'true'
     return response
 
 
