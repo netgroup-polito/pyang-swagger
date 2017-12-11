@@ -33,12 +33,23 @@ pyang -f swagger -p modules modules/config-bridge.yang -o config-bridge-swagger.
       --use the option '-p' to specify the path of the yang models for import purposes.
 ```
 
-### Have a look at the auto-generated JSON output 
+### Have a look at the auto-generated JSON output
 
 [config-bridge.json](./output/config-bridge.json)
 
-### Have a look at the auto-generated Swagger API on swaggerhub.com 
+### Have a look at the auto-generated Swagger API on swaggerhub.com
 [config-bridge-api](https://app.swaggerhub.com/apis/sebymiano/config-bridge_api/1.0.0)
+
+## RESTCONF integration
+
+According to the RESTCONF protocol, the plugin generates three kinds of endpoints. Considering ```{base_path}``` as our base path and ```{path}``` as the path accessing the data or the operation, the plugin generates:
+
+* ```{base_path}/data/{path}``` for all configuration and state data accessible;
+* ```{base_path}/operations/{path}``` for all RPC operations;
+* ```{base_path}/yang-library-version``` storing the revision date of YANG library version.
+
+The methods supported are: OPTIONS, HEAD, GET, POST, PATCH, PUT, DELETE. To enable the generation of the endpoints for OPTIONS and HEAD methods, please enable the ```generate_all_restconf_methods``` flag. Responses are generated according to the definitions contained in the protocol.
+
 
 License
 -------
