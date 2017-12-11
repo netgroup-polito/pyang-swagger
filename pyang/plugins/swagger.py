@@ -920,8 +920,9 @@ def get_input_path_parameters_create(path):
     for param in params:
         if len(param) > 0 and param[0] != '{' and param[len(param) -1] != '}':
             path_without_keys.append(param)
-    parent_keys = path.split(path_without_keys[-1])
-    params = parent_keys[0].split('/')
+    if len(path_without_keys) > 1:
+        parent_keys = path.split(path_without_keys[-1])
+        params = parent_keys[0].split('/')
     for param in params:
         if len(param) > 0 and param [0] == '{' and param[len(param) - 1] == '}':
             path_params.append(param[1:-1])
@@ -991,6 +992,10 @@ def generate_retrieve(stmt, schema, path, definitions, schema_list, is_list=Fals
         '404': {'description': 'Not found'},
         '405': {'description': 'Method not allowed: Use POST to invoke operations'}
     }
+    if schema:
+       response['200']['schema'] = schema
+       if 'enum' in schema:
+           response['200']['x-is-enum'] = 'true'
     get['responses'] = response
     return get
 
