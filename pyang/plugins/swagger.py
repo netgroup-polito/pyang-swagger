@@ -452,6 +452,7 @@ def gen_model(children, tree_structure, config=True, definitions=None):
                 elif attribute.keyword == 'default':
                     node['default'] = attribute.arg
                 elif attribute.keyword == 'mandatory':
+                    node['required'] = True if attribute.arg == 'true' else False
                     parent_model = to_upper_camelcase(child.parent.arg)
                     if parent_model not in PARENT_MODELS.keys():
                         PARENT_MODELS[parent_model] = {'models': [], 'discriminator': to_lower_camelcase(child.arg)}
@@ -898,6 +899,7 @@ def print_api(node, config, ref, path, definitions, is_list=False):
         # or node.arg == _ROOT_NODE_NAME:
         if 'post' in operations: del operations['post']
         if 'delete' in operations: del operations['delete']
+        if 'put' in operations: del operations['put']
 
     return operations
 
