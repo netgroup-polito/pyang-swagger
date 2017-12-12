@@ -412,7 +412,7 @@ def distinguish_attribute_type(attribute, node):
         # map all other types to string
         else:
             node['type'] = 'string'
-    elif attribute.arg[:-2] == 'int' or attribute.arg[:-2] == 'uint':
+    elif attribute.arg[:-2] == 'int' or attribute.arg[:-2] == 'uint' or attribute.arg[:-1] == 'int' or attribute.arg[:-1] == 'uint': # added this check in order to consider int8 e uint8
         node['type'] = 'integer'
         node['format'] = attribute.arg
     elif attribute.arg == 'decimal64':
@@ -541,6 +541,8 @@ def gen_model(children, tree_structure, config=True, definitions=None):
                     key_dict = OrderedDict()
                     key_dict['name'] = key
                     key_dict['type'] = node['properties'][key]['type']
+                    if key_dict['type'] == 'integer':
+                      key_dict['format'] = node['properties'][key]['format']
                     node['x-key-list'].append(key_dict)
                 definitions[node_schema_name]['properties'] = copy.deepcopy(node['properties'])
             del node['properties']
