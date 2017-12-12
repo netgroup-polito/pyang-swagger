@@ -440,6 +440,7 @@ def gen_model(children, tree_structure, config=True, definitions=None):
         node = dict()
         nonRefChildren = None
         listkey = None
+        required_elem_list=list()
 
         if hasattr(child, 'substmts'):
             for attribute in child.substmts:
@@ -454,7 +455,8 @@ def gen_model(children, tree_structure, config=True, definitions=None):
                 elif attribute.keyword == 'default':
                     node['default'] = attribute.arg
                 elif attribute.keyword == 'mandatory':
-                    node['required'] = True if attribute.arg == 'true' else False
+                    required_elem_list.append(child.arg)
+                    node['x-is-required'] = True if attribute.arg == 'true' else False
                     parent_model = to_upper_camelcase(child.parent.arg)
                     if parent_model not in PARENT_MODELS.keys():
                         PARENT_MODELS[parent_model] = {'models': [], 'discriminator': to_lower_camelcase(child.arg)}
@@ -505,6 +507,7 @@ def gen_model(children, tree_structure, config=True, definitions=None):
         if child.keyword == 'leaf-list':
             ll_node = {'type': 'array', 'items': node}
             node = ll_node
+
         # Groupings are class names and upper camelcase.
         # All the others are variables and lower camelcase.
         if child.keyword == 'grouping':
@@ -547,6 +550,9 @@ def gen_model(children, tree_structure, config=True, definitions=None):
                       key_dict['format'] = node['properties'][key]['format']
                     node['x-key-list'].append(key_dict)
                 definitions[node_schema_name]['properties'] = copy.deepcopy(node['properties'])
+                if required_elem_list:
+                    definitions[node_schema_name]['required'] = copy.deepcopy(required_elem_list)
+
             del node['properties']
             node['items']['$ref'] = '#/definitions/{0}'.format(node_schema_name)
 
@@ -562,6 +568,8 @@ def gen_model(children, tree_structure, config=True, definitions=None):
             node_schema_name = to_upper_camelcase(parents_name + ('_' if parent_list else '') + child.arg)
             if node_schema_name not in definitions:
                 definitions[node_schema_name] = copy.deepcopy(node)
+                if required_elem_list:
+                    definitions[node_schema_name]['required'] = copy.deepcopy(required_elem_list)
 
             node.clear()
             node['$ref'] = '#/definitions/{0}'.format(node_schema_name)
