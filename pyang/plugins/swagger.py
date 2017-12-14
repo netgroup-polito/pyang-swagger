@@ -540,6 +540,8 @@ def gen_model(children, tree_structure, config=True, definitions=None):
                     key_dict = OrderedDict()
                     key_dict['name'] = key
                     key_dict['type'] = node['properties'][key]['type']
+                    if key_dict['type'] == 'integer':
+                      key_dict['format'] = node['properties'][key]['format']
                     node['x-key-list'].append(key_dict)
                 definitions[node_schema_name]['properties'] = copy.deepcopy(node['properties'])
             del node['properties']
