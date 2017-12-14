@@ -412,7 +412,7 @@ def distinguish_attribute_type(attribute, node):
         # map all other types to string
         else:
             node['type'] = 'string'
-    elif attribute.arg[:-2] == 'int' or attribute.arg[:-2] == 'uint':
+    elif attribute.arg[:-2] == 'int' or attribute.arg[:-2] == 'uint' or attribute.arg[:-1] == 'int' or attribute.arg[:-1] == 'uint': # added this check in order to consider int8 e uint8
         node['type'] = 'integer'
         node['format'] = attribute.arg
     elif attribute.arg == 'decimal64':
