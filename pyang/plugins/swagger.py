@@ -315,11 +315,11 @@ def emit_swagger_spec(ctx, modules, fd, path):
         # instance level
         model['paths'][modulepath + '{name}/']['post']['x-has-default-impl'] = True
         model['paths'][modulepath + '{name}/']['delete']['x-has-default-impl'] = True
+        model['paths'][modulepath + '{name}/']['put']['x-has-default-impl'] = True
         model['paths'][modulepath + '{name}/uuid/']['get']['x-has-default-impl'] = True
 
         # port list level?
         model['paths'][modulepath + '{name}/ports/']['post']['x-has-default-impl'] = True
-        model['paths'][modulepath + '{name}/ports/']['patch']['x-has-default-impl'] = True
         model['paths'][modulepath + '{name}/ports/']['put']['x-has-default-impl'] = True
         model['paths'][modulepath + '{name}/ports/']['get']['x-has-default-impl'] = True
         model['paths'][modulepath + '{name}/ports/']['delete']['x-has-default-impl'] = True
@@ -327,7 +327,6 @@ def emit_swagger_spec(ctx, modules, fd, path):
         # ports level
         model['paths'][modulepath + '{name}/ports/{ports_name}/']['post']['x-has-default-impl'] = True
         model['paths'][modulepath + '{name}/ports/{ports_name}/']['put']['x-has-default-impl'] = True
-        model['paths'][modulepath + '{name}/ports/{ports_name}/']['patch']['x-has-default-impl'] = True
         model['paths'][modulepath + '{name}/ports/{ports_name}/']['get']['x-has-default-impl'] = True
         model['paths'][modulepath + '{name}/ports/{ports_name}/']['delete']['x-has-default-impl'] = True
 
