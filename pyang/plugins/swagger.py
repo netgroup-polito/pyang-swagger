@@ -545,6 +545,8 @@ def gen_model(children, tree_structure, config=True, definitions=None):
                     key_dict = OrderedDict()
                     key_dict['name'] = key
                     key_dict['type'] = node['properties'][key]['type']
+                    if 'enum' in node['properties'][key]:
+                      key_dict['isEnum'] = 'true'
                     if key_dict['type'] == 'integer':
                       key_dict['format'] = node['properties'][key]['format']
                     node['x-key-list'].append(key_dict)
@@ -1156,11 +1158,16 @@ def fill_right_type_for_path_param(schema, param, definitions, parameter, schema
         if str(param) in schema['properties']:
             parameter['type'] = schema['properties'][str(param)]['type'] if 'type' in schema['properties'][str(param)] else 'string'
             parameter['format'] = schema['properties'][str(param)]['format'] if 'format' in schema['properties'][str(param)] else ''
+            parameter['enum'] = schema['properties'][str(param)]['enum'] if 'enum' in schema['properties'][str(param)] else ''
             found = True
             break;
 
     if 'format' in parameter and not parameter['format']:
         del parameter['format']
+    
+    if 'enum' in parameter and not parameter['enum']:
+        del parameter['enum']
+     
 
     return found
 
