@@ -1161,7 +1161,19 @@ def fill_right_type_for_path_param(schema, param, definitions, parameter, schema
             parameter['enum'] = schema['properties'][str(param)]['enum'] if 'enum' in schema['properties'][str(param)] else ''
             found = True
             break;
-
+    if not found:
+        if '_' in str(param):
+            param_name = str(param).split('_');
+            for j, _ in enumerate(schema_list):
+                if param_name[0].title() == str(schema_list[j]):
+                    schema = definitions[str(schema_list[j])]
+                    if param_name[-1] in schema['properties']:
+                        parameter['type'] = schema['properties'][param_name[-1]]['type'] if 'type' in schema['properties'][param_name[-1]] else 'string'
+                        parameter['format'] = schema['properties'][param_name[-1]]['format'] if 'format' in schema['properties'][param_name[-1]] else ''
+                        parameter['enum'] = schema['properties'][param_name[-1]]['enum'] if 'enum' in schema['properties'][param_name[-1]] else ''
+                        found = True
+                        break;
+        
     if 'format' in parameter and not parameter['format']:
         del parameter['format']
     
