@@ -927,22 +927,6 @@ def get_input_path_parameters(path):
             path_params.append(param[1:-1])
     return path_params
 
-def get_input_path_parameters_create(path):
-    """"Get the input parameters for create functions"""
-    path_without_keys = []
-    path_params = []
-    params = path.split('/')
-    for param in params:
-        if len(param) > 0 and param[0] != '{' and param[len(param) -1] != '}':
-            path_without_keys.append(param)
-    if len(path_without_keys) > 1:
-        parent_keys = path.split(path_without_keys[-1])
-        params = parent_keys[0].split('/')
-    for param in params:
-        if len(param) > 0 and param [0] == '{' and param[len(param) - 1] == '}':
-            path_params.append(param[1:-1])
-    return path_params
-
 ###########################################################
 ############### Creating CRUD Operations ##################
 ###########################################################
@@ -953,7 +937,7 @@ def generate_create(stmt, schema, path, definitions, schema_list, rpc=None, is_l
     """ Generates the create function definitions."""
     path_params = None
     if path:
-        path_params = get_input_path_parameters_create(path)
+        path_params = get_input_path_parameters(path)
     post = {}
     generate_api_header(stmt, post, 'Create', path, is_list=is_list)
     # Input parameters
