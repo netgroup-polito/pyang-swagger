@@ -249,9 +249,9 @@ def print_header(module, fd, children):
     header['schemes'] = ['http']
     for attribute in module.substmts:
         if isinstance(attribute.keyword, tuple) and attribute.keyword[1] == "service-description":
-            header['x-iovnet-service-description'] = attribute.arg
+            header['info']['description'] = attribute.arg
         elif isinstance(attribute.keyword, tuple) and attribute.keyword[1] == "service-version":
-            header['x-iovnet-service-version'] = attribute.arg
+            header['info']['version'] = attribute.arg
 
     # Add tags to the header to group the APIs based on every root node found in the YANG
     if len(children) > 0:
