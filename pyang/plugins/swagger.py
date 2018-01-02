@@ -152,8 +152,20 @@ def add_fake_list_at_beginning(module):
 
     module.i_children.append(top_list)
 
-    del module.substmts[-len(old_list):]
+    base_child = get_basemodel_grouping_children(module)
+    del module.substmts[-len(old_list)+base_child:]
     module.substmts.append(top_list)
+
+
+def get_basemodel_grouping_children(module):
+    modules = module.i_ctx.modules
+    for key in modules:
+        if isinstance(key, tuple) and key[0] == "base-iovnet-service-model":
+            grouping = modules[key].substmts[-1]
+            if grouping.arg == 'base-yang-module' and grouping.keyword == 'grouping':
+                return len(grouping.i_children)
+
+    return 0
 
 
 def add_leaf_name_parameters(leaf_name, module):
@@ -235,6 +247,16 @@ def print_header(module, fd, children):
         header['basePath'] = '/'
 
     header['schemes'] = ['http']
+    header['x-iovnet-service-info'] = OrderedDict()
+    for attribute in module.substmts:
+        if isinstance(attribute.keyword, tuple) and attribute.keyword[1] == "service-description":
+            header['x-iovnet-service-info']['x-service-description'] = attribute.arg
+        elif isinstance(attribute.keyword, tuple) and attribute.keyword[1] == "service-version":
+            header['x-iovnet-service-info']['x-service-version'] = attribute.arg
+
+    if not header['x-iovnet-service-info']:
+        # Dictionary is empty
+        del header['x-iovnet-service-info']
 
     # Add tags to the header to group the APIs based on every root node found in the YANG
     if len(children) > 0:
@@ -464,6 +486,10 @@ def gen_model(children, tree_structure, config=True, definitions=None):
                     node['example'] = attribute.arg
                 elif isinstance(attribute.keyword, tuple) and attribute.keyword[1] == "iovnet-class":
                     node['x-inherits-from'] = attribute.arg
+                elif isinstance(attribute.keyword, tuple) and attribute.keyword[1] == "service-description":
+                    node['x-service-description'] = attribute.arg
+                elif isinstance(attribute.keyword, tuple) and attribute.keyword[1] == "service-version":
+                    node['x-service-version'] = attribute.arg
                 elif attribute.keyword == 'config' and attribute.arg == 'false':
                     config = False
                     node['readOnly'] = True
