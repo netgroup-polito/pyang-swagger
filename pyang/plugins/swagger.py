@@ -409,6 +409,7 @@ def distinguish_attribute_type(attribute, node):
             node['format'] = TYPEDEFS[attribute.arg]['format']
         elif TYPEDEFS[attribute.arg]['type'] == 'enumeration':
             node['type'] = 'string'
+            node['x-typedef'] = TYPEDEFS[attribute.arg]['name']
             node['enum'] = [e for e in TYPEDEFS[attribute.arg]['enum']]
         # map all other types to string
         else:
@@ -547,6 +548,8 @@ def gen_model(children, tree_structure, config=True, definitions=None):
                     key_dict['type'] = node['properties'][key]['type']
                     if 'enum' in node['properties'][key]:
                       key_dict['isEnum'] = 'true'
+                    if 'x-typedef' in node['properties'][key]:
+                      key_dict['x-typedef'] = node['properties'][key]['x-typedef']
                     if key_dict['type'] == 'integer':
                       key_dict['format'] = node['properties'][key]['format']
                     node['x-key-list'].append(key_dict)
@@ -995,6 +998,8 @@ def generate_retrieve(stmt, schema, path, definitions, schema_list, is_list=Fals
        response['200']['schema'] = schema
        if 'enum' in schema:
            response['200']['x-is-enum'] = 'true'
+       if 'x-typedef' in schema:
+            response['200']['x-typedef'] = schema['x-typedef']
     get['responses'] = response
     return get
 
@@ -1143,6 +1148,7 @@ def fill_right_type_for_path_param(schema, param, definitions, parameter, schema
             parameter['type'] = schema['properties'][str(param)]['type'] if 'type' in schema['properties'][str(param)] else 'string'
             parameter['format'] = schema['properties'][str(param)]['format'] if 'format' in schema['properties'][str(param)] else ''
             parameter['enum'] = schema['properties'][str(param)]['enum'] if 'enum' in schema['properties'][str(param)] else ''
+            parameter['x-typedef'] = schema['properties'][str(param)]['x-typedef'] if 'x-typedef' in schema['properties'][str(param)] else ''
             found = True
             break;
     if not found:
@@ -1155,6 +1161,7 @@ def fill_right_type_for_path_param(schema, param, definitions, parameter, schema
                         parameter['type'] = schema['properties'][param_name[-1]]['type'] if 'type' in schema['properties'][param_name[-1]] else 'string'
                         parameter['format'] = schema['properties'][param_name[-1]]['format'] if 'format' in schema['properties'][param_name[-1]] else ''
                         parameter['enum'] = schema['properties'][param_name[-1]]['enum'] if 'enum' in schema['properties'][param_name[-1]] else ''
+                        parameter['x-typedef'] = schema['properties'][param_name[-1]]['x-typedef'] if 'x-typedef' in schema['properties'][param_name[-1]] else ''
                         found = True
                         break;
         
@@ -1163,8 +1170,9 @@ def fill_right_type_for_path_param(schema, param, definitions, parameter, schema
     
     if 'enum' in parameter and not parameter['enum']:
         del parameter['enum']
-     
-
+    if 'x-typedef' in parameter and not parameter['x-typedef']:
+        del parameter['x-typedef']
+        
     return found
 
 
@@ -1181,6 +1189,8 @@ def create_body_dict(name, schema):
             body_dict['description'] = name + 'body object'
         if 'enum' in schema:
             body_dict['x-is-enum'] = 'true'
+        if 'x-typedef' in schema:
+            body_dict['x-typedef'] = schema['x-typedef']
         body_dict['required'] = True
     return body_dict
 
@@ -1195,6 +1205,8 @@ def create_responses(name, schema=None):
         response['200']['schema'] = schema
         if 'enum' in schema:
             response['200']['x-is-enum'] = 'true'
+        if 'x-typedef' in schema:
+            response['200']['x-typedef'] = schema['x-typedef']
     return response
 
 
