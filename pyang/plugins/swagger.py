@@ -16,7 +16,9 @@
 
 import optparse
 import json
+import os
 import re
+import yaml
 import string
 from collections import OrderedDict
 import copy
@@ -37,6 +39,7 @@ def pyang_plugin_init():
 
 class SwaggerPlugin(plugin.PyangPlugin):
     """ Plugin class for swagger file generation."""
+    git_info = ""
 
     def add_output_format(self, fmts):
         self.multiple_modules = True
@@ -85,6 +88,7 @@ class SwaggerPlugin(plugin.PyangPlugin):
         optgrp.add_options(optlist)
 
     def setup_ctx(self, ctx):
+        self.read_yaml_config_file(ctx)
         pass
 
     def setup_fmt(self, ctx):
@@ -105,7 +109,31 @@ class SwaggerPlugin(plugin.PyangPlugin):
 
         global S_API
         S_API = ctx.opts.s_api
-        emit_swagger_spec(ctx, modules, fd, ctx.opts.path)
+        emit_swagger_spec(ctx, modules, fd, ctx.opts.path, self.git_info)
+
+    def read_yaml_config_file(self, ctx):
+        path = "/.config/iovnetctl/pyang-swagger.yaml"
+        home = os.environ['HOME']
+        if not home:
+            return
+
+        path = home + path
+
+        if not os.path.exists(path):
+            print("No configuration file found in " + path)
+            print("Use the install.sh script under pyang-swagger")
+            print("Proceed with default config...")
+            return
+
+        with open(path, 'r') as stream:
+            try:
+                data_loaded = yaml.load(stream)
+            except yaml.YAMLError as exc:
+                print(exc)
+                return
+
+        if 'git-info' in data_loaded and data_loaded['git-info']:
+            self.git_info = data_loaded['git-info']
 
 
 def add_top_list_parameters(top_list, old_list, leaf_name, leaf_name_keyword, module):
@@ -224,7 +252,7 @@ def add_leaf_name_parameters(leaf_name, module):
     leaf_name.substmts.append(leaf_name_description)
 
 
-def print_header(module, fd, children):
+def print_header(module, fd, children, git_info):
     """ Print the swagger header information."""
     module_name = str(module.arg)
 
@@ -246,12 +274,17 @@ def print_header(module, fd, children):
     else:
         header['basePath'] = '/'
 
+    if git_info:
+        header['info']['x-pyang-git-info'] = git_info
+
     header['schemes'] = ['http']
     for attribute in module.substmts:
         if isinstance(attribute.keyword, tuple) and attribute.keyword[1] == "service-description":
             header['info']['description'] = attribute.arg
         elif isinstance(attribute.keyword, tuple) and attribute.keyword[1] == "service-version":
             header['info']['version'] = attribute.arg
+        elif isinstance(attribute.keyword, tuple) and attribute.keyword[1] == "service-name":
+            header['info']['x-service-name'] = attribute.arg
 
     # Add tags to the header to group the APIs based on every root node found in the YANG
     if len(children) > 0:
@@ -266,7 +299,7 @@ def print_header(module, fd, children):
     return header
 
 
-def emit_swagger_spec(ctx, modules, fd, path):
+def emit_swagger_spec(ctx, modules, fd, path, git_info):
     """ Emits the complete swagger specification for the yang file."""
 
     printed_header = False
@@ -279,7 +312,7 @@ def emit_swagger_spec(ctx, modules, fd, path):
         chs = [ch for ch in module.i_children
                if ch.keyword in (statements.data_definition_keywords + ['rpc', 'notification'])]
         if not printed_header:
-            model = print_header(module, fd, chs)
+            model = print_header(module, fd, chs, git_info)
             printed_header = True
             path = '/'
 
