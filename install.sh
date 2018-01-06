@@ -30,11 +30,13 @@ FILE_NAME=pyang-swagger.yaml
 
 DATE=`date '+%Y-%m-%d %H:%M:%S'`
 
-FILE_CONTENT=
 #echo $FILE_CONTENT
 
 mkdir -p $CONFIG_PATH
-echo "git-info: ${GIT_BRANCH}/${GIT_COMMIT_HASH}
-install-date: ${DATE}" > $CONFIG_PATH$FILE_NAME
+
+cat > $CONFIG_PATH$FILE_NAME << EOF
+git-info: ${GIT_BRANCH}/${GIT_COMMIT_HASH}
+install-date: ${DATE}
+EOF
 
 cd $_pwd
