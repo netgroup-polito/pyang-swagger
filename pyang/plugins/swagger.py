@@ -277,6 +277,9 @@ def print_header(module, fd, children, git_info):
     if git_info:
         header['info']['x-pyang-git-info'] = git_info
 
+    if module.pos.ref:
+        header['info']['x-yang-path'] = str(module.pos.ref)
+
     header['schemes'] = ['http']
     for attribute in module.substmts:
         if isinstance(attribute.keyword, tuple) and attribute.keyword[1] == "service-description":
