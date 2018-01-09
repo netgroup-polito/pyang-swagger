@@ -112,7 +112,7 @@ class SwaggerPlugin(plugin.PyangPlugin):
         emit_swagger_spec(ctx, modules, fd, ctx.opts.path, self.git_info)
 
     def read_yaml_config_file(self, ctx):
-        path = "/.config/iovnetctl/pyang-swagger.yaml"
+        path = "/.config/iovnet/pyang-swagger.yaml"
         home = os.environ['HOME']
         if not home:
             return
