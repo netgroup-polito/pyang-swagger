@@ -25,7 +25,7 @@ cd /tmp/pyang-swagger/pyang
 sudo pip install -r requirements.txt
 sudo python setup.py install
 
-CONFIG_PATH=$HOME/.config/iovnetctl/
+CONFIG_PATH=$HOME/.config/iovnet/
 FILE_NAME=pyang-swagger.yaml
 
 DATE=`date '+%Y-%m-%d %H:%M:%S'`
