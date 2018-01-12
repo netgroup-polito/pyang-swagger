@@ -337,7 +337,7 @@ def emit_swagger_spec(ctx, modules, fd, path, git_info):
         # list() needed for python 3 compatibility
         referenced_models = list()
         referenced_models = find_models(ctx, module, models, referenced_models)
-        referenced_models.extend(find_models(ctx, module, chs, referenced_models))
+        # referenced_models.extend(find_models(ctx, module, chs, referenced_models))
 
         for element in referenced_models:
             models.append(element)
@@ -456,7 +456,6 @@ def find_typedefs(ctx, module, children, referenced_types):
 pending_models = list()
 
 
-
 def distinguish_attribute_type(attribute, node):
     if len(attribute.arg.split(':')) > 1:
         attribute.arg = attribute.arg.split(':')[-1]
@@ -498,7 +497,7 @@ def gen_model(children, tree_structure, config=True, definitions=None):
         node = dict()
         nonRefChildren = None
         listkey = None
-        required_elem_list=list()
+        required_elem_list = list()
 
         if hasattr(child, 'substmts'):
             for attribute in child.substmts:
@@ -522,10 +521,6 @@ def gen_model(children, tree_structure, config=True, definitions=None):
                     node['example'] = attribute.arg
                 elif isinstance(attribute.keyword, tuple) and attribute.keyword[1] == "iovnet-class":
                     node['x-inherits-from'] = attribute.arg
-                elif isinstance(attribute.keyword, tuple) and attribute.keyword[1] == "service-description":
-                    node['x-service-description'] = attribute.arg
-                elif isinstance(attribute.keyword, tuple) and attribute.keyword[1] == "service-version":
-                    node['x-service-version'] = attribute.arg
                 elif attribute.keyword == 'config' and attribute.arg == 'false':
                     config = False
                     node['readOnly'] = True
@@ -533,6 +528,8 @@ def gen_model(children, tree_structure, config=True, definitions=None):
                 # Process the reference to another model.
                 # We differentiate between single and array references.
                 elif attribute.keyword == 'uses':
+                    # Workaround to make it working
+                    continue
 
                     if len(attribute.arg.split(':')) > 1:
                         attribute.arg = attribute.arg.split(':')[-1]
@@ -551,6 +548,13 @@ def gen_model(children, tree_structure, config=True, definitions=None):
                             PARENT_MODELS[ref_arg]['models'].append(child.arg)
                         node['allOf'] = []
                         node['allOf'].append({'$ref': ref})
+
+        if child.keyword == 'action':
+            handle_action_object(child, definitions)
+            # Skip processing of action, otherwise they will be
+            # considered as properties
+            # tree_structure[to_lower_camelcase(child.arg)] = node
+            continue
 
         # When a node contains a referenced model as an attribute the algorithm
         # does not go deeper into the sub-tree of the referenced model.
@@ -575,7 +579,7 @@ def gen_model(children, tree_structure, config=True, definitions=None):
         if child.keyword == 'grouping':
             if referenced:
                 node['$ref'] = ref
-
+            node['x-is-yang-grouping'] = True
             tree_structure[to_upper_camelcase(child.arg)] = node
 
         elif child.keyword == 'list':
@@ -599,6 +603,7 @@ def gen_model(children, tree_structure, config=True, definitions=None):
             node_schema_name = to_upper_camelcase(parents_name + ('_' if parent_list else '') + child.arg)
             if node_schema_name not in definitions:
                 definitions[node_schema_name] = dict()
+            if 'properties' not in definitions[node_schema_name]:
                 # TODO: maybe we have to add an key_index for multikey support
                 if node['type'] == 'array':
                     definitions[node_schema_name]['x-is-list'] = 'true'
@@ -609,11 +614,11 @@ def gen_model(children, tree_structure, config=True, definitions=None):
                     key_dict['name'] = key
                     key_dict['type'] = node['properties'][key]['type']
                     if 'enum' in node['properties'][key]:
-                      key_dict['isEnum'] = 'true'
+                        key_dict['isEnum'] = 'true'
                     if 'x-typedef' in node['properties'][key]:
-                      key_dict['x-typedef'] = node['properties'][key]['x-typedef']
+                        key_dict['x-typedef'] = node['properties'][key]['x-typedef']
                     if key_dict['type'] == 'integer':
-                      key_dict['format'] = node['properties'][key]['format']
+                        key_dict['format'] = node['properties'][key]['format']
                     node['x-key-list'].append(key_dict)
                 definitions[node_schema_name]['properties'] = copy.deepcopy(node['properties'])
                 if required_elem_list:
@@ -645,6 +650,27 @@ def gen_model(children, tree_structure, config=True, definitions=None):
             if 'x-inherits-from' in node:
                 definitions[node_schema_name]['x-inherits-from'] = node['x-inherits-from']
                 del node['x-inherits-from']
+        elif child.keyword == 'input' or child.keyword == 'output':
+            parent_list = get_parent_list(child)
+            parent_action_list = get_parent_list(child.parent)
+            parent_action_name = '_'.join(parent_action_list)
+            parents_name = '_'.join(parent_list)
+            node_schema_name = to_upper_camelcase(parents_name + ('_' if parent_list else '') + child.arg)
+            if node_schema_name not in definitions:
+                definitions[node_schema_name] = copy.deepcopy(node)
+                if required_elem_list:
+                    definitions[node_schema_name]['required'] = copy.deepcopy(required_elem_list)
+
+            node.clear()
+            node['$ref'] = '#/definitions/{0}'.format(node_schema_name)
+            definitions[node_schema_name]['x-parent'] = to_upper_camelcase(
+                child.parent.arg if not parents_name else parent_action_name)
+            definitions[node_schema_name]['x-is-yang-action-object'] = True
+            tree_structure[to_lower_camelcase(child.arg)] = node
+
+            if 'x-inherits-from' in node:
+                definitions[node_schema_name]['x-inherits-from'] = node['x-inherits-from']
+                del node['x-inherits-from']
 
         # elif child.keyword == 'leaf':
         #    copy_node = dict()
@@ -664,6 +690,47 @@ def gen_model(children, tree_structure, config=True, definitions=None):
                 tree_structure[to_lower_camelcase(child.arg)] = node
 
 
+def handle_action_object(child, definitions):
+    if not definitions:
+        return
+
+    parent_list = get_parent_list(child)
+    parents_name = '_'.join(parent_list)
+    parents_name_upper = to_upper_camelcase(parents_name)
+    node_schema_name = to_upper_camelcase(parents_name + ('_' if parent_list else '') + child.arg)
+
+    action_dict = dict()
+    action_dict['x-yang-action-baseName'] = child.arg
+    action_dict['x-yang-action-name-upper-camelcase'] = to_upper_camelcase(child.arg)
+    action_dict['x-yang-action-name-lower-camelcase'] = to_lower_camelcase_real(child.arg)
+    action_dict['x-yang-action-has-input'] = False
+    action_dict['x-yang-action-has-output'] = False
+
+    for action_child in child.i_children:
+        if action_child.keyword == 'input':
+            action_dict['x-yang-action-has-input'] = True
+            action_dict['x-yang-action-input-object'] = to_upper_camelcase(node_schema_name + "_input")
+        elif action_child.keyword == 'output':
+            action_dict['x-yang-action-has-output'] = True
+            action_dict['x-yang-action-output-object'] = to_upper_camelcase(node_schema_name + "_output")
+
+    if parents_name_upper not in definitions:
+        definitions[parents_name_upper] = dict()
+
+    definitions[parents_name_upper]['x-has-yang-actions'] = True
+    if 'x-yang-actions' not in definitions[parents_name_upper]:
+        definitions[parents_name_upper]['x-yang-actions'] = list()
+
+    already_in_list = False
+    for elem in definitions[parents_name_upper]['x-yang-actions']:
+        if elem['x-yang-action-baseName'] == action_dict['x-yang-action-baseName']:
+            already_in_list = True
+            break
+
+    if not already_in_list:
+        definitions[parents_name_upper]['x-yang-actions'].append(action_dict)
+
+
 def get_parent_list(child):
     parent = child.parent
     parent_list = list()
@@ -672,6 +739,7 @@ def get_parent_list(child):
         parent = parent.parent
 
     return list(reversed(parent_list[:-1]))
+
 
 def get_parent_schema_list(child):
     parent = child.parent
@@ -692,6 +760,7 @@ def get_parent_schema_list(child):
 
     return final_list
 
+
 def gen_model_node(node, tree_structure, config=True, definitions=None):
     """ Generates the properties sub-tree of the current node."""
     if hasattr(node, 'i_children'):
@@ -701,8 +770,9 @@ def gen_model_node(node, tree_structure, config=True, definitions=None):
         if properties:
             tree_structure['properties'] = properties
 
+
 def generate_yang_lib_api():
-    get = {}
+    get = dict()
     get['description'] = "Read YANG library version revision date"
     get['parameters'] = list()
     get['produces'] = ['application/json']
@@ -782,58 +852,64 @@ def gen_api_for_node_list(node, schema, config, keyList, path, definitions):
 
 def gen_api_for_node_rpc(node, schema, config, path, definitions, apis):
     schema_out = dict()
-
     list_to_iterate = node.i_children if hasattr(node, 'i_children') and node.i_children else node.substmts
 
     for child in list_to_iterate:
         if child.keyword == 'input':
             # TODO: This is done because pyang does not support the action keyword
             child.arg = 'input'
-            gen_model([child], schema, config)
+            gen_model([child], schema, config, definitions=definitions)
 
             # If a body input params has not been defined as a schema (not included in the definitions set),
             # a new definition is created, named the parent node name and the extension Schema
             # (i.e., NodenameRPCInputSchema). This new definition is a schema containing the content
             # of the body input schema i.e {"child.arg":schema} -> schema
+            parent_list = get_parent_list(child)
+            parents_name = '_'.join(parent_list)
+            node_schema_name = to_upper_camelcase(parents_name + ('_' if parent_list else '') + child.arg)
+
             if schema[to_lower_camelcase(child.arg)]:
-                if not '$ref' in schema[to_lower_camelcase(child.arg)]:
-                    definitions[to_upper_camelcase(node.arg + 'RPC_input_schema' if node.keyword == 'rpc'
-                                                   else 'ACTION_input_schema')] = schema[
+                if '$ref' not in schema[to_lower_camelcase(child.arg)]:
+                    definitions[to_upper_camelcase(node_schema_name + ('_rpc' if node.keyword == 'rpc'
+                                                   else ''))] = schema[
                         to_lower_camelcase(child.arg)]
-                    schema = {'$ref': '#/definitions/' + to_upper_camelcase(node.arg + 'RPC_input_schema'
+                    schema = {'$ref': '#/definitions/' + to_upper_camelcase(node_schema_name + ('_rpc'
                                                                             if node.keyword == 'rpc'
-                                                                            else 'ACTION_input_schema')}
+                                                                            else ''))}
                 else:
-                    schema = schema[to_lower_camelcase(node.arg)]
+                    schema = schema[to_lower_camelcase(child.arg)]
             else:
                 schema = None
 
         elif child.keyword == 'output':
             # TODO: This is done because pyang does not support the action keyword
             child.arg = 'output'
-            gen_model([child], schema_out, config)
+            gen_model([child], schema_out, config, definitions=definitions)
 
             # If a body input params has not been defined as a schema (not included in the definitions set),
             # a new definition is created, named the parent node name and the extension Schema
             # (i.e., NodenameRPCOutputSchema). This new definition is a schema containing the content
             # of the body input schema i.e {"child.arg":schema} -> schema
+            parent_list = get_parent_list(child)
+            parents_name = '_'.join(parent_list)
+            node_schema_name = to_upper_camelcase(parents_name + ('_' if parent_list else '') + child.arg)
+
             if schema_out[to_lower_camelcase(child.arg)]:
-                if not '$ref' in schema_out[to_lower_camelcase(child.arg)]:
-                    definitions[to_upper_camelcase(node.arg + ('RPC_output_schema' if node.keyword == 'rpc'
-                                                   else 'ACTION_output_schema'))] = schema_out[
-                        to_lower_camelcase(child.arg)]
-                    schema_out = {'$ref': '#/definitions/' + to_upper_camelcase(node.arg + ('RPC_output_schema'
+                if '$ref' not in schema_out[to_lower_camelcase(child.arg)]:
+                    definitions[to_upper_camelcase(node_schema_name + ('_rpc' if node.keyword == 'rpc' else ''))] = \
+                        schema_out[to_lower_camelcase(child.arg)]
+                    schema_out = {'$ref': '#/definitions/' + to_upper_camelcase(node_schema_name + ('_rpc'
                                                                                 if node.keyword == 'rpc'
-                                                                                else 'ACTION_output_schema'))}
+                                                                                else ''))}
                 else:
                     schema_out = schema_out[to_lower_camelcase(child.arg)]
             else:
                 schema_out = None
 
-    apis[str(path)] = print_rpc(node, schema, path, schema_out)
+    apis[str(path)] = print_rpc(node, schema, path, definitions, schema_out)
+
 
 # Generates the API of the current node.
-
 def gen_api_node(node, path, apis, definitions, config=True):
     """ Generate the API for a node."""
     path += str(node.arg) + '/'
@@ -897,7 +973,6 @@ def gen_api_node(node, path, apis, definitions, config=True):
                 "items": {"$ref": schema['$ref']}
             }
             apis[str(list_path)] = print_api(node, config, list_schema, list_path, definitions, is_list=True)
-            
 
     elif node.keyword == 'rpc' or node.keyword == 'action':
         gen_api_for_node_rpc(node, schema, config, path, definitions, apis)
@@ -942,8 +1017,30 @@ def print_notification(node, schema_out):
     return operations
 
 
-def print_rpc(node, schema_in, path, schema_out):
-    operations = {'post': generate_create(node, schema_in, path, rpc=schema_out)}
+def print_rpc(node, schema_in, path, definitions, schema_out):
+    operations = {}
+    if node.keyword == 'leaf':
+        node_name = node.parent
+    else:
+        node_name = node
+    parent_list = get_parent_schema_list(node_name)
+    parents_name = parent_list[-1] if len(parent_list) > 1 else ''
+    parent_set = set(parent_list)
+    node_schema_name = to_upper_camelcase(node_name.arg) if not parents_name else to_upper_camelcase(
+        parents_name + '_' + node_name.arg)
+
+    if node.keyword == 'action':
+        for child in node.i_children:
+            if child.keyword == 'input':
+                parent_set.add(to_upper_camelcase(node_schema_name + '_input'))
+            elif child.keyword == 'output':
+                parent_set.add(to_upper_camelcase(node_schema_name + '_output'))
+    else:
+        parent_set.add(node_schema_name)
+
+    schema_list = list(parent_set)
+
+    operations['post'] = generate_create(node, schema_in, path, definitions, schema_list, rpc=schema_out)
     return operations
 
 
@@ -996,8 +1093,8 @@ def get_input_path_parameters(path):
 ############### Creating CRUD Operations ##################
 ###########################################################
 
-# CREATE
 
+# CREATE
 def generate_create(stmt, schema, path, definitions, schema_list, rpc=None, is_list=False):
     """ Generates the create function definitions."""
     path_params = None
@@ -1310,7 +1407,13 @@ def to_lower_camelcase(name):
     markers.
     """
     return name
-    #return re.sub(r"(?:\B_|\b\-)([a-zA-Z0-9])", lambda l: l.group(1).upper(), name)
+    # return re.sub(r"(?:\B_|\b\-)([a-zA-Z0-9])", lambda l: l.group(1).upper(), name)
+
+def to_lower_camelcase_real(name):
+    """ Converts the name string to lower camelcase by using "-" and "_" as
+    markers.
+    """
+    return re.sub(r"(?:\B_|\b\-)([a-zA-Z0-9])", lambda l: l.group(1).upper(), name)
 
 
 def to_upper_camelcase(name):
