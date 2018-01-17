@@ -638,9 +638,13 @@ def gen_model(children, tree_structure, config=True, definitions=None):
             parents_name = '_'.join(parent_list)
             node_schema_name = to_upper_camelcase(parents_name + ('_' if parent_list else '') + child.arg)
             if node_schema_name not in definitions:
-                definitions[node_schema_name] = copy.deepcopy(node)
-                if required_elem_list:
-                    definitions[node_schema_name]['required'] = copy.deepcopy(required_elem_list)
+                definitions[node_schema_name] = dict()
+
+            if 'properties' not in definitions[node_schema_name]:
+                definitions[node_schema_name]['properties'] = copy.deepcopy(node)
+
+            if required_elem_list:
+                definitions[node_schema_name]['required'] = copy.deepcopy(required_elem_list)
 
             node.clear()
             node['$ref'] = '#/definitions/{0}'.format(node_schema_name)
@@ -707,12 +711,17 @@ def handle_action_object(child, definitions):
     action_dict['x-yang-action-has-output'] = False
 
     for action_child in child.i_children:
-        if action_child.keyword == 'input':
+        if action_child.keyword == 'input' and action_child.i_children:
             action_dict['x-yang-action-has-input'] = True
             action_dict['x-yang-action-input-object'] = to_upper_camelcase(node_schema_name + "_input")
-        elif action_child.keyword == 'output':
+        else:
+            action_dict['x-yang-action-has-input'] = False
+
+        if action_child.keyword == 'output' and action_child.i_children:
             action_dict['x-yang-action-has-output'] = True
             action_dict['x-yang-action-output-object'] = to_upper_camelcase(node_schema_name + "_output")
+        else:
+            action_dict['x-yang-action-has-output'] = False
 
     if parents_name_upper not in definitions:
         definitions[parents_name_upper] = dict()
@@ -797,8 +806,9 @@ def gen_apis(children, path, apis, definitions, config=True, is_root=False):
         if not hasattr(child, 'i_is_key') or not child.i_is_key:
             gen_api_node(child, path, apis, definitions, config)
 
-    apis['/yang-library-version'] = dict()
-    apis['/yang-library-version']['get'] = generate_yang_lib_api() #"2016-06-21" #found in the repository: /modules/ietf/ietf-yang-library.yang
+    # apis['/yang-library-version'] = dict()
+    # apis['/yang-library-version']['get'] = generate_yang_lib_api() #"2016-06-21"
+    # found in the repository: /modules/ietf/ietf-yang-library.yang
 
 
 def gen_api_for_node_list(node, schema, config, keyList, path, definitions):
@@ -1297,6 +1307,7 @@ def create_parameter_list(path_params, schema, definitions, schema_list):
 
         param_list.append(parameter)
     return param_list
+
 
 def fill_right_type_for_path_param(schema, param, definitions, parameter, schema_list):
     found = False
