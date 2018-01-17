@@ -865,7 +865,7 @@ def gen_api_for_node_rpc(node, schema, config, path, definitions, apis):
     list_to_iterate = node.i_children if hasattr(node, 'i_children') and node.i_children else node.substmts
 
     for child in list_to_iterate:
-        if child.keyword == 'input':
+        if child.keyword == 'input' and child.i_children:
             # TODO: This is done because pyang does not support the action keyword
             child.arg = 'input'
             gen_model([child], schema, config, definitions=definitions)
@@ -891,7 +891,7 @@ def gen_api_for_node_rpc(node, schema, config, path, definitions, apis):
             else:
                 schema = None
 
-        elif child.keyword == 'output':
+        elif child.keyword == 'output' and child.i_children:
             # TODO: This is done because pyang does not support the action keyword
             child.arg = 'output'
             gen_model([child], schema_out, config, definitions=definitions)
@@ -1041,9 +1041,9 @@ def print_rpc(node, schema_in, path, definitions, schema_out):
 
     if node.keyword == 'action':
         for child in node.i_children:
-            if child.keyword == 'input':
+            if child.keyword == 'input' and child.i_children:
                 parent_set.add(to_upper_camelcase(node_schema_name + '_input'))
-            elif child.keyword == 'output':
+            elif child.keyword == 'output' and child.i_children:
                 parent_set.add(to_upper_camelcase(node_schema_name + '_output'))
     else:
         parent_set.add(node_schema_name)
