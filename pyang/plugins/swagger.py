@@ -317,17 +317,21 @@ def emit_swagger_spec(ctx, modules, fd, path, git_info):
     # Go through all modules and extend the model.
     for module in modules:
         # extract children which contain data definition keywords
-        chs = [ch for ch in module.i_children
-               if ch.keyword in (statements.data_definition_keywords + ['rpc', 'notification'])]
+        if hasattr(module, "i_children"):
+            chs = [ch for ch in module.i_children
+                   if ch.keyword in (statements.data_definition_keywords + ['rpc', 'notification'])]
+
         if not printed_header:
             model = print_header(module, fd, chs, git_info)
             printed_header = True
             path = '/'
 
-        typdefs = [module.i_typedefs[element] for element in module.i_typedefs]
-        models = list(module.i_groupings.values())
+        if hasattr(module, "i_typedefs"):
+            typdefs = [module.i_typedefs[element] for element in module.i_typedefs]
+        if hasattr(module,  "i_groupings"):
+            models = list(module.i_groupings.values())
         referenced_types = list()
-        referenced_types = find_typedefs(ctx, module, models, referenced_types)
+        referenced_types = find_typedefs(ctx, module, modules, referenced_types)
         for element in referenced_types:
             typdefs.append(element)
 
@@ -460,6 +464,9 @@ def distinguish_attribute_type(attribute, node):
     if len(attribute.arg.split(':')) > 1:
         attribute.arg = attribute.arg.split(':')[-1]
     # Firstly, it is checked if the attribute type has been previously define in typedefs.
+    if hasattr(attribute, 'i_typedef') and attribute.i_typedef:
+        set_node_type_info(attribute.i_typedef, node)
+
     if attribute.arg in TYPEDEFS:
         if TYPEDEFS[attribute.arg]['type'][:3] == 'int':
             node['type'] = 'integer'
@@ -488,6 +495,21 @@ def distinguish_attribute_type(attribute, node):
     # map all other types to string
     else:
         node['type'] = 'string'
+
+
+def set_node_type_info(typedef, node):
+    if hasattr(typedef, "substmts"):
+        for elem in typedef.substmts:
+            if elem.keyword == 'type' and hasattr(elem, "substmts") and elem.substmts:
+                for nested_elem in elem.substmts:
+                    if nested_elem.keyword == 'pattern':
+                        node['format'] = str(nested_elem.arg)
+                        node['type'] = str(elem.arg)
+                    elif nested_elem.keyword == 'range':
+                        minimum, maximum = str(nested_elem.arg).split("..")
+                        node['format'] = str(elem.arg)
+                        node['minimum'] = minimum
+                        node['maximum'] = maximum
 
 
 def gen_model(children, tree_structure, config=True, definitions=None):
@@ -1174,7 +1196,6 @@ def generate_retrieve(stmt, schema, path, definitions, schema_list, is_list=Fals
 
 
 # UPDATE
-
 def generate_update(stmt, schema, path, definitions, schema_list, is_list=False):
     """ Generates the update function definitions."""
     path_params = None
@@ -1204,8 +1225,8 @@ def generate_update(stmt, schema, path, definitions, schema_list, is_list=False)
     patch['responses'] = response
     return patch
 
-# PUT
 
+# PUT
 def generate_replace(stmt, schema, path, definitions, schema_list, is_list=False):
     """ Generate the put function definitions."""
     path_params = None
@@ -1235,8 +1256,8 @@ def generate_replace(stmt, schema, path, definitions, schema_list, is_list=False
     put['responses'] = response
     return put
 
-# DELETE
 
+# DELETE
 def generate_delete(stmt, ref, path, definitions, schema_list, is_list=False):
     """ Generates the delete function definitions."""
     path_params = get_input_path_parameters(path)
@@ -1255,8 +1276,8 @@ def generate_delete(stmt, ref, path, definitions, schema_list, is_list=False):
     delete['responses'] = response
     return delete
 
-# OPTIONS
 
+# OPTIONS
 def generate_discovery(stmt, ref, path, definitions, schema_list, is_list=False):
     """ Generate the options function definitions."""
     path_params = None
@@ -1273,8 +1294,8 @@ def generate_discovery(stmt, ref, path, definitions, schema_list, is_list=False)
     options['responses'] = response
     return options
 
-# HEAD
 
+# HEAD
 def generate_header_retrieval(stmt, ref, path, definitions, schema_list, is_list=False):
     """ Generate the head function definitions."""
     path_params = None
