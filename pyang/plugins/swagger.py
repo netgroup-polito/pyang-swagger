@@ -508,8 +508,8 @@ def set_node_type_info(typedef, node):
                     elif nested_elem.keyword == 'range':
                         minimum, maximum = str(nested_elem.arg).split("..")
                         node['format'] = str(elem.arg)
-                        node['minimum'] = minimum
-                        node['maximum'] = maximum
+                        node['minimum'] = int(minimum)
+                        node['maximum'] = int(maximum)
 
 
 def gen_model(children, tree_structure, config=True, definitions=None):
