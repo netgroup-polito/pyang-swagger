@@ -1030,7 +1030,7 @@ def gen_typedefs(typedefs):
         type = {'name': typedef.arg}
         for attribute in typedef.substmts:
             if attribute.keyword == 'type':
-                if attribute.arg[:3] == 'int':
+                if attribute.arg[:-2] == 'int' or attribute.arg[:-2] == 'uint' or attribute.arg[:-1] == 'int' or attribute.arg[:-1] == 'uint':
                     type['type'] = 'integer'
                     type['format'] = attribute.arg
                 elif attribute.arg == 'enumeration':
