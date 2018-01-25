@@ -663,7 +663,7 @@ def gen_model(children, tree_structure, config=True, definitions=None):
                 definitions[node_schema_name] = dict()
 
             if 'properties' not in definitions[node_schema_name]:
-                definitions[node_schema_name]['properties'] = copy.deepcopy(node)
+                definitions[node_schema_name]['properties'] = copy.deepcopy(node['properties'])
 
             if required_elem_list:
                 definitions[node_schema_name]['required'] = copy.deepcopy(required_elem_list)
