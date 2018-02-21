@@ -736,14 +736,10 @@ def handle_action_object(child, definitions):
         if action_child.keyword == 'input' and action_child.i_children:
             action_dict['x-yang-action-has-input'] = True
             action_dict['x-yang-action-input-object'] = to_upper_camelcase(node_schema_name + "_input")
-        else:
-            action_dict['x-yang-action-has-input'] = False
 
         if action_child.keyword == 'output' and action_child.i_children:
             action_dict['x-yang-action-has-output'] = True
             action_dict['x-yang-action-output-object'] = to_upper_camelcase(node_schema_name + "_output")
-        else:
-            action_dict['x-yang-action-has-output'] = False
 
     if parents_name_upper not in definitions:
         definitions[parents_name_upper] = dict()
