@@ -160,7 +160,7 @@ def add_leaf_name_keyword_parameters(leaf_name_keyword, module):
     leaf_name_keyword.i_origin_module = module
     leaf_name_keyword.i_typedefs = dict()
     leaf_name_keyword.i_uniques = list()
-    leaf_name_keyword.is_grammatically_valid = True        
+    leaf_name_keyword.is_grammatically_valid = True
 
 
 def add_fake_list_at_beginning(module):
@@ -621,7 +621,7 @@ def gen_model(children, tree_structure, config=True, definitions=None):
                 #    node['items']['properties'] = properties
                 #    del node['properties']
             parent_list = get_parent_list(child)
-            parents_name = '_'.join(parent_list) 
+            parents_name = '_'.join(parent_list)
             node_schema_name = to_upper_camelcase(parents_name + ('_' if parent_list else '') + child.arg)
             if node_schema_name not in definitions:
                 definitions[node_schema_name] = dict()
@@ -791,7 +791,7 @@ def get_parent_schema_list(child):
 def gen_model_node(node, tree_structure, config=True, definitions=None):
     """ Generates the properties sub-tree of the current node."""
     if hasattr(node, 'i_children'):
-        properties = {}
+        properties = OrderedDict()
         children_list = node.i_children if node.i_children else node.substmts
         gen_model(children_list, properties, config, definitions=definitions)
         if properties:
@@ -869,11 +869,11 @@ def gen_api_for_node_list(node, schema, config, keyList, path, definitions):
     # (i.e., NodenameSchema). This new definition is a schema containing the content
     # of the body input schema i.e {"child.arg":schema} -> schema
     if '$ref' not in schema_list[to_lower_camelcase(node.arg)]['items']:
-        definitions[to_upper_camelcase(node.arg)] = dict(
+        definitions[to_upper_camelcase(node.arg)] = OrderedDict(
             schema_list[to_lower_camelcase(node.arg)]['items'])
         schema['$ref'] = '#/definitions/{0}'.format(to_upper_camelcase(node.arg))
     else:
-        schema = dict(schema_list[to_lower_camelcase(node.arg)]['items'])
+        schema = OrderedDict(schema_list[to_lower_camelcase(node.arg)]['items'])
 
     return path, schema
 
@@ -1234,7 +1234,7 @@ def generate_replace(stmt, schema, path, definitions, schema_list, is_list=False
         put['parameters'] = create_parameter_list(path_params, schema, definitions, schema_list)
     else:
         put['parameters'] = []
-    
+
     in_params = create_body_dict(stmt.arg, schema)
 
     if in_params:
@@ -1351,15 +1351,15 @@ def fill_right_type_for_path_param(schema, param, definitions, parameter, schema
                         parameter['x-typedef'] = schema['properties'][param_name[-1]]['x-typedef'] if 'x-typedef' in schema['properties'][param_name[-1]] else ''
                         found = True
                         break;
-        
+
     if 'format' in parameter and not parameter['format']:
         del parameter['format']
-    
+
     if 'enum' in parameter and not parameter['enum']:
         del parameter['enum']
     if 'x-typedef' in parameter and not parameter['x-typedef']:
         del parameter['x-typedef']
-        
+
     return found
 
 
