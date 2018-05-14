@@ -247,9 +247,19 @@ def add_leaf_name_parameters(leaf_name, module):
     leaf_name_description.i_uniques = list()
     leaf_name_description.is_grammatically_valid = True
 
+    leaf_name_example = statements.Statement(module, leaf_name, error.Position("Automatically inserted statement"),
+                                             ("{0}".format(module.arg), "cli-example"), "{0}1".format(module.arg))
+    leaf_name_example.i_groupings = dict()
+    leaf_name_example.i_module = module
+    leaf_name_example.i_origin_module = module
+    leaf_name_example.i_typedefs = dict()
+    leaf_name_example.i_uniques = list()
+    leaf_name_example.is_grammatically_valid = True
+
     leaf_name.substmts.append(leaf_name_type)
     leaf_name.substmts.append(leaf_name_mandatory)
     leaf_name.substmts.append(leaf_name_description)
+    leaf_name.substmts.append(leaf_name_example)
 
 
 def print_header(module, fd, children, git_info):
