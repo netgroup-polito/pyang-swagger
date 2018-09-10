@@ -112,7 +112,7 @@ class SwaggerPlugin(plugin.PyangPlugin):
         emit_swagger_spec(ctx, modules, fd, ctx.opts.path, self.git_info)
 
     def read_yaml_config_file(self, ctx):
-        path = "/.config/iovnet/pyang-swagger.yaml"
+        path = "/.config/polycube/pyang-swagger.yaml"
         home = os.environ['HOME']
         if not home:
             return
@@ -188,7 +188,7 @@ def add_fake_list_at_beginning(module):
 def get_basemodel_grouping_children(module):
     modules = module.i_ctx.modules
     for key in modules:
-        if isinstance(key, tuple) and key[0] == "base-iovnet-service-model":
+        if isinstance(key, tuple) and key[0] == "polycube-base":
             grouping = modules[key].substmts[-1]
             if grouping.arg == 'base-yang-module' and grouping.keyword == 'grouping':
                 return len(grouping.i_children)
@@ -551,7 +551,7 @@ def gen_model(children, tree_structure, config=True, definitions=None):
                         PARENT_MODELS[parent_model] = {'models': [], 'discriminator': to_lower_camelcase(child.arg)}
                 elif isinstance(attribute.keyword, tuple) and attribute.keyword[1] == "cli-example":
                     node['example'] = attribute.arg
-                elif isinstance(attribute.keyword, tuple) and attribute.keyword[1] == "iovnet-class":
+                elif isinstance(attribute.keyword, tuple) and attribute.keyword[1] == "polycube-class":
                     node['x-inherits-from'] = attribute.arg
                 elif attribute.keyword == 'config' and attribute.arg == 'false':
                     config = False
